@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.Windows.Threading;
 using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
@@ -29,27 +29,39 @@ namespace CheckersMultiplayer
         public MainWindow()
         {
             InitializeComponent();
+
+            System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+
+            for (int i = 10; i < 100; i++)
+                ageComboBox.Items.Add(i);
+
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+        }
+
+        private void onRegisterClick(object sender, RoutedEventArgs e)
+        {
+            bool alreadyRegistered = false;
             Crud crud = new Crud();
-            crud.SetData("Jan", "Kowalski", 14);
-            crud.SetData("Marcin", "Nowak", 19);
-            crud.SetData("Pawel", "Kwiatkowski", 24);
-            crud.SetData("Jerzy", "Wozniak", 44);
+
             foreach (var item in crud.LoadData())
             {
-                Console.WriteLine("Name :" + item.Value.Name);
-                Console.WriteLine("Surname :" + item.Value.Surname);
-                Console.WriteLine("age :" + item.Value.age);
+                if (item.Value.login == loginTextBox.Text)
+                    alreadyRegistered = true;
             }
-            crud.DeleteData("Jan");
-            crud.UpdateData("Jerzy", "Wozniak", 35);
-            Console.WriteLine("\nUpdated Data\n\n");
-            foreach (var item in crud.LoadData())
-            {
-                Console.WriteLine("Name :" + item.Value.Name);
-                Console.WriteLine("Surname :" + item.Value.Surname);
-                Console.WriteLine("age :" + item.Value.age);
-            }
-            Console.ReadLine();
+
+            if (alreadyRegistered == false)
+                crud.SetData(nameTextBox.Text, loginTextBox.Text, passwordTextBox.Password, Int32.Parse(ageComboBox.Text), false, false);
+            else
+                loginTextBox.Text = "This login is already taken!";
+        }
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            if(loginTextBox.Text == "This login is already taken!")
+                loginTextBox.Foreground = Brushes.Red;
+            else
+                loginTextBox.Foreground = Brushes.Black;
         }
     }
 
@@ -80,9 +92,12 @@ namespace CheckersMultiplayer
     class data
     {
         //datas for database
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string name { get; set; }
+        public string login { get; set; }
+        public string password { get; set; }
         public int age { get; set; }
+        public bool online { get; set; }
+        public bool inGame { get; set; }
     }
 
     class Crud
@@ -90,17 +105,20 @@ namespace CheckersMultiplayer
         connection conn = new connection();
 
         //set datas to database
-        public void SetData(string Name, string Surname, int age)
+        public void SetData(string name, string login, string password, int age, bool online, bool inGame)
         {
             try
             {
                 data set = new data()
                 {
-                    Name = Name,
-                    Surname = Surname,
-                    age = age
+                    name = name,
+                    login = login,
+                    password = password,
+                    age = age,
+                    online = online,
+                    inGame = inGame
                 };
-                var SetData = conn.client.Set("people/" + Name, set);
+                var SetData = conn.client.Set("players/" + login, set);
             }
             catch (Exception)
             {
@@ -110,17 +128,20 @@ namespace CheckersMultiplayer
         }
 
         //Update datas
-        public void UpdateData(string Name, string Surname, int age)
+        public void UpdateData(string name, string login, string password, int age, bool online, bool inGame)
         {
             try
             {
                 data set = new data()
                 {
-                    Name = Name,
-                    Surname = Surname,
-                    age = age
+                    name = name,
+                    login = login,
+                    password = password,
+                    age = age,
+                    online = online,
+                    inGame = inGame
                 };
-                var SetData = conn.client.Update("people/" + Name, set); ;
+                var SetData = conn.client.Update("players/" + login, set); ;
             }
             catch (Exception)
             {
@@ -129,11 +150,11 @@ namespace CheckersMultiplayer
         }
 
         //Delete datas
-        public void DeleteData(string Name)
+        public void DeleteData(string name, string login, string password, int age, bool online, bool inGame)
         {
             try
             {
-                var SetData = conn.client.Delete("people/" + Name);
+                var SetData = conn.client.Delete("players/" + login);
             }
             catch (Exception)
             {
@@ -146,7 +167,7 @@ namespace CheckersMultiplayer
         {
             try
             {
-                FirebaseResponse al = conn.client.Get("people");
+                FirebaseResponse al = conn.client.Get("players");
                 Dictionary<string, data> ListData = JsonConvert.DeserializeObject<Dictionary<string, data>>(al.Body.ToString());
                 return ListData;
             }

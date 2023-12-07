@@ -5,8 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersMultiplayer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="578.125" Width="1178.125">
     <Grid>
-        
+        <Button x:Name="registerButton" Content="Register" HorizontalAlignment="Left" Margin="478,421,0,0" VerticalAlignment="Top" Width="155" RenderTransformOrigin="2.868,8.591" Height="51" FontSize="22" Click="onRegisterClick"/>
+        <TextBox x:Name="loginTextBox" HorizontalAlignment="Left" Height="35" Margin="521,133,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="324" FontSize="22"/>
+        <Label Content="Login" HorizontalAlignment="Left" Margin="269,129,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="22"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="269,195,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <TextBox x:Name="nameTextBox" HorizontalAlignment="Left" Height="36" Margin="521,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="324" FontSize="22"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="269,63,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="22"/>
+        <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Height="36" Margin="521,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="324" FontSize="22"/>
+        <Label Content="E-mail" HorizontalAlignment="Left" Margin="269,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="22"/>
+        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="521,199,0,0" VerticalAlignment="Top" Width="324" Height="35" FontSize="22"/>
+        <Label Content="Age" HorizontalAlignment="Left" Margin="269,325,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="22"/>
+        <ComboBox x:Name="ageComboBox" HorizontalAlignment="Left" Margin="521,328,0,0" VerticalAlignment="Top" Width="120" Height="36" FontSize="22"/>
+
     </Grid>
 </Window>
