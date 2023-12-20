@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Firebase.Auth;
 using FireSharp.Response;
 using Newtonsoft.Json;
 
@@ -11,6 +12,27 @@ namespace CheckersMultiplayer
     class CRUD_Service
     {
         CRUD_Connection conn = new CRUD_Connection();
+
+        public void RegisterUser(string email,string password)
+        {
+            conn.authClient.CreateUserWithEmailAndPasswordAsync(email,password).ContinueWith(task => {
+                if (task.IsCanceled)
+                {
+                    Console.WriteLine("CreateUserWithEmailAndPasswordAsync was canceled.");
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    Console.WriteLine("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                    return;
+                }
+
+                // Firebase user has been created.
+                UserCredential result = task.Result;
+                Console.WriteLine("Firebase user created successfully:" +
+                    result.User.Uid);
+            });
+        }
 
         //set datas to database
         public void SetData(string name, string login, string password, int age, bool online, bool inGame)

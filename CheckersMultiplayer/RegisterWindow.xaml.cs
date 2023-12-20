@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Firebase.Auth;
+using Firebase.Auth.Providers;
 
 namespace CheckersMultiplayer
 {
@@ -62,7 +64,10 @@ namespace CheckersMultiplayer
             }
 
             if (alreadyRegistered == false)
+            {
                 crud.SetData(nameTextBox.Text, loginTextBox.Text, passwordTextBox.Password, Int32.Parse(ageComboBox.Text), false, false);
+                crud.RegisterUser(emailTextBox.Text, passwordTextBox.Password);
+            }
             else
                 loginTextBox.Text = "This login is already taken!";
         }
