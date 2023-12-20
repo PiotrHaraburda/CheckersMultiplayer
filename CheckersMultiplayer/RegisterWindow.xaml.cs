@@ -54,22 +54,42 @@ namespace CheckersMultiplayer
 
         private void signUpButton_Click(object sender, RoutedEventArgs e)
         {
-            bool alreadyRegistered = false;
-            CRUD_Service crud = new CRUD_Service();
 
-            foreach (var item in crud.LoadData())
+            if (loginTextBox.Text!=""&&passwordTextBox.Password!=""&&emailTextBox.Text!=""&&nameTextBox.Text!="")
             {
-                if (item.Value.login == loginTextBox.Text)
-                    alreadyRegistered = true;
-            }
+                bool alreadyRegistered = false;
+                CRUD_Service crud = new CRUD_Service();
 
-            if (alreadyRegistered == false)
-            {
-                crud.SetData(nameTextBox.Text, loginTextBox.Text, passwordTextBox.Password, Int32.Parse(ageComboBox.Text), false, false);
-                crud.RegisterUser(emailTextBox.Text, passwordTextBox.Password);
+                foreach (var item in crud.LoadData())
+                {
+                    if (item.Value.login == loginTextBox.Text)
+                        alreadyRegistered = true;
+                }
+
+                if (alreadyRegistered == false)
+                {
+                    bool isRegistered=crud.RegisterUser(emailTextBox.Text, passwordTextBox.Password);
+
+                    if(isRegistered == true)
+                    {
+                        crud.SetData(nameTextBox.Text, loginTextBox.Text, emailTextBox.Text, Int32.Parse(ageComboBox.Text), false, false);
+                        accountCreatedLabel.Visibility = Visibility.Visible;
+                        nameTextBox.Visibility = Visibility.Hidden;
+                        loginTextBox.Visibility = Visibility.Hidden;
+                        passwordTextBox.Visibility = Visibility.Hidden;
+                        emailTextBox.Visibility = Visibility.Hidden;
+                        signUpButton.Visibility = Visibility.Hidden;
+                        ageComboBox.Visibility = Visibility.Hidden;
+                        nameLabel.Visibility = Visibility.Hidden;
+                        loginLabel.Visibility = Visibility.Hidden;
+                        passwordLabel.Visibility = Visibility.Hidden;
+                        emailLabel.Visibility = Visibility.Hidden;
+                        ageLabel.Visibility = Visibility.Hidden;
+                    }
+                }
+                else
+                    loginTextBox.Text = "This login is already taken!";
             }
-            else
-                loginTextBox.Text = "This login is already taken!";
         }
     }
 }

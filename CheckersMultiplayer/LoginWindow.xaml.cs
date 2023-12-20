@@ -31,5 +31,28 @@ namespace CheckersMultiplayer
             registerWindow.Show();
             this.Close();
         }
+
+        private void signInButton_Click(object sender, RoutedEventArgs e)
+        {
+            CRUD_Service crud = new CRUD_Service();
+            bool loggedIn=crud.LoginUser(emailTextBox.Text, passwordTextBox.Password);
+
+            if(loggedIn)
+            {
+                foreach (var item in crud.LoadData())
+                {
+                    if (item.Value.email == emailTextBox.Text)
+                    {
+                        crud.UpdateData(item.Value.name, item.Value.login, item.Value.email, item.Value.age, true, item.Value.inGame);
+                        break;
+                    }
+                }
+
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+            }
+
+        }
     }
 }

@@ -5,10 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersMultiplayer"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="CheckersMultiplayer Login" Height="450" Width="800">
     <Grid>
         <Button x:Name="signUpButton" Content="Sign Up" HorizontalAlignment="Left" Margin="634,69,0,0" VerticalAlignment="Top" Width="118" Height="59" FontSize="22" Click="signUpButton_Click"/>
         <Label Content="Not registered?" HorizontalAlignment="Left" Margin="634,23,0,0" VerticalAlignment="Top" FontSize="16" RenderTransformOrigin="0.158,1.224"/>
+        <Button x:Name="signInButton" Content="Sign In" HorizontalAlignment="Left" Margin="257,318,0,0" VerticalAlignment="Top" Width="155" RenderTransformOrigin="2.868,8.591" Height="51" FontSize="22" Click="signInButton_Click"/>
+        <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="27,178,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Height="36" Margin="279,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="324" FontSize="22"/>
+        <Label x:Name="emailLabel" Content="E-mail" HorizontalAlignment="Left" Margin="27,115,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="22"/>
+        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="279,182,0,0" VerticalAlignment="Top" Width="324" Height="35" FontSize="22"/>
 
     </Grid>
 </Window>

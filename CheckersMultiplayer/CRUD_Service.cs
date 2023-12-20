@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using Firebase.Auth;
 using FireSharp.Response;
 using Newtonsoft.Json;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using System.Net.Http;
 
 namespace CheckersMultiplayer
 {
@@ -13,29 +18,81 @@ namespace CheckersMultiplayer
     {
         CRUD_Connection conn = new CRUD_Connection();
 
-        public void RegisterUser(string email,string password)
+        public bool RegisterUser(string email,string password)
         {
-            conn.authClient.CreateUserWithEmailAndPasswordAsync(email,password).ContinueWith(task => {
-                if (task.IsCanceled)
-                {
-                    Console.WriteLine("CreateUserWithEmailAndPasswordAsync was canceled.");
-                    return;
-                }
-                if (task.IsFaulted)
-                {
-                    Console.WriteLine("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                    return;
-                }
+            try
+            {
+                var registerTask = conn.authClient.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+                    if (task.IsCanceled)
+                    {
+                        Console.WriteLine("CreateUserWithEmailAndPasswordAsync was canceled.");
+                    }
+                    if (task.IsFaulted)
+                    {
+                        Console.WriteLine("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                    }
 
-                // Firebase user has been created.
-                UserCredential result = task.Result;
-                Console.WriteLine("Firebase user created successfully:" +
-                    result.User.Uid);
-            });
+                    // Firebase user has been created.
+                    UserCredential result = task.Result;
+                    Console.WriteLine("Firebase user created successfully:" +result.User.Uid);
+                });
+
+                registerTask.Wait();
+                return true;
+            }
+            catch(HttpRequestException)
+            {
+                return false;
+            }
+            catch(FirebaseAuthHttpException)
+            {
+                return false;
+            }
+            catch (AggregateException)
+            {
+                return false;
+            }
+        }
+
+
+        public bool LoginUser(string email, string password)
+        {
+            try
+            {
+                var loginTask = conn.authClient.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+                    if (task.IsCanceled)
+                    {
+                        Console.WriteLine("SignInWithEmailAndPasswordAsync was canceled.");
+                    }
+                    if (task.IsFaulted)
+                    {
+                        Console.WriteLine("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                    }
+
+                    UserCredential result = task.Result;
+
+                    Console.WriteLine("User signed in successfully: " + result.User.Uid);
+                });
+
+                loginTask.Wait();
+                return true;
+            }
+            catch(HttpRequestException)
+            {
+                return false;
+            }
+            catch(FirebaseAuthHttpException)
+            {
+                return false;
+            }
+            catch (AggregateException)
+            {
+                return false;
+            }
         }
 
         //set datas to database
-        public void SetData(string name, string login, string password, int age, bool online, bool inGame)
+        public void SetData(string name, string login, string email, int age, bool online, bool inGame)
         {
             try
             {
@@ -43,7 +100,7 @@ namespace CheckersMultiplayer
                 {
                     name = name,
                     login = login,
-                    password = password,
+                    email=email,
                     age = age,
                     online = online,
                     inGame = inGame
@@ -58,7 +115,7 @@ namespace CheckersMultiplayer
         }
 
         //Update datas
-        public void UpdateData(string name, string login, string password, int age, bool online, bool inGame)
+        public void UpdateData(string name, string login, string email, int age, bool online, bool inGame)
         {
             try
             {
@@ -66,7 +123,7 @@ namespace CheckersMultiplayer
                 {
                     name = name,
                     login = login,
-                    password = password,
+                    email = email,
                     age = age,
                     online = online,
                     inGame = inGame
@@ -80,7 +137,7 @@ namespace CheckersMultiplayer
         }
 
         //Delete datas
-        public void DeleteData(string name, string login, string password, int age, bool online, bool inGame)
+        public void DeleteData(string name, string login, string email, int age, bool online, bool inGame)
         {
             try
             {
