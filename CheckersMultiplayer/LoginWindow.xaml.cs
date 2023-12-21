@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace CheckersMultiplayer
 {
@@ -48,9 +49,23 @@ namespace CheckersMultiplayer
                     }
                 }
 
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
+                emailLabel.Visibility = Visibility.Hidden;
+                passwordLabel.Visibility = Visibility.Hidden;
+                emailTextBox.Visibility = Visibility.Hidden;
+                passwordTextBox.Visibility = Visibility.Hidden;
+                signInButton.Visibility = Visibility.Hidden;
+                signedInLabel.Visibility = Visibility.Visible;
+
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+                timer.Start();
+                timer.Tick += (sender2, args) =>
+                {
+                    timer.Stop();
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    this.Close();
+                };
+
             }
 
         }

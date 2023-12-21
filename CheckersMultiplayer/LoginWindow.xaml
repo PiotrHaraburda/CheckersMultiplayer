@@ -15,6 +15,7 @@
         <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Height="36" Margin="279,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="324" FontSize="22"/>
         <Label x:Name="emailLabel" Content="E-mail" HorizontalAlignment="Left" Margin="27,115,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="22"/>
         <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="279,182,0,0" VerticalAlignment="Top" Width="324" Height="35" FontSize="22"/>
+        <Label x:Name="signedInLabel" Content="Successfully signed in!" HorizontalAlignment="Left" Margin="257,208,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
 
     </Grid>
 </Window>
