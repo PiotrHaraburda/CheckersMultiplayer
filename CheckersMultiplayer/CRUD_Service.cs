@@ -91,6 +91,13 @@ namespace CheckersMultiplayer
             }
         }
 
+        public Firebase.Auth.User LogoutUser()
+        {
+            conn.authClient.SignOut();
+
+            return conn.authClient.User;
+        }
+
         //set datas to database
         public void SetData(string name, string login, string email, int age, bool online, bool inGame)
         {
@@ -113,6 +120,36 @@ namespace CheckersMultiplayer
             }
 
         }
+
+        public void CreateGameRoom(string login)
+        {
+            try
+            {
+                CRUDgame_rooms set = new CRUDgame_rooms()
+                {
+                    host = login,
+                    blackPawns = login,
+                    whitePawns = "",
+                    board = new List<List<string>>
+                    {
+                        new List<string> { "0", "B", "0", "B", "0", "B", "0", "B" },
+                        new List<string> { "B", "0", "B", "0", "B", "0", "B", "0" },
+                        new List<string> { "0", "B", "0", "B", "0", "B", "0", "B" },
+                        new List<string> { "0", "0", "0", "0", "0", "0", "0", "0" },
+                        new List<string> { "0", "0", "0", "0", "0", "0", "0", "0" },
+                        new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" },
+                        new List<string> { "0", "W", "0", "W", "0", "W", "0", "W" },
+                        new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" }
+                    }
+                };
+                var SetData = conn.client.Set("gameRooms/" + login, set);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
 
         //Update datas
         public void UpdateData(string name, string login, string email, int age, bool online, bool inGame)
@@ -150,7 +187,7 @@ namespace CheckersMultiplayer
         }
 
         //List of the datas
-        public Dictionary<string, CRUDplayers> LoadData()
+        public Dictionary<string, CRUDplayers> LoadPlayers()
         {
             try
             {
@@ -164,5 +201,30 @@ namespace CheckersMultiplayer
                 return null;
             }
         }
+
+        public Dictionary<string, CRUDgame_rooms> LoadGameRooms()
+        {
+            try
+            {
+                FirebaseResponse al = conn.client.Get("gameRooms");
+                string json = al.Body.ToString();
+
+                JsonSerializerSettings settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
+                Dictionary<string, CRUDgame_rooms> gameRooms = JsonConvert.DeserializeObject<Dictionary<string, CRUDgame_rooms>>(json, settings);
+
+                return gameRooms;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+
     }
 }

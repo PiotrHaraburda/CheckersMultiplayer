@@ -8,7 +8,20 @@
         WindowStartupLocation="CenterScreen"
         Title="MainApp" Height="450" Width="800">
     <Grid>
-        <Label Content="Warcaby" HorizontalAlignment="Center" Margin="0,167,0,0" VerticalAlignment="Top"/>
+        <DockPanel x:Name="mainMenuPanel" LastChildFill="False" Visibility="Collapsed">
+            <Label Content="Checkers Multiplayer" DockPanel.Dock="Top" Height="36" Margin="0,60,0,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="multiplayerButton" Content="Play Multiplayer" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,40,0,0" Click="multiplayerButton_Click"/>
+            <Button Content="Your Account" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0"/>
+            <Button Content="Settings" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0"/>
+            <Button x:Name="logoutButton" Content="Logout" DockPanel.Dock="Top" Height="31" Margin="0,20,0,0" Width="121" Click="logoutButton_Click"/>
+        </DockPanel>
+        <DockPanel x:Name="multiplayerPanel" LastChildFill="False" Visibility="Visible" >
+            <Label Content="Multiplayer Mode" DockPanel.Dock="Top" Height="31" Margin="0,60,0,0" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"/>
+            <Button x:Name="createLobbyButton" Content="Create Lobby" DockPanel.Dock="Top" Height="33" Margin="0,30,0,0" Width="144" Click="createLobbyButton_Click"/>
+            <Button x:Name="joinLobbyButton" Content="Join Lobby" DockPanel.Dock="Top" Height="33" Width="145" Margin="0,20,0,0" Click="joinLobbyButton_Click"/>
+            <Button Content="Statistics" DockPanel.Dock="Top" Height="33" Margin="0,20,0,0" Width="146"/>
+            <Button x:Name="quitMultiplayerButton" Content="Go Back" DockPanel.Dock="Top" Height="33" Width="146" Margin="0,20,0,0" Click="quitMultiplayerButton_Click"/>
+        </DockPanel>
 
     </Grid>
 </Window>

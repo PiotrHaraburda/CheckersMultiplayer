@@ -33,6 +33,7 @@ namespace CheckersMultiplayer
             this.Close();
         }
 
+
         private void signInButton_Click(object sender, RoutedEventArgs e)
         {
             CRUD_Service crud = new CRUD_Service();
@@ -40,11 +41,23 @@ namespace CheckersMultiplayer
 
             if(loggedIn)
             {
-                foreach (var item in crud.LoadData())
+                string accountName=null;
+                string accountLogin = null;
+                int accountAge = 0;
+                string accountEmail = null;
+                bool accountInGame = false;
+                bool accountOnline = false;
+                foreach (var item in crud.LoadPlayers())
                 {
                     if (item.Value.email == emailTextBox.Text)
                     {
                         crud.UpdateData(item.Value.name, item.Value.login, item.Value.email, item.Value.age, true, item.Value.inGame);
+                        accountName = item.Value.name;
+                        accountLogin = item.Value.login;
+                        accountAge= item.Value.age;
+                        accountEmail = item.Value.email;
+                        accountInGame = item.Value.inGame;
+                        accountOnline = item.Value.online;
                         break;
                     }
                 }
@@ -61,7 +74,7 @@ namespace CheckersMultiplayer
                 timer.Tick += (sender2, args) =>
                 {
                     timer.Stop();
-                    MainWindow mainWindow = new MainWindow();
+                    MainWindow mainWindow = new MainWindow(accountName,accountLogin,accountAge,accountEmail,accountInGame,accountOnline);
                     mainWindow.Show();
                     this.Close();
                 };

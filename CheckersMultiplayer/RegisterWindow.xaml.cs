@@ -60,7 +60,7 @@ namespace CheckersMultiplayer
                 bool alreadyRegistered = false;
                 CRUD_Service crud = new CRUD_Service();
 
-                foreach (var item in crud.LoadData())
+                foreach (var item in crud.LoadPlayers())
                 {
                     if (item.Value.login == loginTextBox.Text)
                         alreadyRegistered = true;
