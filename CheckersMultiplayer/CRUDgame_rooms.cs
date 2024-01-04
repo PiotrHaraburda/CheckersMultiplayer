@@ -14,5 +14,6 @@ namespace CheckersMultiplayer
         public string roomName { get; set; }
         public string password { get; set; }
         public List<List<string>> board { get; set; }
+        public bool inProgress { get; set; }
     }
 }

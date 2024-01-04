@@ -11,6 +11,9 @@ using Newtonsoft.Json;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using System.Net.Http;
+using Firebase.Functions;
+using System.Drawing.Drawing2D;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CheckersMultiplayer
 {
@@ -155,7 +158,7 @@ namespace CheckersMultiplayer
             }
         }
 
-        public void UpdateGameRoom(string login,string password, string roomName)
+        public void UpdateGameRoom(string login,string password, string roomName, bool inProgress)
         {
             try
             {
@@ -164,6 +167,39 @@ namespace CheckersMultiplayer
                     host = login,
                     blackPawns = login,
                     whitePawns = "",
+                    password = password,
+                    roomName = roomName,
+                    board = new List<List<string>>
+                    {
+                        new List<string> { "0", "B", "0", "B", "0", "B", "0", "B" },
+                        new List<string> { "B", "0", "B", "0", "B", "0", "B", "0" },
+                        new List<string> { "0", "B", "0", "B", "0", "B", "0", "B" },
+                        new List<string> { "0", "0", "0", "0", "0", "0", "0", "0" },
+                        new List<string> { "0", "0", "0", "0", "0", "0", "0", "0" },
+                        new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" },
+                        new List<string> { "0", "W", "0", "W", "0", "W", "0", "W" },
+                        new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" }
+                    },
+                    inProgress=inProgress
+                };
+                var SetData = conn.client.Update("gameRooms/" + login, set);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public void UpdateGameRoomOpponent(string login, string password, string roomName,string opponent)
+        {
+            try
+            {
+                CRUDgame_rooms set = new CRUDgame_rooms()
+                {
+                    host = login,
+                    blackPawns = login,
+                    whitePawns = opponent,
                     password = password,
                     roomName = roomName,
                     board = new List<List<string>>
@@ -187,18 +223,17 @@ namespace CheckersMultiplayer
             }
         }
 
-        public void DeleteGameRoom(string gameRoomName)
+        public void DeleteGameRoom(string accountLogin)
         {
             try
             {
-                var SetData = conn.client.Delete("gameRooms/" + gameRoomName);
+                var SetData = conn.client.Delete("gameRooms/" + accountLogin);
             }
             catch (Exception)
             {
                 Console.WriteLine("error");
             }
         }
-
 
         //Update datas
         public void UpdateData(string name, string login, string email, int age, bool online, bool inGame)
@@ -214,7 +249,7 @@ namespace CheckersMultiplayer
                     online = online,
                     inGame = inGame
                 };
-                var SetData = conn.client.Update("players/" + login, set); ;
+                var SetData = conn.client.Update("players/" + login, set);
             }
             catch (Exception)
             {
