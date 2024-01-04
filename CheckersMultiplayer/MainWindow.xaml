@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Title="MainApp" Height="450" Width="800">
     <Grid>
-        <DockPanel x:Name="mainMenuPanel" LastChildFill="False" Visibility="Collapsed">
+        <DockPanel x:Name="mainMenuPanel" LastChildFill="False" Visibility="Visible">
             <Label Content="Checkers Multiplayer" DockPanel.Dock="Top" Height="36" Margin="0,60,0,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Button x:Name="multiplayerButton" Content="Play Multiplayer" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,40,0,0" Click="multiplayerButton_Click"/>
             <Button Content="Your Account" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0"/>
@@ -36,7 +36,7 @@
             <Button x:Name="saveRoomInfoButton" Content="Save" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.202,-2.202" Width="68" Click="saveRoomInfoButton_Click"/>
             <Label Content="None" HorizontalAlignment="Left" Margin="414,290,0,0" VerticalAlignment="Top"/>
         </Grid>
-        <Grid x:Name="gameRoomsGrid">
+        <Grid x:Name="gameRoomsGrid" Visibility="Collapsed">
             <Label Content="Active Game Rooms" HorizontalAlignment="Center" Margin="0,31,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
             <ListBox x:Name="gameRoomsListBox" Margin="136,80,136,80"/>
             <Button x:Name="quitGameRoomsButton" Content="Return" HorizontalAlignment="Left" Margin="33,38,0,0" VerticalAlignment="Top" Width="53" Click="quitGameRoomsButton_Click"/>
