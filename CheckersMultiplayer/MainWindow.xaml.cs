@@ -26,6 +26,8 @@ namespace CheckersMultiplayer
         string accountEmail;
         bool accountInGame;
         bool accountOnline;
+        
+        string gameRoomName;
 
         public MainWindow(string accountName, string accountLogin, int accountAge, string accountEmail, bool accountInGame, bool accountOnline)
         {
@@ -62,9 +64,17 @@ namespace CheckersMultiplayer
 
         private void joinLobbyButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in crud.LoadGameRooms())
+            gameRoomsGrid.Visibility = Visibility.Visible;
+            multiplayerPanel.Visibility= Visibility.Collapsed;
+
+            var gameRooms = crud.LoadGameRooms();
+            if (gameRooms == null)
+                return;
+
+            foreach (var item in gameRooms)
             {
                 Console.WriteLine($"Room: {item.Key}");
+                gameRoomsListBox.Items.Add(item.Value.roomName);
 
                 foreach (var boardRow in item.Value.board)
                 {
@@ -82,7 +92,34 @@ namespace CheckersMultiplayer
 
         private void createLobbyButton_Click(object sender, RoutedEventArgs e)
         {
-            crud.CreateGameRoom(accountLogin);
+            multiplayerPanel.Visibility = Visibility.Collapsed;
+            createLobbyGrid.Visibility = Visibility.Visible;
+            CRUDgame_rooms game_room=crud.CreateGameRoom(accountLogin);
+            roomNameTextBox.Text = game_room.roomName;
+            roomPasswordTextBox.Text = game_room.password;
+        }
+
+        private void quitLobbyCreation_Click(object sender, RoutedEventArgs e)
+        {
+            multiplayerPanel.Visibility = Visibility.Visible;
+            createLobbyGrid.Visibility = Visibility.Collapsed;
+            crud.DeleteGameRoom(gameRoomName);
+        }
+
+        private void saveRoomInfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            crud.UpdateGameRoom(accountLogin, roomNameTextBox.Text, roomPasswordTextBox.Text);
+        }
+
+        private void quitGameRoomsButton_Click(object sender, RoutedEventArgs e)
+        {
+            gameRoomsGrid.Visibility = Visibility.Collapsed;
+            multiplayerPanel.Visibility = Visibility.Visible;
+        }
+
+        private void joinGameRoomButton_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(gameRoomsListBox.SelectedItem);
         }
     }
 }

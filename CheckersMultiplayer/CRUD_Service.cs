@@ -121,7 +121,7 @@ namespace CheckersMultiplayer
 
         }
 
-        public void CreateGameRoom(string login)
+        public CRUDgame_rooms CreateGameRoom(string login)
         {
             try
             {
@@ -130,6 +130,8 @@ namespace CheckersMultiplayer
                     host = login,
                     blackPawns = login,
                     whitePawns = "",
+                    password = "",
+                    roomName= login+"'s room",
                     board = new List<List<string>>
                     {
                         new List<string> { "0", "B", "0", "B", "0", "B", "0", "B" },
@@ -143,10 +145,57 @@ namespace CheckersMultiplayer
                     }
                 };
                 var SetData = conn.client.Set("gameRooms/" + login, set);
+
+                return set;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public void UpdateGameRoom(string login,string password, string roomName)
+        {
+            try
+            {
+                CRUDgame_rooms set = new CRUDgame_rooms()
+                {
+                    host = login,
+                    blackPawns = login,
+                    whitePawns = "",
+                    password = password,
+                    roomName = roomName,
+                    board = new List<List<string>>
+                    {
+                        new List<string> { "0", "B", "0", "B", "0", "B", "0", "B" },
+                        new List<string> { "B", "0", "B", "0", "B", "0", "B", "0" },
+                        new List<string> { "0", "B", "0", "B", "0", "B", "0", "B" },
+                        new List<string> { "0", "0", "0", "0", "0", "0", "0", "0" },
+                        new List<string> { "0", "0", "0", "0", "0", "0", "0", "0" },
+                        new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" },
+                        new List<string> { "0", "W", "0", "W", "0", "W", "0", "W" },
+                        new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" }
+                    }
+                };
+                var SetData = conn.client.Update("gameRooms/" + login, set);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public void DeleteGameRoom(string gameRoomName)
+        {
+            try
+            {
+                var SetData = conn.client.Delete("gameRooms/" + gameRoomName);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("error");
             }
         }
 

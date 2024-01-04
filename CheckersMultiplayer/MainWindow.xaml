@@ -14,14 +14,34 @@
             <Button Content="Your Account" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0"/>
             <Button Content="Settings" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0"/>
             <Button x:Name="logoutButton" Content="Logout" DockPanel.Dock="Top" Height="31" Margin="0,20,0,0" Width="121" Click="logoutButton_Click"/>
+            <Grid Width="100"/>
         </DockPanel>
-        <DockPanel x:Name="multiplayerPanel" LastChildFill="False" Visibility="Visible" >
+        <DockPanel x:Name="multiplayerPanel" LastChildFill="False" Visibility="Collapsed" >
             <Label Content="Multiplayer Mode" DockPanel.Dock="Top" Height="31" Margin="0,60,0,0" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"/>
             <Button x:Name="createLobbyButton" Content="Create Lobby" DockPanel.Dock="Top" Height="33" Margin="0,30,0,0" Width="144" Click="createLobbyButton_Click"/>
             <Button x:Name="joinLobbyButton" Content="Join Lobby" DockPanel.Dock="Top" Height="33" Width="145" Margin="0,20,0,0" Click="joinLobbyButton_Click"/>
             <Button Content="Statistics" DockPanel.Dock="Top" Height="33" Margin="0,20,0,0" Width="146"/>
             <Button x:Name="quitMultiplayerButton" Content="Go Back" DockPanel.Dock="Top" Height="33" Width="146" Margin="0,20,0,0" Click="quitMultiplayerButton_Click"/>
         </DockPanel>
+        <Grid x:Name="createLobbyGrid" Visibility="Collapsed">
+            <Label Content="Creating multiplayer lobby" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+            <Label Content="Room name:&#xD;&#xA;" HorizontalAlignment="Left" Margin="255,111,0,0" VerticalAlignment="Top" Height="27"/>
+            <TextBox x:Name="roomNameTextBox" HorizontalAlignment="Left" Margin="379,116,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="159"/>
+            <Label Content="Room password:" HorizontalAlignment="Left" Margin="255,150,0,0" VerticalAlignment="Top" Height="27"/>
+            <TextBox x:Name="roomPasswordTextBox" HorizontalAlignment="Left" Margin="379,155,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="159"/>
+            <Button Content="Start Game" HorizontalAlignment="Center" Margin="0,364,0,0" VerticalAlignment="Top" Width="106" Height="30"/>
+            <Label Content="Waiting for opponents..." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,232,0,0"/>
+            <Label Content="Your opponent:" HorizontalAlignment="Left" Margin="317,290,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="quitLobbyCreation" Content="Return" HorizontalAlignment="Left" Margin="34,42,0,0" VerticalAlignment="Top" Click="quitLobbyCreation_Click" Width="59" Height="26"/>
+            <Button x:Name="saveRoomInfoButton" Content="Save" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.202,-2.202" Width="68" Click="saveRoomInfoButton_Click"/>
+            <Label Content="None" HorizontalAlignment="Left" Margin="414,290,0,0" VerticalAlignment="Top"/>
+        </Grid>
+        <Grid x:Name="gameRoomsGrid">
+            <Label Content="Active Game Rooms" HorizontalAlignment="Center" Margin="0,31,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
+            <ListBox x:Name="gameRoomsListBox" Margin="136,80,136,80"/>
+            <Button x:Name="quitGameRoomsButton" Content="Return" HorizontalAlignment="Left" Margin="33,38,0,0" VerticalAlignment="Top" Width="53" Click="quitGameRoomsButton_Click"/>
+            <Button x:Name="joinGameRoomButton" Content="Join" HorizontalAlignment="Center" Margin="0,384,0,0" VerticalAlignment="Top" Width="110" Click="joinGameRoomButton_Click"/>
+        </Grid>
 
     </Grid>
 </Window>
