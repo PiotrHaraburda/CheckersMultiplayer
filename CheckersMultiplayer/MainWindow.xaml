@@ -34,7 +34,7 @@
             <Label x:Name="opponentLabel" Content="Your opponent:" HorizontalAlignment="Left" Margin="317,290,0,0" VerticalAlignment="Top"/>
             <Button x:Name="quitLobbyCreation" Content="Return" HorizontalAlignment="Left" Margin="34,42,0,0" VerticalAlignment="Top" Click="quitLobbyCreation_Click" Width="59" Height="26"/>
             <Button x:Name="saveRoomInfoButton" Content="Save" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.202,-2.202" Width="68" Click="saveRoomInfoButton_Click"/>
-            <Label x:Name="opponentNameLabel" Content="None" HorizontalAlignment="Left" Margin="414,290,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="opponentNameLabel" Content="" HorizontalAlignment="Left" Margin="414,290,0,0" VerticalAlignment="Top"/>
         </Grid>
         <Grid x:Name="gameRoomsGrid" Visibility="Collapsed">
             <Label Content="Active Game Rooms" HorizontalAlignment="Center" Margin="0,31,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
@@ -50,30 +50,6 @@
         </Grid>
         <Grid x:Name="gameGrid" Visibility="Collapsed">
             <Image HorizontalAlignment="Left" Height="468" Margin="10,10,0,10" VerticalAlignment="Top" Width="468" Source="/Wood-2.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="63,108,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="63,389,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="63,295,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="109,156,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="109,63,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="156,108,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="203,63,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="249,108,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="203,156,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="297,63,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="343,108,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="297,156,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="389,63,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="389,156,0,0" VerticalAlignment="Top" Width="36" Source="/images/blackPawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="156,295,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="109,342,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="156,389,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="249,295,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="203,342,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="249,389,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="343,295,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="297,342,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="343,389,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
-            <Image Cursor="Hand" HorizontalAlignment="Left" Height="36" Margin="389,342,0,0" VerticalAlignment="Top" Width="36" Source="/images/whitePawn.png"/>
         </Grid>
     </Grid>
 </Window>

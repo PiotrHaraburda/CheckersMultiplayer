@@ -69,7 +69,7 @@ namespace CheckersMultiplayer
                 signInButton.Visibility = Visibility.Hidden;
                 signedInLabel.Visibility = Visibility.Visible;
 
-                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
                 timer.Start();
                 timer.Tick += (sender2, args) =>
                 {

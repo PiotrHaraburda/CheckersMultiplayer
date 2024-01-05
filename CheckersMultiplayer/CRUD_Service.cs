@@ -158,7 +158,7 @@ namespace CheckersMultiplayer
             }
         }
 
-        public void UpdateGameRoom(string login,string password, string roomName, bool inProgress)
+        public void UpdateGameRoom(string login,string password, string roomName,string whitePawns, bool inProgress)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace CheckersMultiplayer
                 {
                     host = login,
                     blackPawns = login,
-                    whitePawns = "",
+                    whitePawns = whitePawns,
                     password = password,
                     roomName = roomName,
                     board = new List<List<string>>
