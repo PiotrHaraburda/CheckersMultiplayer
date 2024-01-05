@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace CheckersMultiplayer
 {
@@ -30,11 +31,14 @@ namespace CheckersMultiplayer
         bool accountInGame;
         bool accountOnline;
 
-        EventStreamResponse response;
+         EventStreamResponse response1;
+         EventStreamResponse response2;
 
         CRUDgame_rooms currentGame=new CRUDgame_rooms();
 
         Image selectedPawn;
+
+        private DispatcherTimer timer;
 
         public MainWindow(string accountName, string accountLogin, int accountAge, string accountEmail, bool accountInGame, bool accountOnline)
         {
@@ -116,7 +120,7 @@ namespace CheckersMultiplayer
             createLobbyGrid.Visibility = Visibility.Collapsed;
             crud.DeleteGameRoom(accountLogin);
 
-            response.Dispose();
+            response1.Dispose();
         }
 
         private void saveRoomInfoButton_Click(object sender, RoutedEventArgs e)
@@ -192,36 +196,6 @@ namespace CheckersMultiplayer
             return;
         }
 
-        public async Task OpponentListenerAsync(string accountLogin)
-        {
-            response = await conn.client.OnAsync("gameRooms/" + accountLogin, (sender, args, context) =>
-            {
-                if (args.Path.Equals("/whitePawns"))
-                {
-                    Dispatcher.Invoke(new Action(() => { 
-                        opponentNameLabel.Content = args.Data.ToString();
-                        waitingForOpponentsLabel.Content = "Waiting for you to start the game...."; ; }));
-
-                    Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ => OpponentListenerAsync(accountLogin));
-                }
-            });
-        }
-
-        public async Task GameStartedListenerAsync(string host)
-        {
-            response = await conn.client.OnAsync("gameRooms/" + host, (sender, args, context) =>
-            {
-                if (args.Path.Equals("/inProgress")&&args.Data.Equals("True"))
-                {
-                    Dispatcher.Invoke(new Action(() => {
-                        createLobbyGrid.Visibility=Visibility.Collapsed;
-                        gameGrid.Visibility = Visibility.Visible;
-                        checkersGame();
-                    }));
-                }
-            });
-        }
-
         private void startGameButton_Click(object sender, RoutedEventArgs e)
         {
             crud.UpdateGameRoom(accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), true);
@@ -247,70 +221,15 @@ namespace CheckersMultiplayer
                 }
             }
 
-            int i = 0;
-            int b = 12;
-            int w = 1;
 
-            foreach (var boardRow in currentGame.board)
-            {
-                Console.Write("Board Values: ");
-                int j = 0;
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Tick += Timer_Tick;
 
-                foreach (var value in boardRow)
-                {
-                    Console.Write($"{value} ");
-                    if (!value.Equals("0"))
-                    {
-                        Image image = new Image();
+            timer.Start();
 
-                        if (value.Equals("B"))
-                        {
-                            image.Source = new BitmapImage(new Uri(@"/images/blackPawn.png", UriKind.Relative));
-                            string imageName = $"pawnImageB_{b}";
-                            image.Name = imageName;
+            drawPawns();
 
-                            if(currentGame.blackPawns.Equals(accountLogin))
-                            {
-                                image.MouseLeftButtonDown += ShowPawnPaths;
-                                image.Cursor = Cursors.Hand;
-                            }
-                            b--;
-                        }
-                        else if (value.Equals("W"))
-                        {
-                            image.Source = new BitmapImage(new Uri(@"/images/whitePawn.png", UriKind.Relative));
-                            string imageName = $"pawnImageW_{w}";
-                            image.Name = imageName;
-                            if (currentGame.whitePawns.Equals(accountLogin))
-                            {
-                                image.MouseLeftButtonDown += ShowPawnPaths;
-                                image.Cursor = Cursors.Hand;
-                            }
-                            w++;
-                        }
-
-                        // Calculate row and column indices based on i and j
-                        int rowIndex = i+1;
-                        int columnIndex = j+1;
-
-                        // Set the row and column indices
-                        Grid.SetRow(image, rowIndex);
-                        Grid.SetColumn(image, columnIndex);
-
-
-                        image.Margin = new Thickness(63 + j * 46.5, 63 + i * 46.5, 0, 0);
-                        image.Width = 36;
-                        image.Height = 36;
-                        image.HorizontalAlignment = HorizontalAlignment.Left;
-                        image.VerticalAlignment = VerticalAlignment.Top;
-
-                        gameGrid.Children.Add(image);
-                    }
-                    j++;
-                }
-                i++;
-                Console.WriteLine();
-            }
         }
 
         private void ShowPawnPaths(object sender, MouseButtonEventArgs e)
@@ -337,7 +256,7 @@ namespace CheckersMultiplayer
                 int targetColumn = Grid.GetColumn(clickedImage);
 
 
-                System.Console.WriteLine(targetRow + " " + targetColumn);
+                //System.Console.WriteLine(targetRow + " " + targetColumn);
 
                 selectedPawn = clickedImage;
 
@@ -456,12 +375,12 @@ namespace CheckersMultiplayer
 
         private void MovePawn(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Image clickedImage)
+            if (sender is Image clickedPawnPath)
             {
-                string imageName = clickedImage.Name;
+                string imageName = clickedPawnPath.Name;
 
-                int targetRow = Grid.GetRow(clickedImage);
-                int targetColumn = Grid.GetColumn(clickedImage);
+                int targetRow = Grid.GetRow(clickedPawnPath);
+                int targetColumn = Grid.GetColumn(clickedPawnPath);
 
                 selectedPawn.Margin = new Thickness(63 + (targetColumn-1) * 46.5, 63 + (targetRow-1) * 46.5, 0, 0);
 
@@ -482,6 +401,165 @@ namespace CheckersMultiplayer
                 {
                     gameGrid.Children.Remove(imageToRemove2);
                 }
+
+                currentGame.board.Clear();
+                currentGame.board = new List<List<string>>();
+
+                for (int i = 0; i < 8; i++)
+                {
+                    List<string> row = new List<string>(Enumerable.Repeat("0", 8));
+                    currentGame.board.Add(row);
+                }
+
+
+                foreach (var child in gameGrid.Children)
+                {
+                    if (child is Image image)
+                    {
+                        int row = Grid.GetRow(image);
+                        int column = Grid.GetColumn(image);
+
+                        if (image.Name.StartsWith("pawnImageW_"))
+                        {
+                            currentGame.board[row-1][column-1] = "W";
+                        }
+                        else if (image.Name.StartsWith("pawnImageB_"))
+                        {
+                            currentGame.board[row-1][column-1] = "B";
+                        }
+
+                    }
+                }
+                crud.UpdateGameRoomBoard(currentGame.host, currentGame.board);
+            }
+        }
+
+        private async Task OpponentListenerAsync(string host)
+        {
+            response1 = await conn.client.OnAsync("gameRooms/" + host, (sender, args, context) =>
+            {
+                if (args.Path.Equals("/whitePawns"))
+                {
+                    Dispatcher.Invoke(new Action(() => {
+                        opponentNameLabel.Content = args.Data.ToString();
+                        waitingForOpponentsLabel.Content = "Waiting for you to start the game...."; ;
+                    }));
+
+                }
+            });
+        }
+
+        private async Task GameStartedListenerAsync(string host)
+        {
+            response2 = await conn.client.OnAsync("gameRooms/" + host, (sender, args, context) =>
+            {
+                if (args.Path.Equals("/inProgress") && args.Data.Equals("True"))
+                {
+                    Dispatcher.Invoke(new Action(() => {
+                        createLobbyGrid.Visibility = Visibility.Collapsed;
+                        gameGrid.Visibility = Visibility.Visible;
+                        checkersGame();
+                    }));
+                }
+            });
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            var gameRooms = crud.LoadGameRooms();
+            if (gameRooms == null)
+                return;
+
+            foreach (var item in gameRooms)
+            {
+                if (item.Key == currentGame.host)
+                {
+                    currentGame.board = new List<List<string>>();
+
+                    foreach (var boardRow in item.Value.board)
+                    {
+                        // Copy the values from gameRooms into currentBoard
+                        currentGame.board.Add(new List<string>(boardRow));
+                    }
+                }
+            }
+
+            drawPawns();
+
+            Console.WriteLine("XD");
+        }
+
+        public void drawPawns()
+        {
+            var imagesToRemove = gameGrid.Children.OfType<Image>().Where(image => image.Name.StartsWith("pawnImageB") || image.Name.StartsWith("pawnImageW")).ToList();
+            foreach (var imageToRemove in imagesToRemove)
+            {
+                gameGrid.Children.Remove(imageToRemove);
+            }
+
+            int i = 0;
+            int b = 12;
+            int w = 1;
+
+            foreach (var boardRow in currentGame.board)
+            {
+                //Console.Write("Board Values: ");
+                int j = 0;
+
+                foreach (var value in boardRow)
+                {
+                    //Console.Write($"{value} ");
+                    if (!value.Equals("0"))
+                    {
+                        Image image = new Image();
+
+                        if (value.Equals("B"))
+                        {
+                            image.Source = new BitmapImage(new Uri(@"/images/blackPawn.png", UriKind.Relative));
+                            string imageName = $"pawnImageB_{b}";
+                            image.Name = imageName;
+
+                            if (currentGame.blackPawns.Equals(accountLogin))
+                            {
+                                image.MouseLeftButtonDown += ShowPawnPaths;
+                                image.Cursor = Cursors.Hand;
+                            }
+                            b--;
+                        }
+                        else if (value.Equals("W"))
+                        {
+                            image.Source = new BitmapImage(new Uri(@"/images/whitePawn.png", UriKind.Relative));
+                            string imageName = $"pawnImageW_{w}";
+                            image.Name = imageName;
+                            if (currentGame.whitePawns.Equals(accountLogin))
+                            {
+                                image.MouseLeftButtonDown += ShowPawnPaths;
+                                image.Cursor = Cursors.Hand;
+                            }
+                            w++;
+                        }
+
+                        // Calculate row and column indices based on i and j
+                        int rowIndex = i + 1;
+                        int columnIndex = j + 1;
+
+                        // Set the row and column indices
+                        Grid.SetRow(image, rowIndex);
+                        Grid.SetColumn(image, columnIndex);
+
+
+                        image.Margin = new Thickness(63 + j * 46.5, 63 + i * 46.5, 0, 0);
+                        image.Width = 36;
+                        image.Height = 36;
+                        image.HorizontalAlignment = HorizontalAlignment.Left;
+                        image.VerticalAlignment = VerticalAlignment.Top;
+
+                        gameGrid.Children.Add(image);
+                    }
+                    j++;
+                }
+                i++;
+                //Console.WriteLine();
             }
         }
 

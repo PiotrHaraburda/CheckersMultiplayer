@@ -191,6 +191,22 @@ namespace CheckersMultiplayer
             }
         }
 
+        public void UpdateGameRoomBoard(string login, List<List<string>> newBoard)
+        {
+            try
+            {
+                var updateData = conn.client.Update("gameRooms/" + login, new
+                {
+                    board = newBoard
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+
         public void UpdateGameRoomOpponent(string login, string password, string roomName,string opponent)
         {
             try
