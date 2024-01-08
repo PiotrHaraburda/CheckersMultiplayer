@@ -41,6 +41,8 @@ namespace CheckersMultiplayer
 
         private DispatcherTimer timer;
 
+        bool boardUpdated = false;
+
         public MainWindow(string accountName, string accountLogin, int accountAge, string accountEmail, bool accountInGame, bool accountOnline)
         {
             InitializeComponent();
@@ -224,6 +226,15 @@ namespace CheckersMultiplayer
                     currentGame.turn = item.Value.turn;
                 }
             }
+
+            if (!currentGame.turn.Equals(accountLogin))
+                whoseTurnLabel.Content = "YOUR OPPONENT's TURN";
+
+            if (currentGame.whitePawns.Equals(accountLogin))
+                opponentNameLabel2.Content = currentGame.blackPawns;
+            else
+                opponentNameLabel2.Content = currentGame.whitePawns;
+
 
             //uruchomienie zegara sprawdzającego czy polozenie pionkow w bazie zostalo zmienione
 
@@ -643,16 +654,17 @@ namespace CheckersMultiplayer
                 //aktualizuje dane o planszy przechowywane w bazie danych
 
                 crud.UpdateGameRoomBoard(currentGame.host, currentGame.board);
-                Task.Delay(1000).ContinueWith(_ =>
+                if (currentGame.whitePawns.Equals(accountLogin))
                 {
-                    if (currentGame.whitePawns.Equals(accountLogin))
-                        crud.UpdateGameRoomTurn(currentGame.host, currentGame.blackPawns);
-                    else
-                        crud.UpdateGameRoomTurn(currentGame.host, currentGame.whitePawns);
+                    crud.UpdateGameRoomTurn(currentGame.host, currentGame.blackPawns);
+                    currentGame.turn = currentGame.blackPawns;
                 }
-                );
+                else
+                {
+                    crud.UpdateGameRoomTurn(currentGame.host, currentGame.whitePawns);
+                    currentGame.turn = currentGame.whitePawns;
+                }
                 
-
             }
         }
 
@@ -701,7 +713,6 @@ namespace CheckersMultiplayer
 
                     foreach (var boardRow in item.Value.board)
                     {
-                        // Copy the values from gameRooms into currentBoard
                         currentGame.board.Add(new List<string>(boardRow));
                     }
                 }
@@ -711,6 +722,14 @@ namespace CheckersMultiplayer
             {
                 drawPawns();
                 Console.WriteLine("XD");
+                if(boardUpdated)
+                    boardUpdated = false;
+            }
+            if(currentGame.turn.Equals(accountLogin)&&!boardUpdated)
+            {
+                drawPawns();
+                Console.WriteLine("XD");
+                boardUpdated = true;
             }
             
         }

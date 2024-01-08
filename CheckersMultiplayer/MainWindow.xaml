@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Title="MainApp" Height="513" Width="800">
     <Grid Margin="0,0,0,3">
-        <DockPanel x:Name="mainMenuPanel" LastChildFill="False" Visibility="Visible">
+        <DockPanel x:Name="mainMenuPanel" LastChildFill="False" Visibility="Hidden">
             <Label Content="Checkers Multiplayer" DockPanel.Dock="Top" Height="36" Margin="0,60,0,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Button x:Name="multiplayerButton" Content="Play Multiplayer" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,40,0,0" Click="multiplayerButton_Click"/>
             <Button Content="Your Account" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0"/>
@@ -48,8 +48,17 @@
             <Button x:Name="quitRoomPasswordGridButton" Content="Cancel" HorizontalAlignment="Left" Margin="314,263,0,0" VerticalAlignment="Top" Height="30" Width="64" Click="quitRoomPasswordGridButton_Click"/>
             <Button x:Name="checkGameRoomPasswordButton" Content="Join" HorizontalAlignment="Left" Margin="425,263,0,0" VerticalAlignment="Top" Height="30" Width="57" Click="checkGameRoomPasswordButton_Click"/>
         </Grid>
-        <Grid x:Name="gameGrid" Visibility="Collapsed">
+        <Grid x:Name="gameGrid" Visibility="Visible">
             <Image HorizontalAlignment="Left" Height="468" Margin="10,10,0,10" VerticalAlignment="Top" Width="468" Source="/Wood-2.png"/>
+            <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="483,374,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.221,-0.077" HorizontalContentAlignment="Center" Width="309"/>
+            <Label x:Name="opponentNameLabel2" Content="OpponentLogn" HorizontalAlignment="Left" Margin="483,400,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="309" FontStyle="Italic"/>
+            <Label x:Name="whoseTurnLabel" Content="YOUR TURN" HorizontalAlignment="Left" Margin="483,86,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Height="37" Width="309" HorizontalContentAlignment="Center"/>
+            <Label Content="White Pawns captured:" HorizontalAlignment="Left" Margin="561,167,0,0" VerticalAlignment="Top"/>
+            <Label Content="Black Pawns captured:" HorizontalAlignment="Left" Margin="561,198,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="numberOfWhitePawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="696,167,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="numberOfBlackPawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="693,198,0,0" VerticalAlignment="Top"/>
+            <Label Content="Time remaining:" HorizontalAlignment="Left" Margin="561,248,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="timeRemainingLabel" Content="10:00" HorizontalAlignment="Left" Margin="661,248,0,0" VerticalAlignment="Top"/>
         </Grid>
     </Grid>
 </Window>
