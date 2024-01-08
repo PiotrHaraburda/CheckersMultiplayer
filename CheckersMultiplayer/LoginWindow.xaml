@@ -7,58 +7,58 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="CheckersMultiplayer Login" Height="450" Width="680" ResizeMode="NoResize" BorderThickness="0,0,0,0" Icon="images/logo.png">
-    <Border CornerRadius="30">
-        <Grid>
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFCFCFCF" Offset="0"/>
-                    <GradientStop Color="White" Offset="0.789"/>
-                </LinearGradientBrush>
-            </Grid.Background>
-            <Button x:Name="signUpButton" Content="Sign Up" HorizontalAlignment="Left" Margin="245,340,0,0" VerticalAlignment="Top" Width="80" Height="38" FontSize="14" Click="signUpButton_Click" Background="White"/>
-            <Label Content="Not registered?" HorizontalAlignment="Left" Margin="245,317,0,0" VerticalAlignment="Top" FontSize="10" RenderTransformOrigin="0.158,1.224" Width="80" HorizontalContentAlignment="Center"/>
-            <Button x:Name="signInButton" Content="Sign In" HorizontalAlignment="Left" Margin="79,340,0,0" VerticalAlignment="Top" Width="141" RenderTransformOrigin="2.868,8.591" Height="38" FontSize="14" Click="signInButton_Click" BorderThickness="0" HorizontalContentAlignment="Center">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background">
-                            <Setter.Value>
-                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                    <GradientStop Color="#FFF3FF00" Offset="0"/>
-                                    <GradientStop Color="#FFFF9700" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="DarkGoldenrod"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="79,218,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Height="31" Margin="79,168,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" FontSize="22"/>
-            <Label x:Name="emailLabel" Content="E-mail" HorizontalAlignment="Left" Margin="79,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="14"/>
-            <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="79,249,0,0" VerticalAlignment="Top" Width="246" Height="35" FontSize="22"/>
-            <Label x:Name="signedInLabel" Content="Successfully signed in!" HorizontalAlignment="Left" Margin="164,191,0,0" VerticalAlignment="Top" Visibility="Hidden" FontSize="18"/>
-            <Border CornerRadius="10" Margin="416,20,23,20">
-                <Border.Background>
-                    <ImageBrush Stretch="Fill" ImageSource="images/loginImage.jpg"/>
-                </Border.Background>
-            </Border>
-            <Image HorizontalAlignment="Left" Height="37" Margin="79,30,0,0" VerticalAlignment="Top" Width="39" Source="images/logo.png"/>
-            <Label Content="CheckersMultiplayer" HorizontalAlignment="Left" Margin="123,30,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
-            <Label Content="Welcome Back, Please Login to Get Started!" HorizontalAlignment="Left" Margin="79,91,0,0" VerticalAlignment="Top"/>
 
-        </Grid>
-    </Border>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFCFCFCF" Offset="0"/>
+                <GradientStop Color="White" Offset="0.789"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Button x:Name="signUpButton" Content="Sign Up" HorizontalAlignment="Left" Margin="245,340,0,0" VerticalAlignment="Top" Width="80" Height="38" FontSize="14" Click="signUpButton_Click" Background="White"/>
+        <Label Content="Not registered?" HorizontalAlignment="Left" Margin="245,317,0,0" VerticalAlignment="Top" FontSize="10" RenderTransformOrigin="0.158,1.224" Width="80" HorizontalContentAlignment="Center"/>
+        <Button x:Name="signInButton" Content="Sign In" HorizontalAlignment="Left" Margin="79,340,0,0" VerticalAlignment="Top" Width="141" RenderTransformOrigin="2.868,8.591" Height="38" FontSize="14" Click="signInButton_Click" BorderThickness="0" HorizontalContentAlignment="Center">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                <GradientStop Color="#FFF3FF00" Offset="0"/>
+                                <GradientStop Color="#FFFF9700" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="DarkGoldenrod"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="79,218,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Height="31" Margin="79,168,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" FontSize="22"/>
+        <Label x:Name="emailLabel" Content="E-mail" HorizontalAlignment="Left" Margin="79,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="14"/>
+        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="79,249,0,0" VerticalAlignment="Top" Width="246" Height="35" FontSize="22"/>
+        <Label x:Name="signedInLabel" Content="Successfully signed in!" HorizontalAlignment="Left" Margin="164,191,0,0" VerticalAlignment="Top" Visibility="Hidden" FontSize="18"/>
+        <Border CornerRadius="10" Margin="416,20,23,20">
+            <Border.Background>
+                <ImageBrush Stretch="Fill" ImageSource="images/loginImage.jpg"/>
+            </Border.Background>
+        </Border>
+        <Image HorizontalAlignment="Left" Height="37" Margin="79,30,0,0" VerticalAlignment="Top" Width="39" Source="images/logo.png"/>
+        <Label Content="CheckersMultiplayer" HorizontalAlignment="Left" Margin="123,30,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
+        <Label Content="Welcome Back, Please Login to Get Started!" HorizontalAlignment="Left" Margin="79,91,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+
 </Window>
