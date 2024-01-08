@@ -15,5 +15,6 @@ namespace CheckersMultiplayer
         public string password { get; set; }
         public List<List<string>> board { get; set; }
         public bool inProgress { get; set; }
+        public string turn {  get; set; }
     }
 }

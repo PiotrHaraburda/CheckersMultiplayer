@@ -145,7 +145,8 @@ namespace CheckersMultiplayer
                         new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" },
                         new List<string> { "0", "W", "0", "W", "0", "W", "0", "W" },
                         new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" }
-                    }
+                    },
+                    turn = login
                 };
                 var SetData = conn.client.Set("gameRooms/" + login, set);
 
@@ -180,7 +181,8 @@ namespace CheckersMultiplayer
                         new List<string> { "0", "W", "0", "W", "0", "W", "0", "W" },
                         new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" }
                     },
-                    inProgress=inProgress
+                    inProgress=inProgress,
+                    turn = login
                 };
                 var SetData = conn.client.Update("gameRooms/" + login, set);
 
@@ -198,6 +200,21 @@ namespace CheckersMultiplayer
                 var updateData = conn.client.Update("gameRooms/" + login, new
                 {
                     board = newBoard
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public void UpdateGameRoomTurn(string login, string newTurn)
+        {
+            try
+            {
+                var updateData = conn.client.Update("gameRooms/" + login, new
+                {
+                    turn = newTurn
                 });
             }
             catch (Exception ex)
@@ -228,7 +245,8 @@ namespace CheckersMultiplayer
                         new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" },
                         new List<string> { "0", "W", "0", "W", "0", "W", "0", "W" },
                         new List<string> { "W", "0", "W", "0", "W", "0", "W", "0" }
-                    }
+                    },
+                    turn = login
                 };
                 var SetData = conn.client.Update("gameRooms/" + login, set);
 
