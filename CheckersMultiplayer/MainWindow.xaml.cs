@@ -643,10 +643,15 @@ namespace CheckersMultiplayer
                 //aktualizuje dane o planszy przechowywane w bazie danych
 
                 crud.UpdateGameRoomBoard(currentGame.host, currentGame.board);
-                if (currentGame.whitePawns.Equals(accountLogin))
-                    crud.UpdateGameRoomTurn(currentGame.host, currentGame.blackPawns);
-                else
-                    crud.UpdateGameRoomTurn(currentGame.host, currentGame.whitePawns);
+                Task.Delay(1000).ContinueWith(_ =>
+                {
+                    if (currentGame.whitePawns.Equals(accountLogin))
+                        crud.UpdateGameRoomTurn(currentGame.host, currentGame.blackPawns);
+                    else
+                        crud.UpdateGameRoomTurn(currentGame.host, currentGame.whitePawns);
+                }
+                );
+                
 
             }
         }
@@ -702,9 +707,11 @@ namespace CheckersMultiplayer
                 }
             }
 
-            
+            if(!currentGame.turn.Equals(accountLogin))
+            {
                 drawPawns();
                 Console.WriteLine("XD");
+            }
             
         }
 
