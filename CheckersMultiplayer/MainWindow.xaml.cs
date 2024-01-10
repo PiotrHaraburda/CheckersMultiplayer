@@ -227,8 +227,6 @@ namespace CheckersMultiplayer
                 }
             }
 
-            if (!currentGame.turn.Equals(accountLogin))
-                whoseTurnLabel.Content = "YOUR OPPONENT's TURN";
 
             if (currentGame.whitePawns.Equals(accountLogin))
                 opponentNameLabel2.Content = currentGame.blackPawns;
@@ -247,6 +245,7 @@ namespace CheckersMultiplayer
             //narysowanie pionkow na podstawie aktualnych danych z bazy
 
             drawPawns();
+            gameLabelsUpdate();
 
         }
 
@@ -664,6 +663,8 @@ namespace CheckersMultiplayer
                     crud.UpdateGameRoomTurn(currentGame.host, currentGame.whitePawns);
                     currentGame.turn = currentGame.whitePawns;
                 }
+
+                gameLabelsUpdate();
                 
             }
         }
@@ -730,6 +731,7 @@ namespace CheckersMultiplayer
                 drawPawns();
                 Console.WriteLine("XD");
                 boardUpdated = true;
+                gameLabelsUpdate();
             }
             
         }
@@ -808,6 +810,36 @@ namespace CheckersMultiplayer
                 i++;
                 //Console.WriteLine();
             }
+        }
+
+        void gameLabelsUpdate()
+        {
+            if (!currentGame.turn.Equals(accountLogin))
+                whoseTurnLabel.Content = "YOUR OPPONENT's TURN";
+            else
+                whoseTurnLabel.Content = "YOUR TURN";
+
+            int countPawnImageB = 0;
+            int countPawnImageW = 0;
+
+            foreach (var child in gameGrid.Children)
+            {
+                if (child is Image image)
+                {
+                    if (image.Name.StartsWith("pawnImageB"))
+                    {
+                        countPawnImageB++;
+                    }
+                    else if (image.Name.StartsWith("pawnImageW"))
+                    {
+                        countPawnImageW++;
+                    }
+                }
+            }
+
+            numberOfBlackPawnsCaptured.Content = 12-countPawnImageB;
+            numberOfWhitePawnsCaptured.Content = 12-countPawnImageW;
+
         }
 
     }
