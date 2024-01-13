@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:CheckersMultiplayer"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="MainApp" Height="513" Width="800">
+        Title="MainApp" Height="513" Width="800"
+        Closing="MainWindow_Closing">
     <Grid Margin="0,0,0,3">
         <DockPanel x:Name="mainMenuPanel" LastChildFill="False" Visibility="Visible">
             <Label Content="Checkers Multiplayer" DockPanel.Dock="Top" Height="36" Margin="0,60,0,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>

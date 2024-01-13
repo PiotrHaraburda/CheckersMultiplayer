@@ -14,6 +14,7 @@ using System.Net.Http;
 using Firebase.Functions;
 using System.Drawing.Drawing2D;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.ComponentModel;
 
 namespace CheckersMultiplayer
 {
@@ -216,6 +217,58 @@ namespace CheckersMultiplayer
                 {
                     turn = newTurn
                 });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public void ClearGameRoomWhitePawns(string host,string blackPawns, string password, string roomName, List<List<string>> board, string turn)
+        {
+            try
+            {
+
+                var gameRoomExists = conn.client.Get("gameRooms/" + host);
+                if (gameRoomExists == null) { return; }
+
+                CRUDgame_rooms set = new CRUDgame_rooms()
+                {
+                    host = host,
+                    blackPawns = blackPawns,
+                    whitePawns = "",
+                    password = password,
+                    roomName = roomName,
+                    board = board,
+                    turn = turn
+                };
+                var SetData = conn.client.Update("gameRooms/" + host, set);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public void ClearGameRoomBlackPawns(string host, string whitePawns, string password, string roomName, List<List<string>> board, string turn)
+        {
+            try
+            {
+
+                var gameRoomExists = conn.client.Get("gameRooms/" + host);
+                if (gameRoomExists == null) { return; }
+
+                CRUDgame_rooms set = new CRUDgame_rooms()
+                {
+                    host = host,
+                    blackPawns = "",
+                    whitePawns = whitePawns,
+                    password = password,
+                    roomName = roomName,
+                    board = board,
+                    turn = turn
+                };
+                var SetData = conn.client.Update("gameRooms/" + host, set);
             }
             catch (Exception ex)
             {
