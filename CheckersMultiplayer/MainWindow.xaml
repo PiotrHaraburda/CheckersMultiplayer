@@ -213,20 +213,24 @@
             <Button x:Name="checkGameRoomPasswordButton" Content="Join" HorizontalAlignment="Left" Margin="425,263,0,0" VerticalAlignment="Top" Height="30" Width="57" Click="checkGameRoomPasswordButton_Click"/>
         </Grid>
         <Grid x:Name="gameGrid" Visibility="Collapsed">
+            <Grid Margin="483,427,0,0">
+                <Button x:Name="quitGameButton" Content="Quit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="83" Height="26" Click="quitGameButton_Click"/>
+            </Grid>
             <Image HorizontalAlignment="Left" Height="468" Margin="10,10,0,10" VerticalAlignment="Top" Width="468" Source="/Wood-2.png"/>
             <Grid x:Name="gameWidgetsGrid" Visibility="Visible">
                 <Grid.RenderTransform>
                     <TranslateTransform x:Name="gameWidgetsGridTransform"/>
                 </Grid.RenderTransform>
-                <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="483,374,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.221,-0.077" HorizontalContentAlignment="Center" Width="309"/>
-                <Label x:Name="opponentNameLabel2" Content="OpponentLogn" HorizontalAlignment="Left" Margin="483,400,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="309" FontStyle="Italic"/>
+                <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="483,357,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.221,-0.077" HorizontalContentAlignment="Center" Width="309"/>
+                <Label x:Name="opponentNameLabel2" Content="OpponentLogin" HorizontalAlignment="Left" Margin="483,383,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="309" FontStyle="Italic"/>
                 <Label x:Name="whoseTurnLabel" Content="YOUR TURN" HorizontalAlignment="Left" Margin="483,86,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Height="37" Width="309" HorizontalContentAlignment="Center"/>
                 <Label Content="White Pawns captured:" HorizontalAlignment="Left" Margin="561,167,0,0" VerticalAlignment="Top"/>
                 <Label Content="Black Pawns captured:" HorizontalAlignment="Left" Margin="561,198,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="numberOfWhitePawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="696,167,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="numberOfBlackPawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="693,198,0,0" VerticalAlignment="Top"/>
                 <Label Content="Time remaining:" HorizontalAlignment="Left" Margin="561,248,0,0" VerticalAlignment="Top"/>
-                <Label x:Name="timeRemainingLabel" Content="10:00" HorizontalAlignment="Left" Margin="661,248,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="timeRemainingLabel" Content="05:00" HorizontalAlignment="Left" Margin="661,248,0,0" VerticalAlignment="Top"/>
+                
             </Grid>
             <Grid Margin="483,168,0,174" x:Name="opponentLeftGrid" Visibility="Collapsed">
                 <Grid.RenderTransform>
@@ -234,6 +238,20 @@
                 </Grid.RenderTransform>
                 <Label Content="You won!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
                 <Label Content="Your opponent left the match." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
+            </Grid>
+            <Grid Margin="483,168,0,174" x:Name="youLostGrid" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="youLostGridTransform"/>
+                </Grid.RenderTransform>
+                <Label Content="You lost!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
+                <Label Content="Game over." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
+            </Grid>
+            <Grid Margin="483,168,0,174" x:Name="youWonGrid" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="youWonGridTransform"/>
+                </Grid.RenderTransform>
+                <Label Content="You won!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
+                <Label Content="Game over." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
             </Grid>
         </Grid>
     </Grid>
