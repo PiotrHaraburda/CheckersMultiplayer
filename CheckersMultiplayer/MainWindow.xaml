@@ -10,12 +10,175 @@
         Closing="MainWindow_Closing">
     <Grid Margin="0,0,0,3">
         <DockPanel x:Name="mainMenuPanel" LastChildFill="False" Visibility="Visible">
+
             <Label Content="Checkers Multiplayer" DockPanel.Dock="Top" Height="36" Margin="0,60,0,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button x:Name="multiplayerButton" Content="Play Multiplayer" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,40,0,0" Click="multiplayerButton_Click"/>
-            <Button Content="Your Account" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0"/>
-            <Button Content="Settings" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0"/>
-            <Button x:Name="logoutButton" Content="Logout" DockPanel.Dock="Top" Height="31" Margin="0,20,0,0" Width="121" Click="logoutButton_Click"/>
+
+            <Button x:Name="multiplayerButton" Content="Play Multiplayer" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,40,0,0" Click="multiplayerButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="#FF1BDC26" Offset="0"/>
+                                    <GradientStop Color="#FF3AB11A" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FF0C9C14" Offset="0"/>
+                                            <GradientStop Color="#FF24730F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button Content="Your Account" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="#FFD25D26" Offset="0"/>
+                                    <GradientStop Color="#FFB1832F" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FF9E4116" Offset="0"/>
+                                            <GradientStop Color="#FF866324" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button Content="Settings" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="#FF26BED2" Offset="0"/>
+                                    <GradientStop Color="#FF4075DC" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FF138C9C" Offset="0"/>
+                                            <GradientStop Color="#FF224996" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button x:Name="logoutButton" Content="Logout" DockPanel.Dock="Top" Height="31" Margin="0,20,0,0" Width="121" Click="logoutButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="#FFBB4BCE" Offset="0"/>
+                                    <GradientStop Color="#FFB70EEC" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FF9536A5" Offset="0"/>
+                                            <GradientStop Color="#FF830DA7" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+            </Button>
+
             <Grid Width="100"/>
+
         </DockPanel>
         <DockPanel x:Name="multiplayerPanel" LastChildFill="False" Visibility="Collapsed" >
             <Label Content="Multiplayer Mode" DockPanel.Dock="Top" Height="31" Margin="0,60,0,0" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"/>
@@ -51,15 +214,27 @@
         </Grid>
         <Grid x:Name="gameGrid" Visibility="Collapsed">
             <Image HorizontalAlignment="Left" Height="468" Margin="10,10,0,10" VerticalAlignment="Top" Width="468" Source="/Wood-2.png"/>
-            <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="483,374,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.221,-0.077" HorizontalContentAlignment="Center" Width="309"/>
-            <Label x:Name="opponentNameLabel2" Content="OpponentLogn" HorizontalAlignment="Left" Margin="483,400,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="309" FontStyle="Italic"/>
-            <Label x:Name="whoseTurnLabel" Content="YOUR TURN" HorizontalAlignment="Left" Margin="483,86,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Height="37" Width="309" HorizontalContentAlignment="Center"/>
-            <Label Content="White Pawns captured:" HorizontalAlignment="Left" Margin="561,167,0,0" VerticalAlignment="Top"/>
-            <Label Content="Black Pawns captured:" HorizontalAlignment="Left" Margin="561,198,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="numberOfWhitePawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="696,167,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="numberOfBlackPawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="693,198,0,0" VerticalAlignment="Top"/>
-            <Label Content="Time remaining:" HorizontalAlignment="Left" Margin="561,248,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="timeRemainingLabel" Content="10:00" HorizontalAlignment="Left" Margin="661,248,0,0" VerticalAlignment="Top"/>
+            <Grid x:Name="gameWidgetsGrid" Visibility="Visible">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="gameWidgetsGridTransform"/>
+                </Grid.RenderTransform>
+                <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="483,374,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.221,-0.077" HorizontalContentAlignment="Center" Width="309"/>
+                <Label x:Name="opponentNameLabel2" Content="OpponentLogn" HorizontalAlignment="Left" Margin="483,400,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="309" FontStyle="Italic"/>
+                <Label x:Name="whoseTurnLabel" Content="YOUR TURN" HorizontalAlignment="Left" Margin="483,86,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Height="37" Width="309" HorizontalContentAlignment="Center"/>
+                <Label Content="White Pawns captured:" HorizontalAlignment="Left" Margin="561,167,0,0" VerticalAlignment="Top"/>
+                <Label Content="Black Pawns captured:" HorizontalAlignment="Left" Margin="561,198,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="numberOfWhitePawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="696,167,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="numberOfBlackPawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="693,198,0,0" VerticalAlignment="Top"/>
+                <Label Content="Time remaining:" HorizontalAlignment="Left" Margin="561,248,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="timeRemainingLabel" Content="10:00" HorizontalAlignment="Left" Margin="661,248,0,0" VerticalAlignment="Top"/>
+            </Grid>
+            <Grid Margin="483,168,0,174" x:Name="opponentLeftGrid" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="opponentLeftGridTransform"/>
+                </Grid.RenderTransform>
+                <Label Content="You won!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
+                <Label Content="Your opponent left the match." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

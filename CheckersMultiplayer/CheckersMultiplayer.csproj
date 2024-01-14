@@ -365,6 +365,9 @@
     <Resource Include="images\blackPawnKing.png" />
     <Resource Include="images\whitePawnKing.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\registerImage.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

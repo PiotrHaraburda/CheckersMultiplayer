@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -33,11 +34,11 @@ namespace CheckersMultiplayer
         bool accountInGame;
         bool accountOnline;
 
-         EventStreamResponse response1;
-         EventStreamResponse response2;
+        EventStreamResponse response1;
+        EventStreamResponse response2;
         EventStreamResponse response3;
 
-        CRUDgame_rooms currentGame=new CRUDgame_rooms();
+        CRUDgame_rooms currentGame = new CRUDgame_rooms();
 
         Image selectedPawn;
         string selectedPawnName;
@@ -84,7 +85,7 @@ namespace CheckersMultiplayer
         {
             gameRoomsListBox.Items.Clear();
             gameRoomsGrid.Visibility = Visibility.Visible;
-            multiplayerPanel.Visibility= Visibility.Collapsed;
+            multiplayerPanel.Visibility = Visibility.Collapsed;
 
             var gameRooms = crud.LoadGameRooms();
             if (gameRooms == null)
@@ -113,7 +114,7 @@ namespace CheckersMultiplayer
         {
             multiplayerPanel.Visibility = Visibility.Collapsed;
             createLobbyGrid.Visibility = Visibility.Visible;
-            CRUDgame_rooms game_room=crud.CreateGameRoom(accountLogin);
+            CRUDgame_rooms game_room = crud.CreateGameRoom(accountLogin);
             roomNameTextBox.Text = game_room.roomName;
             roomPasswordTextBox.Text = game_room.password;
             currentGame.host = accountLogin;
@@ -125,7 +126,7 @@ namespace CheckersMultiplayer
         {
             multiplayerPanel.Visibility = Visibility.Visible;
             createLobbyGrid.Visibility = Visibility.Collapsed;
-            if(accountLogin.Equals(currentGame.host))
+            if (accountLogin.Equals(currentGame.host))
             {
                 crud.DeleteGameRoom(accountLogin);
                 response1.Dispose();
@@ -158,7 +159,7 @@ namespace CheckersMultiplayer
         private void quitRoomPasswordGridButton_Click(object sender, RoutedEventArgs e)
         {
             roomPasswordGrid.Visibility = Visibility.Collapsed;
-            gameRoomsGrid.Visibility=Visibility.Visible;
+            gameRoomsGrid.Visibility = Visibility.Visible;
         }
 
         private void checkGameRoomPasswordButton_Click(object sender, RoutedEventArgs e)
@@ -173,7 +174,7 @@ namespace CheckersMultiplayer
                 {
                     if (item.Value.password.Equals(enterRoomPasswordTextBox.Text))
                     {
-                        if(item.Value.whitePawns.Equals(""))
+                        if (item.Value.whitePawns.Equals(""))
                         {
                             Console.WriteLine("Valid password");
                             crud.UpdateGameRoomOpponent(item.Value.blackPawns, item.Value.password, item.Value.roomName, accountLogin);
@@ -183,7 +184,7 @@ namespace CheckersMultiplayer
                             roomPasswordTextBox.Text = item.Value.password;
                             roomNameTextBox.IsEnabled = false;
                             roomPasswordTextBox.IsEnabled = false;
-                            currentGame.host=item.Value.host;
+                            currentGame.host = item.Value.host;
                             currentGame.password = item.Value.password;
                             currentGame.roomName = item.Value.roomName;
                             currentGame.whitePawns = item.Value.whitePawns;
@@ -192,7 +193,7 @@ namespace CheckersMultiplayer
                             currentGame.turn = item.Value.turn;
 
 
-                            opponentNameLabel.Content=item.Value.blackPawns;
+                            opponentNameLabel.Content = item.Value.blackPawns;
                             waitingForOpponentsLabel.Content = "Waiting for room host to start the game....";
                             saveRoomInfoButton.IsEnabled = false;
                             startGameButton.IsEnabled = false;
@@ -232,14 +233,14 @@ namespace CheckersMultiplayer
 
             foreach (var item in gameRooms)
             {
-                if(item.Key.Equals(currentGame.host))
+                if (item.Key.Equals(currentGame.host))
                 {
                     currentGame.host = item.Value.host;
                     currentGame.password = item.Value.password;
                     currentGame.roomName = item.Value.roomName;
                     currentGame.whitePawns = item.Value.whitePawns;
                     currentGame.blackPawns = item.Value.blackPawns;
-                    currentGame.board=item.Value.board;
+                    currentGame.board = item.Value.board;
                     currentGame.turn = item.Value.turn;
                 }
             }
@@ -268,7 +269,7 @@ namespace CheckersMultiplayer
 
         private void ShowPawnPaths(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Image clickedImage&&currentGame.turn.Equals(accountLogin))
+            if (sender is Image clickedImage && currentGame.turn.Equals(accountLogin))
             {
                 //usuniecie wszystkich widocznych sciezek
 
@@ -291,7 +292,7 @@ namespace CheckersMultiplayer
                 //System.Console.WriteLine(targetRow + " " + targetColumn);
 
                 selectedPawn = clickedImage;
-                selectedPawnName=selectedPawn.Name;
+                selectedPawnName = selectedPawn.Name;
 
 
                 bool leftPathAvailable = true;
@@ -312,10 +313,10 @@ namespace CheckersMultiplayer
                 bool[] kingLeftDownPathAvailable = new bool[6] { true, true, true, true, true, true };
                 bool[] kingRightDownPathAvailable = new bool[6] { true, true, true, true, true, true };
 
-                int kingLeftUpCapture=0;
-                int kingRightUpCapture=0;
-                int kingLeftDownCapture=0;
-                int kingRightDownCapture=0;
+                int kingLeftUpCapture = 0;
+                int kingRightUpCapture = 0;
+                int kingLeftDownCapture = 0;
+                int kingRightDownCapture = 0;
 
                 int kingLeftUpAlly = 0;
                 int kingRightUpAlly = 0;
@@ -343,7 +344,7 @@ namespace CheckersMultiplayer
                     }
 
                 }
-                else if(currentGame.blackPawns.Equals(accountLogin))
+                else if (currentGame.blackPawns.Equals(accountLogin))
                 {
 
                     if ((targetRow + 1 > 8) || (targetColumn + 1 > 8))
@@ -449,7 +450,7 @@ namespace CheckersMultiplayer
                                 if (row == targetRow - i && column == targetColumn - i)
                                 {
                                     kingLeftUpPathAvailable[i - 1] = false;
-                                    if((i < kingLeftUpCapture || kingLeftUpCapture == 0) && pawnImageName.StartsWith("pawnImageB"))
+                                    if ((i < kingLeftUpCapture || kingLeftUpCapture == 0) && pawnImageName.StartsWith("pawnImageB"))
                                         kingLeftUpCapture = i;
                                     else if ((i < kingLeftUpAlly || kingLeftUpAlly == 0) && pawnImageName.StartsWith("pawnImageW"))
                                         kingLeftUpAlly = i;
@@ -530,23 +531,23 @@ namespace CheckersMultiplayer
 
                 if (clickedImage.Name.StartsWith("pawnImageK"))
                 {
-                    for (int i = 1; i <=6; i++)
+                    for (int i = 1; i <= 6; i++)
                     {
                         if ((i > kingLeftUpCapture + 1 && kingLeftUpCapture != 0) || (i > kingLeftUpAlly && kingLeftUpAlly != 0))
-                            kingLeftUpPathAvailable[i-1] = false;
+                            kingLeftUpPathAvailable[i - 1] = false;
                         if ((i > kingRightUpCapture + 1 && kingRightUpCapture != 0) || (i > kingRightUpAlly && kingRightUpAlly != 0))
-                            kingRightUpPathAvailable[i-1] = false;
+                            kingRightUpPathAvailable[i - 1] = false;
                         if ((i > kingLeftDownCapture + 1 && kingLeftDownCapture != 0) || (i > kingLeftDownAlly && kingLeftDownAlly != 0))
-                            kingLeftDownPathAvailable[i-1] = false;
+                            kingLeftDownPathAvailable[i - 1] = false;
                         if ((i > kingRightDownCapture + 1 && kingRightDownCapture != 0) || (i > kingRightDownAlly && kingRightDownAlly != 0))
-                            kingRightDownPathAvailable[i-1] = false;
+                            kingRightDownPathAvailable[i - 1] = false;
                     }
 
-                    Console.WriteLine(kingLeftUpCapture + " " + kingLeftUpAlly + " " + kingRightUpCapture + " " + kingRightUpAlly + " " + kingLeftDownCapture + " " + kingLeftDownAlly + " " + kingRightDownCapture + " " + kingRightDownAlly + " " );
+                    Console.WriteLine(kingLeftUpCapture + " " + kingLeftUpAlly + " " + kingRightUpCapture + " " + kingRightUpAlly + " " + kingLeftDownCapture + " " + kingLeftDownAlly + " " + kingRightDownCapture + " " + kingRightDownAlly + " ");
 
-                    for (int i = 1; i <=6; i++)
+                    for (int i = 1; i <= 6; i++)
                     {
-                        if (kingLeftUpPathAvailable[i-1] == true)
+                        if (kingLeftUpPathAvailable[i - 1] == true)
                         {
                             Image image = new Image();
                             image.Source = new BitmapImage(new Uri(@"/images/greyPawn.png", UriKind.Relative));
@@ -627,7 +628,7 @@ namespace CheckersMultiplayer
 
                 //jesli miejsce po prawej jest wolne
 
-                if ((leftPathAvailable&&!leftPathBlocked)||(leftCaptureAvailable && !leftCaptureBlocked))
+                if ((leftPathAvailable && !leftPathBlocked) || (leftCaptureAvailable && !leftCaptureBlocked))
                 {
                     //dodaje obrazek imitujacy sciezke w odpowiednim miejscu
 
@@ -641,15 +642,15 @@ namespace CheckersMultiplayer
 
                     if (currentGame.whitePawns.Equals(accountLogin))
                     {
-                        if(leftPathAvailable)
+                        if (leftPathAvailable)
                         {
                             image.Margin = new Thickness(63 + (targetColumn - 1 + 1) * 46.5, 63 + (targetRow - 1 - 1) * 46.5, 0, 0);
                             Grid.SetRow(image, targetRow - 1);
                             Grid.SetColumn(image, targetColumn + 1);
                         }
-                        else if(leftCaptureAvailable)
+                        else if (leftCaptureAvailable)
                         {
-                            if (gameGrid.Children.OfType<Image>().Any(i => Grid.GetRow(i) == targetRow - 1 && Grid.GetColumn(i) == targetColumn + 1 && (i.Name.StartsWith("pawnImageB")|| i.Name.StartsWith("pawnImageKB"))))
+                            if (gameGrid.Children.OfType<Image>().Any(i => Grid.GetRow(i) == targetRow - 1 && Grid.GetColumn(i) == targetColumn + 1 && (i.Name.StartsWith("pawnImageB") || i.Name.StartsWith("pawnImageKB"))))
                             {
                                 image.Margin = new Thickness(63 + (targetColumn - 1 + 2) * 46.5, 63 + (targetRow - 1 - 2) * 46.5, 0, 0);
                                 Grid.SetRow(image, targetRow - 2);
@@ -680,7 +681,7 @@ namespace CheckersMultiplayer
                         }
                     }
 
-                    if(image!=null)
+                    if (image != null)
                     {
                         image.Width = 36;
                         image.Height = 36;
@@ -692,10 +693,10 @@ namespace CheckersMultiplayer
                         gameGrid.Children.Add(image);
                     }
                 }
-                
+
                 //jesli miejsce po lewej jest wolne
 
-                if((rightPathAvailable && !rightPathBlocked) || (rightCaptureAvailable && !rightCaptureBlocked))
+                if ((rightPathAvailable && !rightPathBlocked) || (rightCaptureAvailable && !rightCaptureBlocked))
                 {
                     //dodaje obrazek imitujacy sciezke w odpowiednim miejscu
 
@@ -790,7 +791,7 @@ namespace CheckersMultiplayer
                             gameGrid.Children.Remove(pawnToRemove);
                         }
                     }
-                    else if(selectedPawnRow == targetRow - 2 && selectedPawnColumn == targetColumn + 2)
+                    else if (selectedPawnRow == targetRow - 2 && selectedPawnColumn == targetColumn + 2)
                     {
                         var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow - 1 && Grid.GetColumn(i) == targetColumn + 1);
 
@@ -823,43 +824,43 @@ namespace CheckersMultiplayer
                 }
                 else if (selectedPawn.Name.StartsWith("pawnImageK"))
                 {
-                    if(Math.Abs(selectedPawnRow-targetRow)!=1&& Math.Abs(selectedPawnColumn - targetColumn)!= 1)
-                    if (selectedPawnRow < targetRow && selectedPawnColumn < targetColumn)
-                    {
-                        var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow - 1 && Grid.GetColumn(i) == targetColumn - 1);
-
-                        if (pawnToRemove != null)
+                    if (Math.Abs(selectedPawnRow - targetRow) != 1 && Math.Abs(selectedPawnColumn - targetColumn) != 1)
+                        if (selectedPawnRow < targetRow && selectedPawnColumn < targetColumn)
                         {
-                            gameGrid.Children.Remove(pawnToRemove);
-                        }
-                    }
-                    else if (selectedPawnRow < targetRow && selectedPawnColumn > targetColumn)
-                    {
-                        var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow - 1 && Grid.GetColumn(i) == targetColumn + 1);
+                            var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow - 1 && Grid.GetColumn(i) == targetColumn - 1);
 
-                        if (pawnToRemove != null)
-                        {
-                            gameGrid.Children.Remove(pawnToRemove);
+                            if (pawnToRemove != null)
+                            {
+                                gameGrid.Children.Remove(pawnToRemove);
+                            }
                         }
-                    }
-                    else if (selectedPawnRow > targetRow && selectedPawnColumn < targetColumn)
-                    {
-                        var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow + 1 && Grid.GetColumn(i) == targetColumn - 1);
+                        else if (selectedPawnRow < targetRow && selectedPawnColumn > targetColumn)
+                        {
+                            var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow - 1 && Grid.GetColumn(i) == targetColumn + 1);
 
-                        if (pawnToRemove != null)
-                        {
-                            gameGrid.Children.Remove(pawnToRemove);
+                            if (pawnToRemove != null)
+                            {
+                                gameGrid.Children.Remove(pawnToRemove);
+                            }
                         }
-                    }
-                    else if (selectedPawnRow > targetRow && selectedPawnColumn > targetColumn)
-                    {
-                        var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow + 1 && Grid.GetColumn(i) == targetColumn + 1);
+                        else if (selectedPawnRow > targetRow && selectedPawnColumn < targetColumn)
+                        {
+                            var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow + 1 && Grid.GetColumn(i) == targetColumn - 1);
 
-                        if (pawnToRemove != null)
-                        {
-                            gameGrid.Children.Remove(pawnToRemove);
+                            if (pawnToRemove != null)
+                            {
+                                gameGrid.Children.Remove(pawnToRemove);
+                            }
                         }
-                    }
+                        else if (selectedPawnRow > targetRow && selectedPawnColumn > targetColumn)
+                        {
+                            var pawnToRemove = gameGrid.Children.OfType<Image>().FirstOrDefault(i => Grid.GetRow(i) == targetRow + 1 && Grid.GetColumn(i) == targetColumn + 1);
+
+                            if (pawnToRemove != null)
+                            {
+                                gameGrid.Children.Remove(pawnToRemove);
+                            }
+                        }
                 }
 
 
@@ -911,12 +912,12 @@ namespace CheckersMultiplayer
                             if (row == 1)
                                 currentGame.board[row - 1][column - 1] = "KW";
                             else
-                                currentGame.board[row-1][column-1] = "W";
+                                currentGame.board[row - 1][column - 1] = "W";
                         }
                         else if (image.Name.StartsWith("pawnImageB_"))
                         {
                             if (row == 8)
-                                currentGame.board[row-1][column-1] = "KB";
+                                currentGame.board[row - 1][column - 1] = "KB";
                             else
                                 currentGame.board[row - 1][column - 1] = "B";
 
@@ -948,7 +949,7 @@ namespace CheckersMultiplayer
                 }
 
                 gameLabelsUpdate();
-                
+
             }
         }
 
@@ -958,7 +959,8 @@ namespace CheckersMultiplayer
             {
                 if (args.Path.Equals("/whitePawns"))
                 {
-                    Dispatcher.Invoke(new Action(() => {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
                         opponent = args.Data.ToString();
                         opponentNameLabel.Content = args.Data.ToString();
                         waitingForOpponentsLabel.Content = "Waiting for you to start the game...."; ;
@@ -974,7 +976,8 @@ namespace CheckersMultiplayer
             {
                 if (args.Path.Equals("/inProgress") && args.Data.Equals("True"))
                 {
-                    Dispatcher.Invoke(new Action(() => {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
                         createLobbyGrid.Visibility = Visibility.Collapsed;
                         gameGrid.Visibility = Visibility.Visible;
                         checkersGame();
@@ -991,6 +994,7 @@ namespace CheckersMultiplayer
                 (sender as DispatcherTimer)?.Stop();
                 Console.WriteLine("Przeciwnik opuscil mecz");
                 opponentNameLabel2.Content = "";
+                Game_Over();
                 return;
             }
 
@@ -1010,11 +1014,12 @@ namespace CheckersMultiplayer
                 }
             }
 
-            if (currentGame.board==null)
+            if (currentGame.board == null)
             {
                 (sender as DispatcherTimer)?.Stop();
                 Console.WriteLine("Przeciwnik opuscil mecz");
                 opponentNameLabel2.Content = "";
+                Game_Over();
                 return;
             }
 
@@ -1022,17 +1027,17 @@ namespace CheckersMultiplayer
             {
                 drawPawns();
                 Console.WriteLine("XD");
-                if(boardUpdated)
+                if (boardUpdated)
                     boardUpdated = false;
             }
-            if(currentGame.turn.Equals(accountLogin)&&!boardUpdated)
+            if (currentGame.turn.Equals(accountLogin) && !boardUpdated)
             {
                 drawPawns();
                 Console.WriteLine("XD");
                 boardUpdated = true;
                 gameLabelsUpdate();
             }
-            
+
         }
 
         public void drawPawns()
@@ -1163,8 +1168,13 @@ namespace CheckersMultiplayer
                 }
             }
 
-            numberOfBlackPawnsCaptured.Content = 12-countPawnImageB;
-            numberOfWhitePawnsCaptured.Content = 12-countPawnImageW;
+            numberOfBlackPawnsCaptured.Content = 12 - countPawnImageB;
+            numberOfWhitePawnsCaptured.Content = 12 - countPawnImageW;
+
+            if(countPawnImageB == 0|| countPawnImageW == 0)
+            {
+                Game_Over();
+            }
 
         }
 
@@ -1173,5 +1183,27 @@ namespace CheckersMultiplayer
             crud.DeleteGameRoom(currentGame.host);
         }
 
+        void Game_Over()
+        {
+            DoubleAnimation db = new DoubleAnimation();
+            db.From = 0;
+            db.To = 600;
+            db.Duration = TimeSpan.FromSeconds(2);
+            gameWidgetsGridTransform.BeginAnimation(TranslateTransform.YProperty, db);
+
+            if (opponentNameLabel2.Content.Equals(""))
+            {
+                DoubleAnimation db2 = new DoubleAnimation();
+                db2.From = -600;
+                db2.To = 0;
+                db2.Duration = TimeSpan.FromSeconds(2);
+                opponentLeftGridTransform.BeginAnimation(TranslateTransform.YProperty, db2);
+                opponentLeftGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+
+            }
+        }
     }
 }
