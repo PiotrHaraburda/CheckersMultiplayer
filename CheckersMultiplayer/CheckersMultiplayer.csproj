@@ -334,6 +334,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="fonts\Poppins-Regular.ttf" />
+    <Resource Include="fonts\Tektur-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -367,6 +369,19 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\registerImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\account.png" />
+    <Resource Include="images\create.png" />
+    <Resource Include="images\go_back.png" />
+    <Resource Include="images\join.png" />
+    <Resource Include="images\joystick.png" />
+    <Resource Include="images\logout.png" />
+    <Resource Include="images\settings.png" />
+    <Resource Include="images\stats.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\checkers_background.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

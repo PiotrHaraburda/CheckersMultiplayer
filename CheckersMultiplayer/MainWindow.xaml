@@ -6,21 +6,32 @@
         xmlns:local="clr-namespace:CheckersMultiplayer"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="MainApp" Height="513" Width="800"
-        Closing="MainWindow_Closing">
-    <Grid Margin="0,0,0,3">
-        <DockPanel x:Name="mainMenuPanel" LastChildFill="False" Visibility="Visible">
+        Title="MainApp" Height="620" Width="800"
+        Closing="MainWindow_Closing"
+        Icon="images/logo.png"
+        ResizeMode="NoResize">
 
-            <Label Content="Checkers Multiplayer" DockPanel.Dock="Top" Height="36" Margin="0,60,0,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <Button x:Name="multiplayerButton" Content="Play Multiplayer" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,40,0,0" Click="multiplayerButton_Click">
+    <Grid>
+
+        <Grid x:Name="mainMenuPanel" Visibility="Visible">
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Label Content="Checkers Multiplayer" Height="35" Margin="96,17,0,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins"/>
+
+            <Image HorizontalAlignment="Left" Height="38" Margin="30,17,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+
+            <Button x:Name="multiplayerButton"  Margin="576,480,24,24" Click="multiplayerButton_Click" Width="200" Height="60">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
                         <Setter Property="Background">
                             <Setter.Value>
                                 <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                    <GradientStop Color="#FF1BDC26" Offset="0"/>
+                                    <GradientStop Color="Transparent" Offset="0"/>
                                     <GradientStop Color="#FF3AB11A" Offset="1"/>
                                 </LinearGradientBrush>
                             </Setter.Value>
@@ -42,7 +53,7 @@
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                            <GradientStop Color="#FF0C9C14" Offset="0"/>
+                                            <GradientStop Color="Transparent" Offset="0"/>
                                             <GradientStop Color="#FF24730F" Offset="1"/>
                                         </LinearGradientBrush>
                                     </Setter.Value>
@@ -52,16 +63,22 @@
 
                     </Style>
                 </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Play Multiplayer" Width="90" FontFamily="fonts/#Poppins"/>
+                    <Image Source="images/joystick.png" Width="30" Height="30"/>
+                </StackPanel>
+
             </Button>
 
-            <Button Content="Your Account" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0">
+            <Button Margin="30,480,570,24" Width="200" Height="60">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
                         <Setter Property="Background">
                             <Setter.Value>
                                 <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                    <GradientStop Color="#FFD25D26" Offset="0"/>
+                                    <GradientStop Color="Transparent" Offset="0"/>
                                     <GradientStop Color="#FFB1832F" Offset="1"/>
                                 </LinearGradientBrush>
                             </Setter.Value>
@@ -83,7 +100,7 @@
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                            <GradientStop Color="#FF9E4116" Offset="0"/>
+                                            <GradientStop Color="Transparent" Offset="0"/>
                                             <GradientStop Color="#FF866324" Offset="1"/>
                                         </LinearGradientBrush>
                                     </Setter.Value>
@@ -93,16 +110,22 @@
 
                     </Style>
                 </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Your Account" Width="90" FontFamily="fonts/#Poppins"/>
+                    <Image Source="images/account.png" Width="30" Height="30"/>
+                </StackPanel>
+
             </Button>
 
-            <Button Content="Settings" DockPanel.Dock="Top" Height="31" Width="120" Margin="0,20,0,0">
+            <Button Margin="248,480,352,24" Height="60" Width="200">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
                         <Setter Property="Background">
                             <Setter.Value>
                                 <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                    <GradientStop Color="#FF26BED2" Offset="0"/>
+                                    <GradientStop Color="Transparent" Offset="0"/>
                                     <GradientStop Color="#FF4075DC" Offset="1"/>
                                 </LinearGradientBrush>
                             </Setter.Value>
@@ -124,7 +147,7 @@
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                            <GradientStop Color="#FF138C9C" Offset="0"/>
+                                            <GradientStop Color="Transparent" Offset="0"/>
                                             <GradientStop Color="#FF224996" Offset="1"/>
                                         </LinearGradientBrush>
                                     </Setter.Value>
@@ -134,16 +157,22 @@
 
                     </Style>
                 </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Settings" Width="90" FontFamily="fonts/#Poppins"/>
+                    <Image Source="images/settings.png" Width="30" Height="30"/>
+                </StackPanel>
+
             </Button>
 
-            <Button x:Name="logoutButton" Content="Logout" DockPanel.Dock="Top" Height="31" Margin="0,20,0,0" Width="121" Click="logoutButton_Click">
+            <Button x:Name="logoutButton" Margin="576,17,24,427" Click="logoutButton_Click" Height="60" Width="200">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
                         <Setter Property="Background">
                             <Setter.Value>
                                 <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                    <GradientStop Color="#FFBB4BCE" Offset="0"/>
+                                    <GradientStop Color="Transparent" Offset="0"/>
                                     <GradientStop Color="#FFB70EEC" Offset="1"/>
                                 </LinearGradientBrush>
                             </Setter.Value>
@@ -165,7 +194,7 @@
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                                            <GradientStop Color="#FF9536A5" Offset="0"/>
+                                            <GradientStop Color="Transparent" Offset="0"/>
                                             <GradientStop Color="#FF830DA7" Offset="1"/>
                                         </LinearGradientBrush>
                                     </Setter.Value>
@@ -175,18 +204,221 @@
 
                     </Style>
                 </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Logout" Width="90" FontFamily="fonts/#Poppins"/>
+                    <Image Source="images/logout.png" Width="30" Height="30"/>
+                </StackPanel>
+
             </Button>
 
-            <Grid Width="100"/>
+        </Grid>
 
-        </DockPanel>
-        <DockPanel x:Name="multiplayerPanel" LastChildFill="False" Visibility="Collapsed" >
-            <Label Content="Multiplayer Mode" DockPanel.Dock="Top" Height="31" Margin="0,60,0,0" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"/>
-            <Button x:Name="createLobbyButton" Content="Create Lobby" DockPanel.Dock="Top" Height="33" Margin="0,30,0,0" Width="144" Click="createLobbyButton_Click"/>
-            <Button x:Name="joinLobbyButton" Content="Join Lobby" DockPanel.Dock="Top" Height="33" Width="145" Margin="0,20,0,0" Click="joinLobbyButton_Click"/>
-            <Button Content="Statistics" DockPanel.Dock="Top" Height="33" Margin="0,20,0,0" Width="146"/>
-            <Button x:Name="quitMultiplayerButton" Content="Go Back" DockPanel.Dock="Top" Height="33" Width="146" Margin="0,20,0,0" Click="quitMultiplayerButton_Click"/>
-        </DockPanel>
+
+        <Grid x:Name="multiplayerPanel" Visibility="Hidden" >
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Label Content="Checkers Multiplayer" Height="35" Margin="96,17,0,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins"/>
+
+            <Image HorizontalAlignment="Left" Height="38" Margin="30,17,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+
+            <Label Content="Multiplayer Mode" Margin="0,173,0,382" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center" Foreground="White" Width="404" FontFamily="fonts/#Poppins"/>
+
+            <Button x:Name="createLobbyButton" Margin="600,485,0,59" Click="createLobbyButton_Click" Width="200" Height="60">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="#FF3AB11A" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="Transparent" Offset="0"/>
+                                            <GradientStop Color="#FF24730F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Create Lobby" Width="90" FontFamily="fonts/#Poppins"/>
+                    <Image Source="images/create.png" Width="30" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
+            <Button x:Name="joinLobbyButton" Margin="337,487,263,57" Click="joinLobbyButton_Click" Width="200" Height="60">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="#FFB1832F" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                         CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="Transparent" Offset="0"/>
+                                            <GradientStop Color="#FF866324" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Join Lobby" Width="90" FontFamily="fonts/#Poppins"/>
+                    <Image Source="images/join.png" Width="30" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
+            <Button Margin="49,485,551,59" Width="200" Height="60">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="#FF4075DC" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="Transparent" Offset="0"/>
+                                            <GradientStop Color="#FF224996" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Statistics" Width="90" FontFamily="fonts/#Poppins"/>
+                    <Image Source="images/stats.png" Width="30" Height="30"/>
+                </StackPanel>
+
+
+            </Button>
+
+            <Button x:Name="quitMultiplayerButton" Margin="575,34,25,510" Click="quitMultiplayerButton_Click" Width="200" Height="60">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="#FFB70EEC" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="Transparent" Offset="0"/>
+                                            <GradientStop Color="#FF830DA7" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Go Back" Width="90" FontFamily="fonts/#Poppins"/>
+                    <Image Source="images/go_back.png" Width="30" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
+        </Grid>
+
+
         <Grid x:Name="createLobbyGrid" Visibility="Collapsed">
             <Label Content="Creating multiplayer lobby" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
             <Label Content="Room name:&#xD;&#xA;" HorizontalAlignment="Left" Margin="255,111,0,0" VerticalAlignment="Top" Height="27"/>
@@ -200,18 +432,24 @@
             <Button x:Name="saveRoomInfoButton" Content="Save" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.202,-2.202" Width="68" Click="saveRoomInfoButton_Click"/>
             <Label x:Name="opponentNameLabel" Content="" HorizontalAlignment="Left" Margin="414,290,0,0" VerticalAlignment="Top"/>
         </Grid>
+
+
         <Grid x:Name="gameRoomsGrid" Visibility="Collapsed">
             <Label Content="Active Game Rooms" HorizontalAlignment="Center" Margin="0,31,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
             <ListBox x:Name="gameRoomsListBox" Margin="136,80,136,114"/>
             <Button x:Name="quitGameRoomsButton" Content="Return" HorizontalAlignment="Left" Margin="33,38,0,0" VerticalAlignment="Top" Width="53" Click="quitGameRoomsButton_Click"/>
             <Button x:Name="joinGameRoomButton" Content="Join" HorizontalAlignment="Center" Margin="0,419,0,0" VerticalAlignment="Top" Width="110" Click="joinGameRoomButton_Click"/>
         </Grid>
+
+
         <Grid x:Name="roomPasswordGrid" Visibility="Collapsed">
             <Label Content="Enter the room password" HorizontalAlignment="Center" Margin="0,129,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
             <TextBox x:Name="enterRoomPasswordTextBox" HorizontalAlignment="Center" Margin="0,188,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="29" FontSize="16"/>
             <Button x:Name="quitRoomPasswordGridButton" Content="Cancel" HorizontalAlignment="Left" Margin="314,263,0,0" VerticalAlignment="Top" Height="30" Width="64" Click="quitRoomPasswordGridButton_Click"/>
             <Button x:Name="checkGameRoomPasswordButton" Content="Join" HorizontalAlignment="Left" Margin="425,263,0,0" VerticalAlignment="Top" Height="30" Width="57" Click="checkGameRoomPasswordButton_Click"/>
         </Grid>
+
+
         <Grid x:Name="gameGrid" Visibility="Collapsed">
             <Grid Margin="483,427,0,0">
                 <Button x:Name="quitGameButton" Content="Quit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="83" Height="26" Click="quitGameButton_Click"/>
@@ -230,7 +468,7 @@
                 <Label x:Name="numberOfBlackPawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="693,198,0,0" VerticalAlignment="Top"/>
                 <Label Content="Time remaining:" HorizontalAlignment="Left" Margin="561,248,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="timeRemainingLabel" Content="05:00" HorizontalAlignment="Left" Margin="661,248,0,0" VerticalAlignment="Top"/>
-                
+
             </Grid>
             <Grid Margin="483,168,0,174" x:Name="opponentLeftGrid" Visibility="Collapsed">
                 <Grid.RenderTransform>
@@ -254,5 +492,8 @@
                 <Label Content="Game over." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
             </Grid>
         </Grid>
+
+
     </Grid>
+
 </Window>

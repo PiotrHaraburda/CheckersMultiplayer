@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:CheckersMultiplayer"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="CheckersMultiplayer Registration" Height="506.125" Width="750" ResizeMode="NoResize" Icon="images/logo.png">
+        Title="CheckersMultiplayer Registration" Height="530" Width="750" ResizeMode="NoResize" Icon="images/logo.png">
 
     <Grid>
-        <Button x:Name="signUpButton" Content="Sign Up" HorizontalAlignment="Left" Margin="596,430,0,0" VerticalAlignment="Top" Width="122" Height="38" FontSize="14" Click="signUpButton_Click">
+
+        <Button x:Name="signUpButton" Content="Sign Up" HorizontalAlignment="Left" Margin="596,430,0,0" VerticalAlignment="Top" Width="122" Height="38" FontSize="14" Click="signUpButton_Click" FontFamily="fonts/#Poppins">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Background">
@@ -49,25 +50,116 @@
             </Button.Style>
         </Button>
 
-        <TextBox x:Name="loginTextBox" HorizontalAlignment="Left" Height="27" Margin="472,183,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" FontSize="14" VerticalContentAlignment="Center"/>
-        <Label x:Name="loginLabel" Content="Login" HorizontalAlignment="Left" Margin="354,180,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="18"/>
-        <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="354,280,0,0" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.569,-0.323"/>
-        <TextBox x:Name="nameTextBox" HorizontalAlignment="Left" Height="27" Margin="472,133,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" FontSize="14" VerticalContentAlignment="Center"/>
-        <Label x:Name="nameLabel" Content="Name" HorizontalAlignment="Left" Margin="352,130,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="18"/>
-        <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Height="27" Margin="472,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" FontSize="14" VerticalContentAlignment="Center"/>
-        <Label x:Name="emailLabel" Content="E-mail" HorizontalAlignment="Left" Margin="354,228,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="18" Height="37"/>
-        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="472,233,0,0" VerticalAlignment="Top" Width="246" Height="27" FontSize="14"/>
-        <Label x:Name="ageLabel" Content="Age" HorizontalAlignment="Left" Margin="356,330,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,0.858" FontSize="18"/>
-        <ComboBox x:Name="ageComboBox" HorizontalAlignment="Left" Margin="472,333,0,0" VerticalAlignment="Top" Width="100" Height="27" FontSize="14" BorderBrush="White">
+        <TextBox x:Name="loginTextBox" HorizontalAlignment="Left" Height="27" Margin="470,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" FontSize="14" VerticalContentAlignment="Center" FontFamily="fonts/#Poppins">
+            <TextBox.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border BorderThickness="0,0,0,1">
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                            <GradientStop Color="Blue" Offset="0"/>
+                                            <GradientStop Color="LightBlue" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                    <ScrollViewer x:Name="PART_ContentHost"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+        <Label x:Name="loginLabel" Content="Login" HorizontalAlignment="Left" Margin="350,180,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="fonts/#Poppins"/>
+
+        <Label x:Name="passwordLabel" Content="Password" HorizontalAlignment="Left" Margin="350,280,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="fonts/#Poppins"/>
+
+        <TextBox x:Name="nameTextBox" HorizontalAlignment="Left" Height="27" Margin="470,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" FontSize="14" VerticalContentAlignment="Center" FontFamily="fonts/#Poppins">
+            <TextBox.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border BorderThickness="0,0,0,1">
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                            <GradientStop Color="Blue" Offset="0"/>
+                                            <GradientStop Color="LightBlue" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                    <ScrollViewer x:Name="PART_ContentHost"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+        <Label x:Name="nameLabel" Content="Name" HorizontalAlignment="Left" Margin="350,130,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="fonts/#Poppins"/>
+
+        <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Height="27" Margin="470,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" FontSize="14" VerticalContentAlignment="Center" FontFamily="fonts/#Poppins">
+            <TextBox.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border BorderThickness="0,0,0,1">
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                            <GradientStop Color="Blue" Offset="0"/>
+                                            <GradientStop Color="LightBlue" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                    <ScrollViewer x:Name="PART_ContentHost"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+        <Label x:Name="emailLabel" Content="E-mail" HorizontalAlignment="Left" Margin="350,230,0,0" VerticalAlignment="Top" FontSize="18" Height="37" FontFamily="fonts/#Poppins"/>
+
+        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="470,280,0,0" VerticalAlignment="Top" Width="246" Height="27" FontSize="14" FontFamily="fonts/#Poppins">
+            <PasswordBox.Resources>
+                <Style TargetType="PasswordBox">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="PasswordBox">
+                                <Border BorderThickness="0,0,0,1">
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                            <GradientStop Color="Blue" Offset="0"/>
+                                            <GradientStop Color="LightBlue" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                    <ScrollViewer x:Name="PART_ContentHost"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </PasswordBox.Resources>
+        </PasswordBox>
+
+        <Label x:Name="ageLabel" Content="Age" HorizontalAlignment="Left" Margin="350,330,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="fonts/#Poppins"/>
+
+        <ComboBox x:Name="ageComboBox" HorizontalAlignment="Left" Margin="470,335,0,0" VerticalAlignment="Top" Width="100" Height="27" FontSize="14" BorderBrush="White" FontFamily="fonts/#Poppins">
+
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1">
                     <GradientStop Color="#FFF0F0F0"/>
                     <GradientStop Color="White" Offset="0.1"/>
                 </LinearGradientBrush>
             </ComboBox.Background>
+
         </ComboBox>
 
-        <Button x:Name="signInButton" Content="Sign In" HorizontalAlignment="Left" Margin="356,430,0,0" VerticalAlignment="Top" Width="230" Height="38" FontSize="14" Click="signInButton_Click">
+        <Button x:Name="signInButton" Content="Sign In" HorizontalAlignment="Left" Margin="356,430,0,0" VerticalAlignment="Top" Width="230" Height="38" FontSize="14" Click="signInButton_Click" FontFamily="fonts/#Poppins">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
 
@@ -109,19 +201,22 @@
             </Button.Style>
         </Button>
 
-        <Label Content="Already registered?" HorizontalAlignment="Left" Margin="356,407,0,0" VerticalAlignment="Top" FontSize="10" RenderTransformOrigin="0.158,1.224" Width="140" />
-        <Label x:Name="accountCreatedLabel" Content="Your account has been created successfully!" HorizontalAlignment="Left" Margin="577,338,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Label Content="Already registered?" HorizontalAlignment="Left" Margin="356,407,0,0" VerticalAlignment="Top" FontSize="10" Width="140" FontFamily="fonts/#Poppins"/>
 
-        <Border CornerRadius="10" Margin="19,24,442,22">
+        <Label x:Name="accountCreatedLabel" Content="Your account has been created successfully!" HorizontalAlignment="Left" Margin="408,357,0,0" VerticalAlignment="Top" Visibility="Hidden" FontFamily="fonts/#Poppins"/>
+
+        <Border CornerRadius="10" Margin="15,20,440,20">
             <Border.Background>
                 <ImageBrush Stretch="Fill" ImageSource="images/registerImage.jpg"/>
             </Border.Background>
+
         </Border>
-        <Image HorizontalAlignment="Center" Height="37" Margin="0,24,0,0" VerticalAlignment="Top" Width="38" Source="images/logo.png"/>
-        <Label Content="CheckersMultiplayer" HorizontalAlignment="Left" Margin="472,24,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Height="37"/>
-        <Label Content="Welcome Back, Please Register to Get Started!" HorizontalAlignment="Left" Margin="354,82,0,0" VerticalAlignment="Top"/>
 
+        <Image HorizontalAlignment="Center" Height="37" Margin="0,25,0,0" VerticalAlignment="Top" Width="39" Source="images/logo.png"/>
 
+        <Label Content="CheckersMultiplayer" HorizontalAlignment="Left" Margin="470,25,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Height="37" FontFamily="fonts/#Poppins"/>
+
+        <Label Content="Welcome Back, Please Register to Get Started!" HorizontalAlignment="Left" Margin="354,82,0,0" VerticalAlignment="Top" FontFamily="fonts/#Poppins"/>
 
     </Grid>
 </Window>
