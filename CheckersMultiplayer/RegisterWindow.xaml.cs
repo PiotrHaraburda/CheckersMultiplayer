@@ -60,11 +60,12 @@ namespace CheckersMultiplayer
                 bool alreadyRegistered = false;
                 CRUD_Service crud = new CRUD_Service();
 
-                foreach (var item in crud.LoadPlayers())
-                {
-                    if (item.Value.login == loginTextBox.Text)
-                        alreadyRegistered = true;
-                }
+                if(crud.LoadPlayers()!=null)
+                    foreach (var item in crud.LoadPlayers())
+                    {
+                        if (item.Value.login == loginTextBox.Text)
+                            alreadyRegistered = true;
+                    }
 
                 if (alreadyRegistered == false)
                 {
@@ -72,7 +73,7 @@ namespace CheckersMultiplayer
 
                     if(isRegistered == true)
                     {
-                        crud.SetData(nameTextBox.Text, loginTextBox.Text, emailTextBox.Text, Int32.Parse(ageComboBox.Text), false, false);
+                        crud.SetData(nameTextBox.Text, loginTextBox.Text, emailTextBox.Text, Int32.Parse(ageComboBox.Text), false, false, 1000);
                         accountCreatedLabel.Visibility = Visibility.Visible;
                         nameTextBox.Visibility = Visibility.Hidden;
                         loginTextBox.Visibility = Visibility.Hidden;

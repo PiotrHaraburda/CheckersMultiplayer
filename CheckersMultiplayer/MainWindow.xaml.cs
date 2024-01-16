@@ -33,6 +33,7 @@ namespace CheckersMultiplayer
         string accountEmail;
         bool accountInGame;
         bool accountOnline;
+        int accountVR;
 
         int countPawnImageB = 0;
         int countPawnImageW = 0;
@@ -55,7 +56,9 @@ namespace CheckersMultiplayer
         bool boardUpdated = false;
         string opponent;
 
-        public MainWindow(string accountName, string accountLogin, int accountAge, string accountEmail, bool accountInGame, bool accountOnline)
+        bool loggedOut = false;
+
+        public MainWindow(string accountName, string accountLogin, int accountAge, string accountEmail, bool accountInGame, bool accountOnline, int accountVR)
         {
             InitializeComponent();
             this.accountName = accountName;
@@ -64,6 +67,13 @@ namespace CheckersMultiplayer
             this.accountEmail = accountEmail;
             this.accountInGame = accountInGame;
             this.accountOnline = accountOnline;
+            this.accountVR = accountVR;
+            firstNameValueLabel.Content = accountName.Split(' ')[0];
+            lastNameValueLabel.Content = accountName.Split(' ')[1];
+            loginValueLabel.Content = accountLogin;
+            emailValueLabel.Content = accountEmail;
+            ageValueLabel.Content = accountAge;
+            VRValueLabel.Content = accountVR;
         }
 
         private void multiplayerButton_Click(object sender, RoutedEventArgs e)
@@ -82,6 +92,8 @@ namespace CheckersMultiplayer
         {
             if (crud.LogoutUser() == null)
             {
+                loggedOut = true;
+                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, false, this.accountInGame, this.accountVR);
                 LoginWindow loginWindow = new LoginWindow();
                 loginWindow.Show();
                 this.Close();
@@ -1330,7 +1342,14 @@ namespace CheckersMultiplayer
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            crud.DeleteGameRoom(currentGame.host);
+            if(loggedOut==false)
+            {
+                if (crud.LogoutUser() == null)
+                {
+                    crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, false, this.accountInGame, this.accountVR);
+                    crud.DeleteGameRoom(currentGame.host);
+                }
+            }
         }
 
         void Game_Over()
@@ -1427,7 +1446,13 @@ namespace CheckersMultiplayer
             {
                 countPawnImageB = 0;
             }
+        }
 
+        private void Account_Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainMenuPanel.Visibility = Visibility.Hidden;
+            accountGrid.Visibility = Visibility.Visible;
+            crud.UpdateUserPassword("11111111");
         }
     }
 }

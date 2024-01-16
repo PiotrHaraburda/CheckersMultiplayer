@@ -15,5 +15,6 @@ namespace CheckersMultiplayer
         public int age { get; set; }
         public bool online { get; set; }
         public bool inGame { get; set; }
+        public int VR { get; set; }
     }
 }

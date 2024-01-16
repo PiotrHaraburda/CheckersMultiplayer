@@ -47,44 +47,46 @@ namespace CheckersMultiplayer
                 string accountEmail = null;
                 bool accountInGame = false;
                 bool accountOnline = false;
+                int accountVR = 0;
+
                 foreach (var item in crud.LoadPlayers())
                 {
-                    if (item.Value.email == emailTextBox.Text)
+                    if (item.Value.email == emailTextBox.Text && item.Value.online == false)
                     {
-                        crud.UpdateData(item.Value.name, item.Value.login, item.Value.email, item.Value.age, true, item.Value.inGame);
+                        crud.UpdateData(item.Value.name, item.Value.login, item.Value.email, item.Value.age, true, item.Value.inGame, item.Value.VR);
                         accountName = item.Value.name;
                         accountLogin = item.Value.login;
                         accountAge= item.Value.age;
                         accountEmail = item.Value.email;
                         accountInGame = item.Value.inGame;
                         accountOnline = item.Value.online;
+                        accountVR = item.Value.VR;
+
+                        emailLabel.Visibility = Visibility.Hidden;
+                        passwordLabel.Visibility = Visibility.Hidden;
+                        emailTextBox.Visibility = Visibility.Hidden;
+                        passwordTextBox.Visibility = Visibility.Hidden;
+                        signInButton.Visibility = Visibility.Hidden;
+                        signUpButton.Visibility = Visibility.Hidden;
+                        welcomeLabel.Visibility = Visibility.Hidden;
+                        notRegisteredLabel.Visibility = Visibility.Hidden;
+
+                        signedInLabel.Visibility = Visibility.Visible;
+
+                        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+                        timer.Start();
+                        timer.Tick += (sender2, args) =>
+                        {
+                            timer.Stop();
+                            MainWindow mainWindow = new MainWindow(accountName, accountLogin, accountAge, accountEmail, accountInGame, accountOnline, accountVR);
+                            mainWindow.Show();
+                            this.Close();
+                        };
+
                         break;
                     }
                 }
-
-                emailLabel.Visibility = Visibility.Hidden;
-                passwordLabel.Visibility = Visibility.Hidden;
-                emailTextBox.Visibility = Visibility.Hidden;
-                passwordTextBox.Visibility = Visibility.Hidden;
-                signInButton.Visibility = Visibility.Hidden;
-                signUpButton.Visibility = Visibility.Hidden;
-                welcomeLabel.Visibility = Visibility.Hidden;
-                notRegisteredLabel.Visibility = Visibility.Hidden;
-
-                signedInLabel.Visibility = Visibility.Visible;
-
-                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-                timer.Start();
-                timer.Tick += (sender2, args) =>
-                {
-                    timer.Stop();
-                    MainWindow mainWindow = new MainWindow(accountName,accountLogin,accountAge,accountEmail,accountInGame,accountOnline);
-                    mainWindow.Show();
-                    this.Close();
-                };
-
             }
-
         }
     }
 }

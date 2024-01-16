@@ -102,8 +102,30 @@ namespace CheckersMultiplayer
             return conn.authClient.User;
         }
 
+        public void UpdateUserPassword(string newPassword)
+        {
+            User user = conn.authClient.User;
+            if (user != null)
+            {
+                user.ChangePasswordAsync(newPassword).ContinueWith(task => {
+                    if (task.IsCanceled)
+                    {
+                        Console.WriteLine("UpdatePasswordAsync was canceled.");
+                        return;
+                    }
+                    if (task.IsFaulted)
+                    {
+                        Console.WriteLine("UpdatePasswordAsync encountered an error: " + task.Exception);
+                        return;
+                    }
+
+                    Console.WriteLine("Password updated successfully.");
+                });
+            }
+        }
+
         //set datas to database
-        public void SetData(string name, string login, string email, int age, bool online, bool inGame)
+        public void SetData(string name, string login, string email, int age, bool online, bool inGame, int VR)
         {
             try
             {
@@ -111,10 +133,11 @@ namespace CheckersMultiplayer
                 {
                     name = name,
                     login = login,
-                    email=email,
+                    email = email,
                     age = age,
                     online = online,
-                    inGame = inGame
+                    inGame = inGame,
+                    VR = VR
                 };
                 var SetData = conn.client.Set("players/" + login, set);
             }
@@ -295,7 +318,7 @@ namespace CheckersMultiplayer
         }
 
         //Update datas
-        public void UpdateData(string name, string login, string email, int age, bool online, bool inGame)
+        public void UpdateData(string name, string login, string email, int age, bool online, bool inGame, int VR)
         {
             try
             {
@@ -306,7 +329,8 @@ namespace CheckersMultiplayer
                     email = email,
                     age = age,
                     online = online,
-                    inGame = inGame
+                    inGame = inGame,
+                    VR = VR
                 };
                 var SetData = conn.client.Update("players/" + login, set);
             }

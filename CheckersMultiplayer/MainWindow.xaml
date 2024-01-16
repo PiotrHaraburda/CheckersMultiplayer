@@ -71,7 +71,7 @@
 
             </Button>
 
-            <Button Margin="30,480,570,24" Width="200" Height="60">
+            <Button x:Name="accountButton" Margin="30,480,570,24" Width="200" Height="60" Click="Account_Button_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -500,6 +500,26 @@
             </Grid>
         </Grid>
 
+        <Grid x:Name="accountGrid" Visibility="Collapsed">
+            <Label Content="Account Panel" HorizontalAlignment="Center" Margin="0,39,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22"/>
+            <Label Content="Welcome to your account settings, Name!" HorizontalAlignment="Center" Margin="0,83,0,0" VerticalAlignment="Top"/>
+            <Label Content="First Name:" HorizontalAlignment="Left" Margin="322,181,0,0" VerticalAlignment="Top"/>
+            <Label Content="Last Name:" HorizontalAlignment="Left" Margin="322,212,0,0" VerticalAlignment="Top"/>
+            <Label Content="Login:" HorizontalAlignment="Left" Margin="322,243,0,0" VerticalAlignment="Top"/>
+            <Label Content="E-mail:" HorizontalAlignment="Left" Margin="322,274,0,0" VerticalAlignment="Top"/>
+            <Label Content="Age:" HorizontalAlignment="Left" Margin="322,305,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="firstNameValueLabel" Content="Label" HorizontalAlignment="Left" Margin="422,181,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="lastNameValueLabel" Content="Label" HorizontalAlignment="Left" Margin="422,212,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="loginValueLabel" Content="Label" HorizontalAlignment="Left" Margin="422,243,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="emailValueLabel" Content="Label" HorizontalAlignment="Left" Margin="422,274,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="ageValueLabel" Content="Label" HorizontalAlignment="Left" Margin="422,305,0,0" VerticalAlignment="Top"/>
+            <Label Content="Victory Points (VR):" HorizontalAlignment="Left" Margin="290,396,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="VRValueLabel" Content="Label" HorizontalAlignment="Left" Margin="431,396,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="changePasswordButton" Content="Change Password" HorizontalAlignment="Left" Margin="282,487,0,0" VerticalAlignment="Top" Height="31" Width="108"/>
+            <Button x:Name="deleteAccountButton" Content="Delete Account" HorizontalAlignment="Left" Margin="422,487,0,0" VerticalAlignment="Top" Height="31" Width="108"/>
+            <Button x:Name="quitAccountPanel" Content="Return" HorizontalAlignment="Left" Margin="33,47,0,0" VerticalAlignment="Top" Width="60" Height="23"/>
+
+        </Grid>
 
     </Grid>
 
