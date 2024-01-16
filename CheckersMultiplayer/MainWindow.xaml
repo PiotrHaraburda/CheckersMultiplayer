@@ -420,10 +420,10 @@
 
 
         <Grid x:Name="createLobbyGrid" Visibility="Collapsed">
-            <Label Content="Creating multiplayer lobby" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
-            <Label Content="Room name:&#xD;&#xA;" HorizontalAlignment="Left" Margin="255,111,0,0" VerticalAlignment="Top" Height="27"/>
+            <Label x:Name="createLobbyMainLabel" Content="Creating multiplayer lobby" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+            <Label x:Name="roomNameLabel" Content="Room name:&#xD;&#xA;" HorizontalAlignment="Left" Margin="255,111,0,0" VerticalAlignment="Top" Height="27"/>
             <TextBox x:Name="roomNameTextBox" HorizontalAlignment="Left" Margin="379,116,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="159"/>
-            <Label Content="Room password:" HorizontalAlignment="Left" Margin="255,150,0,0" VerticalAlignment="Top" Height="27"/>
+            <Label x:Name="roomPasswordLabel" Content="Room password:" HorizontalAlignment="Left" Margin="255,150,0,0" VerticalAlignment="Top" Height="27"/>
             <TextBox x:Name="roomPasswordTextBox" HorizontalAlignment="Left" Margin="379,155,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="159"/>
             <Button x:Name="startGameButton" Content="Start Game" HorizontalAlignment="Center" Margin="0,364,0,0" VerticalAlignment="Top" Width="106" Height="30" Click="startGameButton_Click"/>
             <Label x:Name="waitingForOpponentsLabel" Content="Waiting for opponents..." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,232,0,0"/>
@@ -451,9 +451,6 @@
 
 
         <Grid x:Name="gameGrid" Visibility="Collapsed">
-            <Grid Margin="483,427,0,0">
-                <Button x:Name="quitGameButton" Content="Quit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="83" Height="26" Click="quitGameButton_Click"/>
-            </Grid>
             <Image HorizontalAlignment="Left" Height="468" Margin="10,10,0,10" VerticalAlignment="Top" Width="468" Source="/Wood-2.png"/>
             <Grid x:Name="gameWidgetsGrid" Visibility="Visible">
                 <Grid.RenderTransform>
@@ -490,6 +487,16 @@
                 </Grid.RenderTransform>
                 <Label Content="You won!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
                 <Label Content="Game over." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
+            </Grid>
+            <Grid Margin="483,168,0,174" x:Name="drawGrid" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="drawGridTransform"/>
+                </Grid.RenderTransform>
+                <Label Content="Draw!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
+                <TextBlock Text="The game is drawn with only 2 kings remaining on the board." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top" Width="200" TextWrapping="Wrap" Height="44" TextAlignment="Center"/>
+            </Grid>
+            <Grid Margin="483,427,0,0">
+                <Button x:Name="quitGameButton" Content="Quit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="83" Height="26" Click="quitGameButton_Click"/>
             </Grid>
         </Grid>
 

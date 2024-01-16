@@ -85,6 +85,10 @@ namespace CheckersMultiplayer
                         passwordLabel.Visibility = Visibility.Hidden;
                         emailLabel.Visibility = Visibility.Hidden;
                         ageLabel.Visibility = Visibility.Hidden;
+                        alreadyRegisteredLabel.Visibility = Visibility.Hidden;
+                        welcomeLabel.Visibility = Visibility.Hidden;
+
+                        signInButton.Width = 344;
                     }
                 }
                 else

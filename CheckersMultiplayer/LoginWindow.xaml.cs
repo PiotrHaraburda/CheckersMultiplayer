@@ -67,6 +67,10 @@ namespace CheckersMultiplayer
                 emailTextBox.Visibility = Visibility.Hidden;
                 passwordTextBox.Visibility = Visibility.Hidden;
                 signInButton.Visibility = Visibility.Hidden;
+                signUpButton.Visibility = Visibility.Hidden;
+                welcomeLabel.Visibility = Visibility.Hidden;
+                notRegisteredLabel.Visibility = Visibility.Hidden;
+
                 signedInLabel.Visibility = Visibility.Visible;
 
                 var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };

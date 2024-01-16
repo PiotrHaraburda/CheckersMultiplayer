@@ -201,7 +201,7 @@
             </Button.Style>
         </Button>
 
-        <Label Content="Already registered?" HorizontalAlignment="Left" Margin="356,407,0,0" VerticalAlignment="Top" FontSize="10" Width="140" FontFamily="fonts/#Poppins"/>
+        <Label x:Name="alreadyRegisteredLabel" Content="Already registered?" HorizontalAlignment="Left" Margin="356,407,0,0" VerticalAlignment="Top" FontSize="10" Width="140" FontFamily="fonts/#Poppins"/>
 
         <Label x:Name="accountCreatedLabel" Content="Your account has been created successfully!" HorizontalAlignment="Left" Margin="408,357,0,0" VerticalAlignment="Top" Visibility="Hidden" FontFamily="fonts/#Poppins"/>
 
@@ -216,7 +216,7 @@
 
         <Label Content="CheckersMultiplayer" HorizontalAlignment="Left" Margin="470,25,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Height="37" FontFamily="fonts/#Poppins"/>
 
-        <Label Content="Welcome Back, Please Register to Get Started!" HorizontalAlignment="Left" Margin="354,82,0,0" VerticalAlignment="Top" FontFamily="fonts/#Poppins"/>
+        <Label x:Name="welcomeLabel" Content="Welcome Back, Please Register to Get Started!" HorizontalAlignment="Left" Margin="354,82,0,0" VerticalAlignment="Top" FontFamily="fonts/#Poppins"/>
 
     </Grid>
 </Window>
