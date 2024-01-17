@@ -2,9 +2,11 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Common;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -57,6 +59,7 @@ namespace CheckersMultiplayer
         string opponent;
 
         bool loggedOut = false;
+        public ObservableCollection<PlayerRankingData> playerRankingData { get; set; }
 
         public MainWindow(string accountName, string accountLogin, int accountAge, string accountEmail, bool accountInGame, bool accountOnline, int accountVR)
         {
@@ -68,8 +71,20 @@ namespace CheckersMultiplayer
             this.accountInGame = accountInGame;
             this.accountOnline = accountOnline;
             this.accountVR = accountVR;
-            firstNameValueLabel.Content = accountName.Split(' ')[0];
-            lastNameValueLabel.Content = accountName.Split(' ')[1];
+
+            string[] nameParts = accountName.Split(' ');
+
+            if (nameParts.Length >= 2)
+            {
+                firstNameValueLabel.Content = nameParts[0];
+                lastNameValueLabel.Content = nameParts[1];
+            }
+            else
+            {
+                firstNameValueLabel.Content = accountName;
+                lastNameValueLabel.Content = "";
+            }
+
             loginValueLabel.Content = accountLogin;
             emailValueLabel.Content = accountEmail;
             ageValueLabel.Content = accountAge;
@@ -93,7 +108,7 @@ namespace CheckersMultiplayer
             if (crud.LogoutUser() == null)
             {
                 loggedOut = true;
-                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, false, this.accountInGame, this.accountVR);
+                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, false, this.accountInGame, accountVR);
                 LoginWindow loginWindow = new LoginWindow();
                 loginWindow.Show();
                 this.Close();
@@ -126,6 +141,38 @@ namespace CheckersMultiplayer
 
                     //Console.WriteLine();
                 }
+            }
+        }
+
+        private void statisticsButton_Click(object sender, RoutedEventArgs e)
+        {
+            rankingListBox.ItemsSource = null;
+            statisticsGrid.Visibility = Visibility.Visible;
+            multiplayerPanel.Visibility = Visibility.Hidden;
+
+            if (crud.LoadPlayers() != null)
+            {
+                playerRankingData = new ObservableCollection<PlayerRankingData>();
+
+                foreach (var item in crud.LoadPlayers())
+                {
+                    string imagePath = "";
+
+                    if (item.Value.online)
+                        imagePath = @"/images/online.png";
+                    else
+                        imagePath = @"/images/offline.png";
+
+                    playerRankingData.Add(new PlayerRankingData
+                    {
+                        Login = item.Value.login,
+                        VR = item.Value.VR,
+                        StatusImagePath = imagePath
+                    });
+                }
+                var sortedPlayerRankingData = playerRankingData.OrderByDescending(player => player.VR).ToList();
+
+                rankingListBox.ItemsSource = new ObservableCollection<PlayerRankingData>(sortedPlayerRankingData);
             }
         }
 
@@ -1094,12 +1141,14 @@ namespace CheckersMultiplayer
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            Console.WriteLine("ZZZZ");
             var gameRooms = crud.LoadGameRooms();
             if (gameRooms == null)
             {
                 DispatcherTimer dispatcherTimer = (DispatcherTimer)sender;
                 dispatcherTimer.Stop();
-                Console.WriteLine("Przeciwnik opuscil mecz");
+                timer.Stop();
+                Console.WriteLine("Przeciwnik opuscil mecz1");
                 currentGame.inProgress = false;
                 if(countPawnImageW!=0&&countPawnImageB!=0)
                     opponentNameLabel2.Content = "";
@@ -1127,7 +1176,8 @@ namespace CheckersMultiplayer
             {
                 DispatcherTimer dispatcherTimer = (DispatcherTimer)sender;
                 dispatcherTimer.Stop();
-                Console.WriteLine("Przeciwnik opuscil mecz");
+                timer.Stop();
+                Console.WriteLine("Przeciwnik opuscil mecz2");
                 currentGame.inProgress = false;
                 if (countPawnImageW != 0 && countPawnImageB != 0)
                     opponentNameLabel2.Content = "";
@@ -1346,7 +1396,7 @@ namespace CheckersMultiplayer
             {
                 if (crud.LogoutUser() == null)
                 {
-                    crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, false, this.accountInGame, this.accountVR);
+                    crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, false, this.accountInGame, accountVR);
                     crud.DeleteGameRoom(currentGame.host);
                 }
             }
@@ -1386,6 +1436,10 @@ namespace CheckersMultiplayer
             }
             else if (opponentNameLabel2.Content.Equals("") && !(countPawnImageKB == 1 && countPawnImageKW == 1 && countPawnImageB == 1 && countPawnImageW == 1))
             {
+                Console.WriteLine(accountVR+"1");
+                accountVR = accountVR + 8;
+                Console.WriteLine(accountVR);
+                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
                 DoubleAnimation db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
@@ -1395,6 +1449,10 @@ namespace CheckersMultiplayer
             }
             else if(!opponentNameLabel2.Content.Equals("")&&accountLogin.Equals(currentGame.whitePawns) && countPawnImageW == 0)
             {
+                Console.WriteLine(accountVR + "2");
+                accountVR = accountVR - 8;
+                Console.WriteLine(accountVR);
+                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
                 DoubleAnimation db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
@@ -1404,6 +1462,10 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && accountLogin.Equals(currentGame.blackPawns) && countPawnImageB == 0)
             {
+                Console.WriteLine(accountVR + "3");
+                accountVR = accountVR - 8;
+                Console.WriteLine(accountVR);
+                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
                 DoubleAnimation db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
@@ -1413,6 +1475,10 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && accountLogin.Equals(currentGame.whitePawns) && countPawnImageB == 0)
             {
+                Console.WriteLine(accountVR + "4");
+                accountVR = accountVR + 8;
+                Console.WriteLine(accountVR);
+                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
                 DoubleAnimation db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
@@ -1422,6 +1488,10 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && accountLogin.Equals(currentGame.blackPawns) && countPawnImageW == 0)
             {
+                Console.WriteLine(accountVR + "5");
+                accountVR = accountVR + 8;
+                Console.WriteLine(accountVR);
+                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
                 DoubleAnimation db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
@@ -1436,7 +1506,7 @@ namespace CheckersMultiplayer
             gameGrid.Visibility = Visibility.Hidden;
             mainMenuPanel.Visibility = Visibility.Visible;
             crud.DeleteGameRoom(currentGame.host);
-            opponentNameLabel2.Content = "";
+            VRValueLabel.Content = accountVR;
 
             if (accountLogin.Equals(currentGame.whitePawns))
             {
@@ -1448,11 +1518,61 @@ namespace CheckersMultiplayer
             }
         }
 
-        private void Account_Button_Click(object sender, RoutedEventArgs e)
+        private void accountButton_Click(object sender, RoutedEventArgs e)
         {
             mainMenuPanel.Visibility = Visibility.Hidden;
             accountGrid.Visibility = Visibility.Visible;
-            crud.UpdateUserPassword("11111111");
+        }
+
+        private void quitAccountPanelButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainMenuPanel.Visibility = Visibility.Visible;
+            accountGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void changePasswordButton_Click(object sender, RoutedEventArgs e)
+        {
+            passwordChangeGrid.Visibility = Visibility.Visible;
+            accountGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void quitPasswordChangeGridButton_Click(object sender, RoutedEventArgs e)
+        {
+            passwordChangeGrid.Visibility = Visibility.Hidden;
+            accountGrid.Visibility = Visibility.Visible;
+        }
+
+        private void confirmPasswordChangeButton_Click(object sender, RoutedEventArgs e)
+        {
+            crud.UpdateUserPassword(newPasswordTextBox.Text);
+        }
+
+        private void deleteAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            accountDeleteGrid.Visibility = Visibility.Visible;
+            accountGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void quitAccountDeleteGridButton_Click(object sender, RoutedEventArgs e)
+        {
+            accountDeleteGrid.Visibility = Visibility.Hidden;
+            accountGrid.Visibility = Visibility.Visible;
+        }
+
+        private void confirmAccountDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            loggedOut = true;
+            crud.DeleteUser();
+            crud.DeleteData(accountLogin);
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+            this.Close();
+        }
+
+        private void quitStatisticsGridButton_Click(object sender, RoutedEventArgs e)
+        {
+            statisticsGrid.Visibility = Visibility.Hidden;
+            multiplayerPanel.Visibility = Visibility.Visible;
         }
     }
 }

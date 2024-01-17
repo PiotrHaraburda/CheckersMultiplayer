@@ -311,6 +311,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlayerRankingData.cs" />
     <Compile Include="RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -382,6 +383,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\checkers_background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\offline.png" />
+    <Resource Include="images\online.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\delete.png" />
+    <Resource Include="images\password.png" />
+    <Resource Include="images\save.png" />
+    <Resource Include="images\start.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

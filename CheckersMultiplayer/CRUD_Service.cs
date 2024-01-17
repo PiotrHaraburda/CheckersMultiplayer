@@ -95,6 +95,29 @@ namespace CheckersMultiplayer
             }
         }
 
+        public void DeleteUser()
+        {
+            User user = conn.authClient.User;
+            if (user != null)
+            {
+                user.DeleteAsync().ContinueWith(task => {
+                    if (task.IsCanceled)
+                    {
+                        Console.WriteLine("DeleteAsync was canceled.");
+                        return;
+                    }
+                    if (task.IsFaulted)
+                    {
+                        Console.WriteLine("DeleteAsync encountered an error: " + task.Exception);
+                        return;
+                    }
+
+                    Console.WriteLine("User deleted successfully.");
+                });
+            }
+
+        }
+
         public Firebase.Auth.User LogoutUser()
         {
             conn.authClient.SignOut();
@@ -341,7 +364,7 @@ namespace CheckersMultiplayer
         }
 
         //Delete datas
-        public void DeleteData(string name, string login, string email, int age, bool online, bool inGame)
+        public void DeleteData(string login)
         {
             try
             {
