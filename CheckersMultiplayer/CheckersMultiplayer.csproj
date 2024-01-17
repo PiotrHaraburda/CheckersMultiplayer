@@ -285,6 +285,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="scripts\FirebaseConnection.cs" />
+    <Compile Include="scripts\FirebaseCRUD.cs" />
+    <Compile Include="scripts\GameRooms.cs" />
+    <Compile Include="scripts\PlayerRankingData.cs" />
+    <Compile Include="scripts\Players.cs" />
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -301,17 +306,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CRUDgame_rooms.cs" />
-    <Compile Include="CRUDplayers.cs" />
-    <Compile Include="CRUD_Connection.cs" />
-    <Compile Include="CRUD_Service.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlayerRankingData.cs" />
     <Compile Include="RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -342,12 +342,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Wood-2.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Wood-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\blackPawn.png" />

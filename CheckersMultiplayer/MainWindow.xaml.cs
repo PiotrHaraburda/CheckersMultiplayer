@@ -1,76 +1,64 @@
-﻿using FireSharp.Response;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+using CheckersMultiplayer.scripts;
+using FireSharp.Response;
 
 namespace CheckersMultiplayer
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainApp.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        CRUD_Service crud = new CRUD_Service();
-        CRUD_Connection conn = new CRUD_Connection();
-        string accountName;
-        string accountLogin;
-        int accountAge;
-        string accountEmail;
-        bool accountInGame;
-        bool accountOnline;
-        int accountVR;
+        private readonly FirebaseCrud _firebaseCrud = new FirebaseCrud();
+        private readonly FirebaseConnection _firebaseConnection = new FirebaseConnection();
+        private readonly string _accountName;
+        private readonly string _accountLogin;
+        private readonly int _accountAge;
+        private readonly string _accountEmail;
+        private readonly bool _accountInGame;
+        private readonly bool _accountOnline;
+        private int _accountVR;
 
-        int countPawnImageB = 0;
-        int countPawnImageW = 0;
-        int countPawnImageKB = 0;
-        int countPawnImageKW = 0;
+        private int _countPawnImageB;
+        private int _countPawnImageW;
+        private int _countPawnImageKB;
+        private int _countPawnImageKW;
 
-        EventStreamResponse response1;
-        EventStreamResponse response2;
-        EventStreamResponse response3;
+        private EventStreamResponse _response1;
 
-        CRUDgame_rooms currentGame = new CRUDgame_rooms();
+        private readonly GameRooms _currentGame = new GameRooms();
 
-        Image selectedPawn;
-        string selectedPawnName;
+        private Image _selectedPawnImage;
+        private string _selectedPawnName;
 
-        private DispatcherTimer timer;
-        private DispatcherTimer timer2;
-        private TimeSpan remainingTime;
+        private DispatcherTimer _timer;
+        private DispatcherTimer _timer2;
+        private TimeSpan _remainingTime;
 
-        bool boardUpdated = false;
-        string opponent;
+        private bool _boardUpdated;
 
-        bool loggedOut = false;
-        public ObservableCollection<PlayerRankingData> playerRankingData { get; set; }
+        private bool _loggedOut;
+        private ObservableCollection<PlayerRankingData> playerRankingData { get; set; }
 
         public MainWindow(string accountName, string accountLogin, int accountAge, string accountEmail, bool accountInGame, bool accountOnline, int accountVR)
         {
             InitializeComponent();
-            this.accountName = accountName;
-            this.accountLogin = accountLogin;
-            this.accountAge = accountAge;
-            this.accountEmail = accountEmail;
-            this.accountInGame = accountInGame;
-            this.accountOnline = accountOnline;
-            this.accountVR = accountVR;
+            _accountName = accountName;
+            _accountLogin = accountLogin;
+            _accountAge = accountAge;
+            _accountEmail = accountEmail;
+            _accountInGame = accountInGame;
+            _accountOnline = accountOnline;
+            _accountVR = accountVR;
 
             string[] nameParts = accountName.Split(' ');
 
@@ -105,13 +93,13 @@ namespace CheckersMultiplayer
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (crud.LogoutUser() == null)
+            if (_firebaseCrud.LogoutUser() == null)
             {
-                loggedOut = true;
-                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, false, this.accountInGame, accountVR);
-                LoginWindow loginWindow = new LoginWindow();
+                _loggedOut = true;
+                _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, false, _accountInGame, _accountVR);
+                var loginWindow = new LoginWindow();
                 loginWindow.Show();
-                this.Close();
+                Close();
             }
         }
 
@@ -121,26 +109,13 @@ namespace CheckersMultiplayer
             gameRoomsGrid.Visibility = Visibility.Visible;
             multiplayerPanel.Visibility = Visibility.Hidden;
 
-            var gameRooms = crud.LoadGameRooms();
+            var gameRooms = _firebaseCrud.LoadGameRooms();
             if (gameRooms == null)
                 return;
 
             foreach (var item in gameRooms)
             {
-                //Console.WriteLine($"Room: {item.Value.roomName}");
                 gameRoomsListBox.Items.Add(item.Value.roomName);
-
-                foreach (var boardRow in item.Value.board)
-                {
-                    //Console.Write("Board Values: ");
-
-                    foreach (var value in boardRow)
-                    {
-                        //Console.Write($"{value} ");
-                    }
-
-                    //Console.WriteLine();
-                }
             }
         }
 
@@ -150,30 +125,29 @@ namespace CheckersMultiplayer
             statisticsGrid.Visibility = Visibility.Visible;
             multiplayerPanel.Visibility = Visibility.Hidden;
 
-            if (crud.LoadPlayers() != null)
+            if (_firebaseCrud.LoadPlayers() == null) return;
+            
+            playerRankingData = new ObservableCollection<PlayerRankingData>();
+
+            foreach (var item in _firebaseCrud.LoadPlayers())
             {
-                playerRankingData = new ObservableCollection<PlayerRankingData>();
+                string imagePath;
 
-                foreach (var item in crud.LoadPlayers())
+                if (item.Value.online)
+                    imagePath = @"/images/online.png";
+                else
+                    imagePath = @"/images/offline.png";
+
+                playerRankingData.Add(new PlayerRankingData
                 {
-                    string imagePath = "";
-
-                    if (item.Value.online)
-                        imagePath = @"/images/online.png";
-                    else
-                        imagePath = @"/images/offline.png";
-
-                    playerRankingData.Add(new PlayerRankingData
-                    {
-                        Login = item.Value.login,
-                        VR = item.Value.VR,
-                        StatusImagePath = imagePath
-                    });
-                }
-                var sortedPlayerRankingData = playerRankingData.OrderByDescending(player => player.VR).ToList();
-
-                rankingListBox.ItemsSource = new ObservableCollection<PlayerRankingData>(sortedPlayerRankingData);
+                    login = item.Value.login,
+                    vr = item.Value.vr,
+                    statusImagePath = imagePath
+                });
             }
+            var sortedPlayerRankingData = playerRankingData.OrderByDescending(player => player.vr).ToList();
+
+            rankingListBox.ItemsSource = new ObservableCollection<PlayerRankingData>(sortedPlayerRankingData);
         }
 
         private void createLobbyButton_Click(object sender, RoutedEventArgs e)
@@ -191,11 +165,11 @@ namespace CheckersMultiplayer
             saveRoomInfoButton.Visibility = Visibility.Visible;
             opponentNameLabel.Visibility = Visibility.Visible;
 
-            CRUDgame_rooms game_room = crud.CreateGameRoom(accountLogin);
-            roomNameTextBox.Text = game_room.roomName;
-            currentGame.roomName = game_room.roomName;
-            roomPasswordTextBox.Text = game_room.password;
-            currentGame.host = accountLogin;
+            var gameRoom = _firebaseCrud.CreateGameRoom(_accountLogin);
+            roomNameTextBox.Text = gameRoom.roomName;
+            _currentGame.roomName = gameRoom.roomName;
+            roomPasswordTextBox.Text = gameRoom.password;
+            _currentGame.host = _accountLogin;
             waitingForOpponentsLabel.Content = "Waiting for opponents...";
             saveRoomInfoButton.IsEnabled = true;
             startGameButton.IsEnabled = true;
@@ -204,29 +178,29 @@ namespace CheckersMultiplayer
             opponentNameLabel.Content = "";
             startGameButton.IsEnabled = false;
 
-            OpponentListenerAsync(accountLogin);
+            OpponentListenerAsync(_accountLogin);
         }
 
         private void quitLobbyCreation_Click(object sender, RoutedEventArgs e)
         {
             multiplayerPanel.Visibility = Visibility.Visible;
             createLobbyGrid.Visibility = Visibility.Hidden;
-            if(currentGame.roomName!=null)
+            
+            if (_currentGame.roomName == null) return;
+            
+            if (_accountLogin.Equals(_currentGame.host))
             {
-                if (accountLogin.Equals(currentGame.host))
-                {
-                    crud.DeleteGameRoom(accountLogin);
-                    response1.Dispose();
-                }
-                else
-                    crud.ClearGameRoomWhitePawns(currentGame.host, currentGame.blackPawns, currentGame.password, currentGame.roomName, currentGame.board, currentGame.turn);
+                _firebaseCrud.DeleteGameRoom(_accountLogin);
+                _response1.Dispose();
             }
+            else
+                _firebaseCrud.ClearGameRoomWhitePawns(_currentGame.host, _currentGame.blackPawns, _currentGame.password, _currentGame.roomName, _currentGame.board, _currentGame.turn);
 
         }
 
         private void saveRoomInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            crud.UpdateGameRoom(accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), false);
+            _firebaseCrud.UpdateGameRoom(_accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), false);
         }
 
         private void quitGameRoomsButton_Click(object sender, RoutedEventArgs e)
@@ -237,11 +211,10 @@ namespace CheckersMultiplayer
 
         private void joinGameRoomButton_Click(object sender, RoutedEventArgs e)
         {
-            if (gameRoomsListBox.SelectedItem != null)
-            {
-                roomPasswordGrid.Visibility = Visibility.Visible;
-                gameRoomsGrid.Visibility = Visibility.Hidden;
-            }
+            if (gameRoomsListBox.SelectedItem == null) return;
+            
+            roomPasswordGrid.Visibility = Visibility.Visible;
+            gameRoomsGrid.Visibility = Visibility.Hidden;
         }
 
         private void quitRoomPasswordGridButton_Click(object sender, RoutedEventArgs e)
@@ -252,123 +225,119 @@ namespace CheckersMultiplayer
 
         private void checkGameRoomPasswordButton_Click(object sender, RoutedEventArgs e)
         {
-            var gameRooms = crud.LoadGameRooms();
+            var gameRooms = _firebaseCrud.LoadGameRooms();
             if (gameRooms == null)
                 return;
 
             foreach (var item in gameRooms)
             {
-                if (item.Value.roomName.Equals(gameRoomsListBox.SelectedItem.ToString()))
+                if (!item.Value.roomName.Equals(gameRoomsListBox.SelectedItem.ToString())) continue;
+                
+                if (item.Value.password.Equals(enterRoomPasswordTextBox.Text))
                 {
-                    if (item.Value.password.Equals(enterRoomPasswordTextBox.Text))
+                    if (item.Value.whitePawns.Equals(""))
                     {
-                        if (item.Value.whitePawns.Equals(""))
-                        {
-                            Console.WriteLine("Valid password");
-                            crud.UpdateGameRoomOpponent(item.Value.blackPawns, item.Value.password, item.Value.roomName, accountLogin);
-                            roomPasswordGrid.Visibility = Visibility.Hidden;
-                            createLobbyGrid.Visibility = Visibility.Visible;
-                            createLobbyMainLabel.Visibility = Visibility.Visible;
-                            roomNameLabel.Visibility = Visibility.Visible;
-                            roomNameTextBox.Visibility = Visibility.Visible;
-                            roomPasswordLabel.Visibility = Visibility.Visible;
-                            roomPasswordTextBox.Visibility = Visibility.Visible;
-                            startGameButton.Visibility = Visibility.Visible;
-                            waitingForOpponentsLabel.Visibility = Visibility.Visible;
-                            opponentLabel.Visibility = Visibility.Visible;
-                            saveRoomInfoButton.Visibility = Visibility.Visible;
-                            opponentNameLabel.Visibility = Visibility.Visible;
-                            roomNameTextBox.Text = item.Value.roomName;
-                            roomPasswordTextBox.Text = item.Value.password;
-                            roomNameTextBox.IsEnabled = false;
-                            roomPasswordTextBox.IsEnabled = false;
-                            currentGame.host = item.Value.host;
-                            currentGame.password = item.Value.password;
-                            currentGame.roomName = item.Value.roomName;
-                            currentGame.whitePawns = item.Value.whitePawns;
-                            currentGame.blackPawns = item.Value.blackPawns;
-                            currentGame.board = item.Value.board;
-                            currentGame.turn = item.Value.turn;
-                            currentGame.inProgress = item.Value.inProgress;
+                        Console.WriteLine(@"Valid password");
+                        _firebaseCrud.UpdateGameRoomOpponent(item.Value.blackPawns, item.Value.password, item.Value.roomName, _accountLogin);
+                        roomPasswordGrid.Visibility = Visibility.Hidden;
+                        createLobbyGrid.Visibility = Visibility.Visible;
+                        createLobbyMainLabel.Visibility = Visibility.Visible;
+                        roomNameLabel.Visibility = Visibility.Visible;
+                        roomNameTextBox.Visibility = Visibility.Visible;
+                        roomPasswordLabel.Visibility = Visibility.Visible;
+                        roomPasswordTextBox.Visibility = Visibility.Visible;
+                        startGameButton.Visibility = Visibility.Visible;
+                        waitingForOpponentsLabel.Visibility = Visibility.Visible;
+                        opponentLabel.Visibility = Visibility.Visible;
+                        saveRoomInfoButton.Visibility = Visibility.Visible;
+                        opponentNameLabel.Visibility = Visibility.Visible;
+                        roomNameTextBox.Text = item.Value.roomName;
+                        roomPasswordTextBox.Text = item.Value.password;
+                        roomNameTextBox.IsEnabled = false;
+                        roomPasswordTextBox.IsEnabled = false;
+                        _currentGame.host = item.Value.host;
+                        _currentGame.password = item.Value.password;
+                        _currentGame.roomName = item.Value.roomName;
+                        _currentGame.whitePawns = item.Value.whitePawns;
+                        _currentGame.blackPawns = item.Value.blackPawns;
+                        _currentGame.board = item.Value.board;
+                        _currentGame.turn = item.Value.turn;
+                        _currentGame.inProgress = item.Value.inProgress;
 
 
-                            opponentNameLabel.Content = item.Value.blackPawns;
-                            waitingForOpponentsLabel.Content = "Waiting for room host to start the game....";
-                            saveRoomInfoButton.IsEnabled = false;
-                            startGameButton.IsEnabled = false;
+                        opponentNameLabel.Content = item.Value.blackPawns;
+                        waitingForOpponentsLabel.Content = "Waiting for room host to start the game....";
+                        saveRoomInfoButton.IsEnabled = false;
+                        startGameButton.IsEnabled = false;
 
-                            GameStartedListenerAsync(item.Value.host);
+                        GameStartedListenerAsync(item.Value.host);
 
-                            timer2 = new DispatcherTimer();
-                            timer2.Interval = TimeSpan.FromSeconds(2);
-                            timer2.Tick += Timer_GameRoomExisting;
+                        _timer2 = new DispatcherTimer();
+                        _timer2.Interval = TimeSpan.FromSeconds(2);
+                        _timer2.Tick += Timer_GameRoomExisting;
 
-                            timer2.Start();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Room full");
-                        }
+                        _timer2.Start();
                     }
                     else
-                        Console.WriteLine("Invalid password");
-                    return;
+                    {
+                        Console.WriteLine(@"Room full");
+                    }
                 }
+                else
+                    Console.WriteLine(@"Invalid password");
+                return;
             }
 
-            Console.WriteLine("Game room not existing");
-            return;
+            Console.WriteLine(@"Game room not existing");
         }
 
-        void Timer_GameRoomExisting(object sender, EventArgs e)
+        private void Timer_GameRoomExisting(object sender, EventArgs e)
         {
             bool gameRoomExists = false;
-            var gameRooms = crud.LoadGameRooms();
+            var gameRooms = _firebaseCrud.LoadGameRooms();
 
             if (gameRooms != null)
             {
                 foreach (var item in gameRooms)
                 {
-                    if (item.Key.Equals(currentGame.host))
+                    if (item.Key.Equals(_currentGame.host))
                     {
                         gameRoomExists = true;
                     }
                 }
             }
 
-            if(gameRoomExists==false)
-            {
-                DispatcherTimer dispatcherTimer = (DispatcherTimer)sender;
-                dispatcherTimer.Stop();
-                currentGame.roomName = null;
-                createLobbyMainLabel.Visibility = Visibility.Hidden;
-                roomNameLabel.Visibility = Visibility.Hidden;
-                roomNameTextBox.Visibility = Visibility.Hidden;
-                roomPasswordLabel.Visibility = Visibility.Hidden;
-                roomPasswordTextBox.Visibility = Visibility.Hidden;
-                startGameButton.Visibility = Visibility.Hidden;
-                waitingForOpponentsLabel.Visibility = Visibility.Hidden;
-                opponentLabel.Visibility = Visibility.Hidden;
-                saveRoomInfoButton.Visibility = Visibility.Hidden;
-                opponentNameLabel.Visibility = Visibility.Hidden;
-            }
+            if (gameRoomExists) return;
+            
+            var dispatcherTimer = (DispatcherTimer)sender;
+            dispatcherTimer.Stop();
+            _currentGame.roomName = null;
+            createLobbyMainLabel.Visibility = Visibility.Hidden;
+            roomNameLabel.Visibility = Visibility.Hidden;
+            roomNameTextBox.Visibility = Visibility.Hidden;
+            roomPasswordLabel.Visibility = Visibility.Hidden;
+            roomPasswordTextBox.Visibility = Visibility.Hidden;
+            startGameButton.Visibility = Visibility.Hidden;
+            waitingForOpponentsLabel.Visibility = Visibility.Hidden;
+            opponentLabel.Visibility = Visibility.Hidden;
+            saveRoomInfoButton.Visibility = Visibility.Hidden;
+            opponentNameLabel.Visibility = Visibility.Hidden;
 
         }
 
         private void startGameButton_Click(object sender, RoutedEventArgs e)
         {
-            crud.UpdateGameRoom(accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), true);
+            _firebaseCrud.UpdateGameRoom(_accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), true);
             createLobbyGrid.Visibility = Visibility.Hidden;
             gameGrid.Visibility = Visibility.Visible;
-            checkersGame();
+            CheckersGame();
         }
 
-        void checkersGame()
+        private void CheckersGame()
         {
-            if(timer2!=null)
-                timer2.Stop();
+            _timer2?.Stop();
 
-            var gameRooms = crud.LoadGameRooms();
+            var gameRooms = _firebaseCrud.LoadGameRooms();
             if (gameRooms == null)
                 return;
 
@@ -382,45 +351,45 @@ namespace CheckersMultiplayer
 
             foreach (var item in gameRooms)
             {
-                if (item.Key.Equals(currentGame.host))
-                {
-                    currentGame.host = item.Value.host;
-                    currentGame.password = item.Value.password;
-                    currentGame.roomName = item.Value.roomName;
-                    currentGame.whitePawns = item.Value.whitePawns;
-                    currentGame.blackPawns = item.Value.blackPawns;
-                    currentGame.board = item.Value.board;
-                    currentGame.turn = item.Value.turn;
-                    currentGame.inProgress = item.Value.inProgress;
-                }
+                if (!item.Key.Equals(_currentGame.host)) continue;
+                
+                _currentGame.host = item.Value.host;
+                _currentGame.password = item.Value.password;
+                _currentGame.roomName = item.Value.roomName;
+                _currentGame.whitePawns = item.Value.whitePawns;
+                _currentGame.blackPawns = item.Value.blackPawns;
+                _currentGame.board = item.Value.board;
+                _currentGame.turn = item.Value.turn;
+                _currentGame.inProgress = item.Value.inProgress;
             }
 
 
-            if (currentGame.whitePawns.Equals(accountLogin))
-                opponentNameLabel2.Content = currentGame.blackPawns;
+            if (_currentGame.whitePawns.Equals(_accountLogin))
+                opponentNameLabel2.Content = _currentGame.blackPawns;
             else
-                opponentNameLabel2.Content = currentGame.whitePawns;
+                opponentNameLabel2.Content = _currentGame.whitePawns;
 
 
             //uruchomienie zegara sprawdzającego czy polozenie pionkow w bazie zostalo zmienione
 
-            remainingTime = TimeSpan.FromMinutes(5);
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += Timer_Tick;
+            _remainingTime = TimeSpan.FromMinutes(5);
+            
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += Timer_Tick;
 
-            timer.Start();
+            _timer.Start();
 
             //narysowanie pionkow na podstawie aktualnych danych z bazy
 
-            drawPawns();
-            gameLabelsUpdate();
+            DrawPawns();
+            GameLabelsUpdate();
 
         }
 
         private void ShowPawnPaths(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Image clickedImage && currentGame.turn.Equals(accountLogin) && currentGame.inProgress)
+            if (sender is Image clickedImage && _currentGame.turn.Equals(_accountLogin) && _currentGame.inProgress)
             {
                 //usuniecie wszystkich widocznych sciezek
 
@@ -434,16 +403,14 @@ namespace CheckersMultiplayer
 
                 //pobranie polozenia pionka ktory zostal klikniety
 
-                string imageName = clickedImage.Name;
-
                 int targetRow = Grid.GetRow(clickedImage);
                 int targetColumn = Grid.GetColumn(clickedImage);
 
 
                 //System.Console.WriteLine(targetRow + " " + targetColumn);
 
-                selectedPawn = clickedImage;
-                selectedPawnName = selectedPawn.Name;
+                _selectedPawnImage = clickedImage;
+                _selectedPawnName = _selectedPawnImage.Name;
 
 
                 bool leftPathAvailable = true;
@@ -458,11 +425,11 @@ namespace CheckersMultiplayer
                 bool leftCaptureBlocked = false;
                 bool rightCaptureBlocked = false;
 
-                bool[] kingLeftUpPathAvailable = new bool[6] { true, true, true, true, true, true };
-                bool[] kingRightUpPathAvailable = new bool[6] { true, true, true, true, true, true };
+                bool[] kingLeftUpPathAvailable = new bool[] { true, true, true, true, true, true };
+                bool[] kingRightUpPathAvailable = new bool[] { true, true, true, true, true, true };
 
-                bool[] kingLeftDownPathAvailable = new bool[6] { true, true, true, true, true, true };
-                bool[] kingRightDownPathAvailable = new bool[6] { true, true, true, true, true, true };
+                bool[] kingLeftDownPathAvailable = new bool[] { true, true, true, true, true, true };
+                bool[] kingRightDownPathAvailable = new bool[] { true, true, true, true, true, true };
 
                 int kingLeftUpCapture = 0;
                 int kingRightUpCapture = 0;
@@ -474,7 +441,7 @@ namespace CheckersMultiplayer
                 int kingLeftDownAlly = 0;
                 int kingRightDownAlly = 0;
 
-                if (currentGame.whitePawns.Equals(accountLogin))
+                if (_currentGame.whitePawns.Equals(_accountLogin))
                 {
                     if ((targetRow - 1 < 1) || (targetColumn + 1 > 8))
                     {
@@ -495,7 +462,7 @@ namespace CheckersMultiplayer
                     }
 
                 }
-                else if (currentGame.blackPawns.Equals(accountLogin))
+                else if (_currentGame.blackPawns.Equals(_accountLogin))
                 {
 
                     if ((targetRow + 1 > 8) || (targetColumn + 1 > 8))
@@ -538,11 +505,10 @@ namespace CheckersMultiplayer
 
                 //dla kazdego pionka narysowanego na planszy
 
-                foreach (var child in gameGrid.Children)
+                foreach (object child in gameGrid.Children)
                 {
-                    if (child is Image)
+                    if (child is Image pawnImage)
                     {
-                        Image pawnImage = (Image)child;
                         string pawnImageName = pawnImage.Name;
 
                         //pobranie polozenia pionka
@@ -552,7 +518,7 @@ namespace CheckersMultiplayer
                         // jezeli sterujemy pionkami bialymi sprawdzamy czy jakis pionek znajduje sie nad kliknietym pionkiem po lewej i prawej
                         // jesli natomiast sterujemy czarnymi to patrzymy pod spodem
 
-                        if (currentGame.whitePawns.Equals(accountLogin))
+                        if (_currentGame.whitePawns.Equals(_accountLogin))
                         {
                             if ((row == targetRow - 1 && column == targetColumn + 1))
                             {
@@ -572,7 +538,7 @@ namespace CheckersMultiplayer
                                 rightCaptureAvailable = false;
                             }
                         }
-                        else if (currentGame.blackPawns.Equals(accountLogin))
+                        else if (_currentGame.blackPawns.Equals(_accountLogin))
                         {
                             if ((row == targetRow + 1 && column == targetColumn + 1))
                             {
@@ -694,15 +660,13 @@ namespace CheckersMultiplayer
                             kingRightDownPathAvailable[i - 1] = false;
                     }
 
-                    Console.WriteLine(kingLeftUpCapture + " " + kingLeftUpAlly + " " + kingRightUpCapture + " " + kingRightUpAlly + " " + kingLeftDownCapture + " " + kingLeftDownAlly + " " + kingRightDownCapture + " " + kingRightDownAlly + " ");
-
                     for (int i = 1; i <= 6; i++)
                     {
-                        if (kingLeftUpPathAvailable[i - 1] == true)
+                        if (kingLeftUpPathAvailable[i - 1])
                         {
-                            Image image = new Image();
+                            var image = new Image();
                             image.Source = new BitmapImage(new Uri(@"/images/greyPawn.png", UriKind.Relative));
-                            string pathImageName = "pawnPath_K";
+                            const string pathImageName = "pawnPath_K";
                             image.Name = pathImageName;
 
                             image.Margin = new Thickness(63 + (targetColumn - 1 - i) * 46.5, 63 + (targetRow - 1 - i) * 46.5, 0, 0);
@@ -717,11 +681,11 @@ namespace CheckersMultiplayer
 
                             gameGrid.Children.Add(image);
                         }
-                        if (kingRightUpPathAvailable[i - 1] == true)
+                        if (kingRightUpPathAvailable[i - 1])
                         {
-                            Image image = new Image();
+                            var image = new Image();
                             image.Source = new BitmapImage(new Uri(@"/images/greyPawn.png", UriKind.Relative));
-                            string pathImageName = "pawnPath_K";
+                            const string pathImageName = "pawnPath_K";
                             image.Name = pathImageName;
 
                             image.Margin = new Thickness(63 + (targetColumn - 1 + i) * 46.5, 63 + (targetRow - 1 - i) * 46.5, 0, 0);
@@ -736,11 +700,11 @@ namespace CheckersMultiplayer
 
                             gameGrid.Children.Add(image);
                         }
-                        if (kingLeftDownPathAvailable[i - 1] == true)
+                        if (kingLeftDownPathAvailable[i - 1])
                         {
-                            Image image = new Image();
+                            var image = new Image();
                             image.Source = new BitmapImage(new Uri(@"/images/greyPawn.png", UriKind.Relative));
-                            string pathImageName = "pawnPath_K";
+                            const string pathImageName = "pawnPath_K";
                             image.Name = pathImageName;
 
                             image.Margin = new Thickness(63 + (targetColumn - 1 - i) * 46.5, 63 + (targetRow - 1 + i) * 46.5, 0, 0);
@@ -755,11 +719,11 @@ namespace CheckersMultiplayer
 
                             gameGrid.Children.Add(image);
                         }
-                        if (kingRightDownPathAvailable[i - 1] == true)
+                        if (kingRightDownPathAvailable[i - 1])
                         {
-                            Image image = new Image();
+                            var image = new Image();
                             image.Source = new BitmapImage(new Uri(@"/images/greyPawn.png", UriKind.Relative));
-                            string pathImageName = "pawnPath_K";
+                            const string pathImageName = "pawnPath_K";
                             image.Name = pathImageName;
 
                             image.Margin = new Thickness(63 + (targetColumn - 1 + i) * 46.5, 63 + (targetRow - 1 + i) * 46.5, 0, 0);
@@ -783,15 +747,15 @@ namespace CheckersMultiplayer
                 {
                     //dodaje obrazek imitujacy sciezke w odpowiednim miejscu
 
-                    Image image = new Image();
+                    var image = new Image();
                     image.Source = new BitmapImage(new Uri(@"/images/greyPawn.png", UriKind.Relative));
-                    string pathImageName = "pawnPath_1";
+                    const string pathImageName = "pawnPath_1";
                     image.Name = pathImageName;
 
                     Grid.SetRow(image, targetRow);
                     Grid.SetColumn(image, targetColumn);
 
-                    if (currentGame.whitePawns.Equals(accountLogin))
+                    if (_currentGame.whitePawns.Equals(_accountLogin))
                     {
                         if (leftPathAvailable)
                         {
@@ -811,7 +775,7 @@ namespace CheckersMultiplayer
                                 image = null;
                         }
                     }
-                    else if (currentGame.blackPawns.Equals(accountLogin))
+                    else if (_currentGame.blackPawns.Equals(_accountLogin))
                     {
                         if (leftPathAvailable)
                         {
@@ -851,13 +815,13 @@ namespace CheckersMultiplayer
                 {
                     //dodaje obrazek imitujacy sciezke w odpowiednim miejscu
 
-                    Image image = new Image();
+                    var image = new Image();
                     image.Source = new BitmapImage(new Uri(@"/images/greyPawn.png", UriKind.Relative));
-                    string pathImageName = "pawnPath_2";
+                    const string pathImageName = "pawnPath_2";
                     image.Name = pathImageName;
 
 
-                    if (currentGame.whitePawns.Equals(accountLogin))
+                    if (_currentGame.whitePawns.Equals(_accountLogin))
                     {
                         if (rightPathAvailable)
                         {
@@ -877,7 +841,7 @@ namespace CheckersMultiplayer
                                 image = null;
                         }
                     }
-                    else if (currentGame.blackPawns.Equals(accountLogin))
+                    else if (_currentGame.blackPawns.Equals(_accountLogin))
                     {
                         if (rightPathAvailable)
                         {
@@ -921,17 +885,15 @@ namespace CheckersMultiplayer
             {
                 //pobieram dane o kliknietej sciezce
 
-                string imageName = clickedPawnPath.Name;
-
                 int targetRow = Grid.GetRow(clickedPawnPath);
                 int targetColumn = Grid.GetColumn(clickedPawnPath);
 
-                int selectedPawnRow = Grid.GetRow(selectedPawn);
-                int selectedPawnColumn = Grid.GetColumn(selectedPawn);
+                int selectedPawnRow = Grid.GetRow(_selectedPawnImage);
+                int selectedPawnColumn = Grid.GetColumn(_selectedPawnImage);
 
                 //implementuje usuwanie zbitego pionka
 
-                if (selectedPawn.Name.StartsWith("pawnImageB"))
+                if (_selectedPawnImage.Name.StartsWith("pawnImageB"))
                 {
                     if (selectedPawnRow == targetRow - 2 && selectedPawnColumn == targetColumn - 2)
                     {
@@ -952,7 +914,7 @@ namespace CheckersMultiplayer
                         }
                     }
                 }
-                else if (selectedPawn.Name.StartsWith("pawnImageW"))
+                else if (_selectedPawnImage.Name.StartsWith("pawnImageW"))
                 {
                     if (selectedPawnRow == targetRow + 2 && selectedPawnColumn == targetColumn - 2)
                     {
@@ -973,7 +935,7 @@ namespace CheckersMultiplayer
                         }
                     }
                 }
-                else if (selectedPawn.Name.StartsWith("pawnImageK"))
+                else if (_selectedPawnImage.Name.StartsWith("pawnImageK"))
                 {
                     if (Math.Abs(selectedPawnRow - targetRow) != 1 && Math.Abs(selectedPawnColumn - targetColumn) != 1)
                         if (selectedPawnRow < targetRow && selectedPawnColumn < targetColumn)
@@ -1015,9 +977,7 @@ namespace CheckersMultiplayer
                 }
 
 
-                var foundImage = gameGrid.Children.OfType<Image>().FirstOrDefault(i => i.Name == selectedPawnName);
-
-                Console.WriteLine(foundImage.Name + " " + selectedPawnName);
+                var foundImage = gameGrid.Children.OfType<Image>().FirstOrDefault(i => i.Name == _selectedPawnName);
 
                 if (foundImage != null)
                 {
@@ -1040,18 +1000,18 @@ namespace CheckersMultiplayer
 
                 //czyszcze cala tablice odwzorowujaca plansze
 
-                currentGame.board.Clear();
-                currentGame.board = new List<List<string>>();
+                _currentGame.board.Clear();
+                _currentGame.board = new List<List<string>>();
 
                 for (int i = 0; i < 8; i++)
                 {
-                    List<string> row = new List<string>(Enumerable.Repeat("0", 8));
-                    currentGame.board.Add(row);
+                    var row = new List<string>(Enumerable.Repeat("0", 8));
+                    _currentGame.board.Add(row);
                 }
 
                 //uzupelniam cala tablice odwzorowujaca plansze na podstawie pionkow umieszczonych na planszy
 
-                foreach (var child in gameGrid.Children)
+                foreach (object child in gameGrid.Children)
                 {
                     if (child is Image image)
                     {
@@ -1061,25 +1021,25 @@ namespace CheckersMultiplayer
                         if (image.Name.StartsWith("pawnImageW_"))
                         {
                             if (row == 1)
-                                currentGame.board[row - 1][column - 1] = "KW";
+                                _currentGame.board[row - 1][column - 1] = "KW";
                             else
-                                currentGame.board[row - 1][column - 1] = "W";
+                                _currentGame.board[row - 1][column - 1] = "W";
                         }
                         else if (image.Name.StartsWith("pawnImageB_"))
                         {
                             if (row == 8)
-                                currentGame.board[row - 1][column - 1] = "KB";
+                                _currentGame.board[row - 1][column - 1] = "KB";
                             else
-                                currentGame.board[row - 1][column - 1] = "B";
+                                _currentGame.board[row - 1][column - 1] = "B";
 
                         }
                         else if (image.Name.StartsWith("pawnImageKW_"))
                         {
-                            currentGame.board[row - 1][column - 1] = "KW";
+                            _currentGame.board[row - 1][column - 1] = "KW";
                         }
                         else if (image.Name.StartsWith("pawnImageKB_"))
                         {
-                            currentGame.board[row - 1][column - 1] = "KB";
+                            _currentGame.board[row - 1][column - 1] = "KB";
                         }
 
                     }
@@ -1087,37 +1047,35 @@ namespace CheckersMultiplayer
 
                 //aktualizuje dane o planszy przechowywane w bazie danych
 
-                crud.UpdateGameRoomBoard(currentGame.host, currentGame.board);
-                if (currentGame.whitePawns.Equals(accountLogin))
+                _firebaseCrud.UpdateGameRoomBoard(_currentGame.host, _currentGame.board);
+                if (_currentGame.whitePawns.Equals(_accountLogin))
                 {
-                    crud.UpdateGameRoomTurn(currentGame.host, currentGame.blackPawns);
-                    currentGame.turn = currentGame.blackPawns;
+                    _firebaseCrud.UpdateGameRoomTurn(_currentGame.host, _currentGame.blackPawns);
+                    _currentGame.turn = _currentGame.blackPawns;
                 }
                 else
                 {
-                    crud.UpdateGameRoomTurn(currentGame.host, currentGame.whitePawns);
-                    currentGame.turn = currentGame.whitePawns;
+                    _firebaseCrud.UpdateGameRoomTurn(_currentGame.host, _currentGame.whitePawns);
+                    _currentGame.turn = _currentGame.whitePawns;
                 }
 
-                gameLabelsUpdate();
+                GameLabelsUpdate();
 
             }
         }
 
         private async Task OpponentListenerAsync(string host)
         {
-            response1 = await conn.client.OnAsync("gameRooms/" + host, (sender, args, context) =>
+            _response1 = await _firebaseConnection.Client.OnAsync("gameRooms/" + host, (sender, args, context) =>
             {
                 if (args.Path.Equals("/whitePawns"))
                 {
-                    Dispatcher.Invoke(new Action(() =>
+                    Dispatcher.Invoke(() =>
                     {
-                        Console.WriteLine("JD");
-                        opponent = args.Data.ToString();
                         opponentNameLabel.Content = args.Data.ToString();
-                        waitingForOpponentsLabel.Content = "Waiting for you to start the game...."; ;
+                        waitingForOpponentsLabel.Content = "Waiting for you to start the game....";
                         startGameButton.IsEnabled = true;
-                    }));
+                    });
                     OpponentListenerAsync(host);
                 }
             });
@@ -1125,115 +1083,110 @@ namespace CheckersMultiplayer
 
         private async Task GameStartedListenerAsync(string host)
         {
-            response2 = await conn.client.OnAsync("gameRooms/" + host, (sender, args, context) =>
+            await _firebaseConnection.Client.OnAsync("gameRooms/" + host, (sender, args, context) =>
             {
                 if (args.Path.Equals("/inProgress") && args.Data.Equals("True"))
                 {
-                    Dispatcher.Invoke(new Action(() =>
+                    Dispatcher.Invoke(() =>
                     {
                         createLobbyGrid.Visibility = Visibility.Hidden;
                         gameGrid.Visibility = Visibility.Visible;
-                        checkersGame();
-                    }));
+                        CheckersGame();
+                    });
                 }
             });
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            Console.WriteLine("ZZZZ");
-            var gameRooms = crud.LoadGameRooms();
+            var gameRooms = _firebaseCrud.LoadGameRooms();
             if (gameRooms == null)
             {
-                DispatcherTimer dispatcherTimer = (DispatcherTimer)sender;
+                var dispatcherTimer = (DispatcherTimer)sender;
                 dispatcherTimer.Stop();
-                timer.Stop();
-                Console.WriteLine("Przeciwnik opuscil mecz1");
-                currentGame.inProgress = false;
-                if(countPawnImageW!=0&&countPawnImageB!=0)
+                _timer.Stop();
+                _currentGame.inProgress = false;
+                if(_countPawnImageW!=0&&_countPawnImageB!=0)
                     opponentNameLabel2.Content = "";
-                Game_Over();
+                GameOver();
                 return;
             }
 
-            currentGame.board = null;
+            _currentGame.board = null;
 
             foreach (var item in gameRooms)
             {
-                if (item.Key == currentGame.host)
-                {
-                    currentGame.board = new List<List<string>>();
-                    currentGame.turn = item.Value.turn;
+                if (item.Key != _currentGame.host) continue;
+                
+                _currentGame.board = new List<List<string>>();
+                _currentGame.turn = item.Value.turn;
 
-                    foreach (var boardRow in item.Value.board)
-                    {
-                        currentGame.board.Add(new List<string>(boardRow));
-                    }
+                foreach (var boardRow in item.Value.board)
+                {
+                    _currentGame.board.Add(new List<string>(boardRow));
                 }
             }
 
-            if (currentGame.board == null)
+            if (_currentGame.board == null)
             {
-                DispatcherTimer dispatcherTimer = (DispatcherTimer)sender;
+                var dispatcherTimer = (DispatcherTimer)sender;
                 dispatcherTimer.Stop();
-                timer.Stop();
-                Console.WriteLine("Przeciwnik opuscil mecz2");
-                currentGame.inProgress = false;
-                if (countPawnImageW != 0 && countPawnImageB != 0)
+                _timer.Stop();
+                _currentGame.inProgress = false;
+                if (_countPawnImageW != 0 && _countPawnImageB != 0)
                     opponentNameLabel2.Content = "";
-                Game_Over();
+                GameOver();
                 return;
             }
 
-            if (!currentGame.turn.Equals(accountLogin))
+            if (!_currentGame.turn.Equals(_accountLogin))
             {
-                drawPawns();
-                Console.WriteLine("XD");
-                if (boardUpdated)
-                    boardUpdated = false;
+                DrawPawns();
+                if (_boardUpdated)
+                    _boardUpdated = false;
             }
-            if (currentGame.turn.Equals(accountLogin))
+            
+            if (_currentGame.turn.Equals(_accountLogin))
             {
-                remainingTime = remainingTime.Subtract(TimeSpan.FromSeconds(1));
+                _remainingTime = _remainingTime.Subtract(TimeSpan.FromSeconds(1));
 
-                timeRemainingLabel.Content = remainingTime.ToString("mm':'ss");
+                timeRemainingLabel.Content = _remainingTime.ToString("mm':'ss");
 
-                if (remainingTime <= TimeSpan.Zero)
+                if (_remainingTime <= TimeSpan.Zero)
                 {
-                    if (accountLogin.Equals(currentGame.whitePawns))
+                    if (_accountLogin.Equals(_currentGame.whitePawns))
                     {
-                        DispatcherTimer dispatcherTimer = (DispatcherTimer)sender;
+                        var dispatcherTimer = (DispatcherTimer)sender;
                         dispatcherTimer.Stop();
-                        currentGame.inProgress = false;
-                        if (countPawnImageW != 0 && countPawnImageB != 0)
+                        _currentGame.inProgress = false;
+                        if (_countPawnImageW != 0 && _countPawnImageB != 0)
                             opponentNameLabel2.Content = "";
-                        crud.ClearGameRoomWhitePawns(currentGame.host, currentGame.blackPawns, currentGame.password, currentGame.roomName, currentGame.board, currentGame.turn);
-                        countPawnImageW = 0;
+                        _firebaseCrud.ClearGameRoomWhitePawns(_currentGame.host, _currentGame.blackPawns, _currentGame.password, _currentGame.roomName, _currentGame.board, _currentGame.turn);
+                        _countPawnImageW = 0;
                     }
-                    else if (accountLogin.Equals(currentGame.blackPawns))
+                    else if (_accountLogin.Equals(_currentGame.blackPawns))
                     {
-                        DispatcherTimer dispatcherTimer = (DispatcherTimer)sender;
+                        var dispatcherTimer = (DispatcherTimer)sender;
                         dispatcherTimer.Stop();
-                        currentGame.inProgress = false;
-                        if (countPawnImageW != 0 && countPawnImageB != 0)
+                        _currentGame.inProgress = false;
+                        if (_countPawnImageW != 0 && _countPawnImageB != 0)
                             opponentNameLabel2.Content = "";
-                        crud.DeleteGameRoom(accountLogin);
-                        countPawnImageB = 0;
+                        _firebaseCrud.DeleteGameRoom(_accountLogin);
+                        _countPawnImageB = 0;
                     }
                 }
 
-                if (!boardUpdated)
+                if (!_boardUpdated)
                 {
-                    drawPawns();
-                    Console.WriteLine("XD");
-                    boardUpdated = true;
-                    gameLabelsUpdate();
+                    DrawPawns();
+                    _boardUpdated = true;
+                    GameLabelsUpdate();
                 }
             }
 
         }
 
-        public void drawPawns()
+        private void DrawPawns()
         {
             //usuwam wszystkie pionki narysowane na planszy
 
@@ -1252,66 +1205,73 @@ namespace CheckersMultiplayer
 
             //na podstawie tablicy przechowywujacej aktualny stan pionkow na planszy rysuje kolejno pionki na planszy
 
-            foreach (var boardRow in currentGame.board)
+            foreach (var boardRow in _currentGame.board)
             {
                 //Console.Write("Board Values: ");
                 int j = 0;
 
-                foreach (var value in boardRow)
+                foreach (string value in boardRow)
                 {
                     //Console.Write($"{value} ");
                     if (!value.Equals("0"))
                     {
-                        Image image = new Image();
+                        var image = new Image();
 
-                        if (value.Equals("B"))
+                        switch (value)
                         {
-                            image.Source = new BitmapImage(new Uri(@"/images/blackPawn.png", UriKind.Relative));
-                            string imageName = $"pawnImageB_{b}";
-                            image.Name = imageName;
+                            case "B":
+                            {
+                                image.Source = new BitmapImage(new Uri(@"/images/blackPawn.png", UriKind.Relative));
+                                string imageName = $"pawnImageB_{b}";
+                                image.Name = imageName;
 
-                            if (currentGame.blackPawns.Equals(accountLogin))
-                            {
-                                image.MouseLeftButtonDown += ShowPawnPaths;
-                                image.Cursor = Cursors.Hand;
+                                if (_currentGame.blackPawns.Equals(_accountLogin))
+                                {
+                                    image.MouseLeftButtonDown += ShowPawnPaths;
+                                    image.Cursor = Cursors.Hand;
+                                }
+                                b--;
+                                break;
                             }
-                            b--;
-                        }
-                        else if (value.Equals("W"))
-                        {
-                            image.Source = new BitmapImage(new Uri(@"/images/whitePawn.png", UriKind.Relative));
-                            string imageName = $"pawnImageW_{w}";
-                            image.Name = imageName;
-                            if (currentGame.whitePawns.Equals(accountLogin))
+                            case "W":
                             {
-                                image.MouseLeftButtonDown += ShowPawnPaths;
-                                image.Cursor = Cursors.Hand;
+                                image.Source = new BitmapImage(new Uri(@"/images/whitePawn.png", UriKind.Relative));
+                                string imageName = $"pawnImageW_{w}";
+                                image.Name = imageName;
+                                if (_currentGame.whitePawns.Equals(_accountLogin))
+                                {
+                                    image.MouseLeftButtonDown += ShowPawnPaths;
+                                    image.Cursor = Cursors.Hand;
+                                }
+                                w++;
+                                break;
                             }
-                            w++;
-                        }
-                        else if (value.Equals("KB"))
-                        {
-                            image.Source = new BitmapImage(new Uri(@"/images/blackPawnKing.png", UriKind.Relative));
-                            string imageName = $"pawnImageKB_{kb}";
-                            image.Name = imageName;
-                            if (currentGame.blackPawns.Equals(accountLogin))
+                            case "KB":
                             {
-                                image.MouseLeftButtonDown += ShowPawnPaths;
-                                image.Cursor = Cursors.Hand;
+                                image.Source = new BitmapImage(new Uri(@"/images/blackPawnKing.png", UriKind.Relative));
+                                string imageName = $"pawnImageKB_{kb}";
+                                image.Name = imageName;
+                                if (_currentGame.blackPawns.Equals(_accountLogin))
+                                {
+                                    image.MouseLeftButtonDown += ShowPawnPaths;
+                                    image.Cursor = Cursors.Hand;
+                                }
+                                kb--;
+                                break;
                             }
-                            kb--;
-                        }
-                        else if (value.Equals("KW"))
-                        {
-                            image.Source = new BitmapImage(new Uri(@"/images/whitePawnKing.png", UriKind.Relative));
-                            string imageName = $"pawnImageKW_{kw}";
-                            image.Name = imageName;
-                            if (currentGame.whitePawns.Equals(accountLogin))
+                            case "KW":
                             {
-                                image.MouseLeftButtonDown += ShowPawnPaths;
-                                image.Cursor = Cursors.Hand;
+                                image.Source = new BitmapImage(new Uri(@"/images/whitePawnKing.png", UriKind.Relative));
+                                string imageName = $"pawnImageKW_{kw}";
+                                image.Name = imageName;
+                                if (_currentGame.whitePawns.Equals(_accountLogin))
+                                {
+                                    image.MouseLeftButtonDown += ShowPawnPaths;
+                                    image.Cursor = Cursors.Hand;
+                                }
+                                kw++;
+                                break;
                             }
-                            kw++;
                         }
 
                         int rowIndex = i + 1;
@@ -1319,8 +1279,7 @@ namespace CheckersMultiplayer
 
                         Grid.SetRow(image, rowIndex);
                         Grid.SetColumn(image, columnIndex);
-
-
+                        
                         image.Margin = new Thickness(63 + j * 46.5, 63 + i * 46.5, 0, 0);
                         image.Width = 36;
                         image.Height = 36;
@@ -1332,81 +1291,76 @@ namespace CheckersMultiplayer
                     j++;
                 }
                 i++;
-                //Console.WriteLine();
             }
         }
 
-        void gameLabelsUpdate()
+        private void GameLabelsUpdate()
         {
-            countPawnImageB = 0;
-            countPawnImageW = 0;
-            countPawnImageKB = 0;
-            countPawnImageKW = 0;
+            _countPawnImageB = 0;
+            _countPawnImageW = 0;
+            _countPawnImageKB = 0;
+            _countPawnImageKW = 0;
 
-            if (!currentGame.turn.Equals(accountLogin))
+            if (!_currentGame.turn.Equals(_accountLogin))
                 whoseTurnLabel.Content = "YOUR OPPONENT's TURN";
             else
                 whoseTurnLabel.Content = "YOUR TURN";
 
 
-            foreach (var child in gameGrid.Children)
+            foreach (object child in gameGrid.Children)
             {
                 if (child is Image image)
                 {
                     if (image.Name.StartsWith("pawnImageB"))
                     {
-                        countPawnImageB++;
+                        _countPawnImageB++;
                     }
                     else if (image.Name.StartsWith("pawnImageKB"))
                     {
-                        countPawnImageB++;
-                        countPawnImageKB++;
+                        _countPawnImageB++;
+                        _countPawnImageKB++;
                     }
                     else if (image.Name.StartsWith("pawnImageW"))
                     {
-                        countPawnImageW++;
+                        _countPawnImageW++;
                     }
                     else if (image.Name.StartsWith("pawnImageKW"))
                     {
-                        countPawnImageW++;
-                        countPawnImageKW++;
+                        _countPawnImageW++;
+                        _countPawnImageKW++;
                     }
                 }
             }
 
-            numberOfBlackPawnsCaptured.Content = 12 - countPawnImageB;
-            numberOfWhitePawnsCaptured.Content = 12 - countPawnImageW;
+            numberOfBlackPawnsCaptured.Content = 12 - _countPawnImageB;
+            numberOfWhitePawnsCaptured.Content = 12 - _countPawnImageW;
 
-            if(countPawnImageB == 0 || countPawnImageW == 0 || (countPawnImageKB==1 && countPawnImageKW==1 && countPawnImageB == 1 && countPawnImageW == 1))
+            if(_countPawnImageB == 0 || _countPawnImageW == 0 || (_countPawnImageKB==1 && _countPawnImageKW==1 && _countPawnImageB == 1 && _countPawnImageW == 1))
             {
-                timer.Stop();
-                currentGame.inProgress = false;
-                if (countPawnImageW != 0 && countPawnImageB != 0)
+                _timer.Stop();
+                _currentGame.inProgress = false;
+                if (_countPawnImageW != 0 && _countPawnImageB != 0)
                     opponentNameLabel2.Content = "";
-                Console.WriteLine("OKKKK3");
-                Game_Over();
-                return;
+                GameOver();
             }
 
         }
 
-        void MainWindow_Closing(object sender, CancelEventArgs e)
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if(loggedOut==false)
-            {
-                if (crud.LogoutUser() == null)
-                {
-                    crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, false, this.accountInGame, accountVR);
-                    crud.DeleteGameRoom(currentGame.host);
-                }
-            }
+            if (_loggedOut) return;
+
+            if (_firebaseCrud.LogoutUser() != null) return;
+            
+            _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, false, _accountInGame, _accountVR);
+            _firebaseCrud.DeleteGameRoom(_currentGame.host);
         }
 
-        void Game_Over()
+        private void GameOver()
         {
             if(mainMenuPanel.Visibility == Visibility.Hidden)
             {
-                DoubleAnimation db = new DoubleAnimation();
+                var db = new DoubleAnimation();
                 db.From = 0;
                 db.To = 600;
                 db.Duration = TimeSpan.FromSeconds(2);
@@ -1414,7 +1368,7 @@ namespace CheckersMultiplayer
                 db.Completed += (sender, e) =>
                 {
                     gameWidgetsGrid.Visibility = Visibility.Hidden;
-                    DoubleAnimation reverseDb = new DoubleAnimation();
+                    var reverseDb = new DoubleAnimation();
                     reverseDb.From = 600;
                     reverseDb.To = 0;
                     reverseDb.Duration = TimeSpan.FromSeconds(2);
@@ -1425,74 +1379,64 @@ namespace CheckersMultiplayer
             }
 
 
-            if (opponentNameLabel2.Content.Equals("")&&(countPawnImageKB == 1 && countPawnImageKW == 1 && countPawnImageB == 1 && countPawnImageW == 1))
+            if (opponentNameLabel2.Content.Equals("")&&(_countPawnImageKB == 1 && _countPawnImageKW == 1 && _countPawnImageB == 1 && _countPawnImageW == 1))
             {
-                DoubleAnimation db2 = new DoubleAnimation();
+                var db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
                 db2.Duration = TimeSpan.FromSeconds(2);
                 drawGridTransform.BeginAnimation(TranslateTransform.YProperty, db2);
                 drawGrid.Visibility = Visibility.Visible;
             }
-            else if (opponentNameLabel2.Content.Equals("") && !(countPawnImageKB == 1 && countPawnImageKW == 1 && countPawnImageB == 1 && countPawnImageW == 1))
+            else if (opponentNameLabel2.Content.Equals("") && !(_countPawnImageKB == 1 && _countPawnImageKW == 1 && _countPawnImageB == 1 && _countPawnImageW == 1))
             {
-                Console.WriteLine(accountVR+"1");
-                accountVR = accountVR + 8;
-                Console.WriteLine(accountVR);
-                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
-                DoubleAnimation db2 = new DoubleAnimation();
+                _accountVR += 8;
+                _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
+                var db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
                 db2.Duration = TimeSpan.FromSeconds(2);
                 opponentLeftGridTransform.BeginAnimation(TranslateTransform.YProperty, db2);
                 opponentLeftGrid.Visibility = Visibility.Visible;
             }
-            else if(!opponentNameLabel2.Content.Equals("")&&accountLogin.Equals(currentGame.whitePawns) && countPawnImageW == 0)
+            else if(!opponentNameLabel2.Content.Equals("")&&_accountLogin.Equals(_currentGame.whitePawns) && _countPawnImageW == 0)
             {
-                Console.WriteLine(accountVR + "2");
-                accountVR = accountVR - 8;
-                Console.WriteLine(accountVR);
-                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
-                DoubleAnimation db2 = new DoubleAnimation();
+                _accountVR -= 8;
+                _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
+                var db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
                 db2.Duration = TimeSpan.FromSeconds(2);
                 youLostGridTransform.BeginAnimation(TranslateTransform.YProperty, db2);
                 youLostGrid.Visibility = Visibility.Visible;
             }
-            else if (!opponentNameLabel2.Content.Equals("") && accountLogin.Equals(currentGame.blackPawns) && countPawnImageB == 0)
+            else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.blackPawns) && _countPawnImageB == 0)
             {
-                Console.WriteLine(accountVR + "3");
-                accountVR = accountVR - 8;
-                Console.WriteLine(accountVR);
-                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
-                DoubleAnimation db2 = new DoubleAnimation();
+                _accountVR -= 8;
+                _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
+                var db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
                 db2.Duration = TimeSpan.FromSeconds(2);
                 youLostGridTransform.BeginAnimation(TranslateTransform.YProperty, db2);
                 youLostGrid.Visibility = Visibility.Visible;
             }
-            else if (!opponentNameLabel2.Content.Equals("") && accountLogin.Equals(currentGame.whitePawns) && countPawnImageB == 0)
+            else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.whitePawns) && _countPawnImageB == 0)
             {
-                Console.WriteLine(accountVR + "4");
-                accountVR = accountVR + 8;
-                Console.WriteLine(accountVR);
-                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
-                DoubleAnimation db2 = new DoubleAnimation();
+                _accountVR += 8;
+                _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
+                var db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
                 db2.Duration = TimeSpan.FromSeconds(2);
                 youWonGridTransform.BeginAnimation(TranslateTransform.YProperty, db2);
                 youWonGrid.Visibility = Visibility.Visible;
             }
-            else if (!opponentNameLabel2.Content.Equals("") && accountLogin.Equals(currentGame.blackPawns) && countPawnImageW == 0)
+            else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.blackPawns) && _countPawnImageW == 0)
             {
-                Console.WriteLine(accountVR + "5");
-                accountVR = accountVR + 8;
-                Console.WriteLine(accountVR);
-                crud.UpdateData(this.accountName, this.accountLogin, this.accountEmail, this.accountAge, true, this.accountInGame, accountVR);
-                DoubleAnimation db2 = new DoubleAnimation();
+                _accountVR += 8;
+                _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
+                var db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
                 db2.Duration = TimeSpan.FromSeconds(2);
@@ -1505,16 +1449,16 @@ namespace CheckersMultiplayer
         {
             gameGrid.Visibility = Visibility.Hidden;
             mainMenuPanel.Visibility = Visibility.Visible;
-            crud.DeleteGameRoom(currentGame.host);
-            VRValueLabel.Content = accountVR;
+            _firebaseCrud.DeleteGameRoom(_currentGame.host);
+            VRValueLabel.Content = _accountVR;
 
-            if (accountLogin.Equals(currentGame.whitePawns))
+            if (_accountLogin.Equals(_currentGame.whitePawns))
             {
-                countPawnImageW = 0;
+                _countPawnImageW = 0;
             }
-            else if (accountLogin.Equals(currentGame.blackPawns))
+            else if (_accountLogin.Equals(_currentGame.blackPawns))
             {
-                countPawnImageB = 0;
+                _countPawnImageB = 0;
             }
         }
 
@@ -1544,7 +1488,7 @@ namespace CheckersMultiplayer
 
         private void confirmPasswordChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            crud.UpdateUserPassword(newPasswordTextBox.Text);
+            _firebaseCrud.UpdateUserPassword(newPasswordTextBox.Text);
         }
 
         private void deleteAccountButton_Click(object sender, RoutedEventArgs e)
@@ -1561,12 +1505,12 @@ namespace CheckersMultiplayer
 
         private void confirmAccountDeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            loggedOut = true;
-            crud.DeleteUser();
-            crud.DeleteData(accountLogin);
+            _loggedOut = true;
+            _firebaseCrud.DeleteUser();
+            _firebaseCrud.DeleteData(_accountLogin);
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
-            this.Close();
+            Close();
         }
 
         private void quitStatisticsGridButton_Click(object sender, RoutedEventArgs e)

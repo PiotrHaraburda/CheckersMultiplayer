@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace CheckersMultiplayer
+namespace CheckersMultiplayer.scripts
 {
-    class CRUDgame_rooms
+    internal class GameRooms
     {
         public string host { get; set; }
         public string blackPawns { get; set; }

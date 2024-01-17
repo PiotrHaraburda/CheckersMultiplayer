@@ -1,26 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
 
-namespace CheckersMultiplayer
+namespace CheckersMultiplayer.scripts
 {
-    class CRUD_Connection
+    internal class FirebaseConnection
     {
         //firebase connection Settings
-        public IFirebaseConfig fc = new FirebaseConfig()
+        private readonly IFirebaseConfig _firebaseConfig = new FirebaseConfig()
         {
             AuthSecret = "kD2SaWj1hzgdv5HPdVLUwNDIzyDUpRsWCtNoqZWh",
             BasePath = "https://checkersmultiplayer-ea56b-default-rtdb.europe-west1.firebasedatabase.app/"
         };
 
-        public FirebaseAuthConfig config = new FirebaseAuthConfig
+        private readonly FirebaseAuthConfig _firebaseAuthConfig = new FirebaseAuthConfig
         {
             ApiKey = "AIzaSyD8jC0nVSHwS_y4M-BXRfJyZXbke6Lfeec",
             AuthDomain = "checkersmultiplayer-ea56b.firebaseapp.com",
@@ -30,20 +26,20 @@ namespace CheckersMultiplayer
             }
         };
 
-        public IFirebaseClient client;
-        public FirebaseAuthClient authClient;
+        public readonly IFirebaseClient Client;
+        public readonly FirebaseAuthClient AuthClient;
         //Code to warn console if class cannot connect when called.
-        public CRUD_Connection()
+        public FirebaseConnection()
         {
             try
             {
-                client = new FirebaseClient(fc);
-                authClient = new FirebaseAuthClient(config);
+                Client = new FirebaseClient(_firebaseConfig);
+                AuthClient = new FirebaseAuthClient(_firebaseAuthConfig);
 
             }
             catch (Exception)
             {
-                Console.WriteLine("database connection error");
+                Console.WriteLine(@"Database connection error");
             }
         }
     }

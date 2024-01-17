@@ -1,91 +1,76 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+using CheckersMultiplayer.scripts;
 
 namespace CheckersMultiplayer
 {
-    /// <summary>
-    /// Logika interakcji dla klasy LoginWindow.xaml
-    /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginWindow
     {
         public LoginWindow()
         {
             InitializeComponent();
-            Console.WriteLine("Login window opened");
+            Console.WriteLine(@"Login window opened");
         }
 
         private void signUpButton_Click(object sender, RoutedEventArgs e)
         {
-            RegisterWindow registerWindow = new RegisterWindow();
+            var registerWindow = new RegisterWindow();
             registerWindow.Show();
-            this.Close();
+            Close();
         }
 
 
         private void signInButton_Click(object sender, RoutedEventArgs e)
         {
-            CRUD_Service crud = new CRUD_Service();
-            bool loggedIn=crud.LoginUser(emailTextBox.Text, passwordTextBox.Password);
+            var firebaseCrud = new FirebaseCrud();
+            bool loggedIn=firebaseCrud.LoginUser(emailTextBox.Text, passwordTextBox.Password);
 
-            if(loggedIn)
+            if (!loggedIn) return;
+            
+            string accountName;
+            string accountLogin;
+            int accountAge;
+            string accountEmail;
+            bool accountInGame;
+            bool accountOnline;
+            int accountVR;
+
+            foreach (var item in firebaseCrud.LoadPlayers())
             {
-                string accountName=null;
-                string accountLogin = null;
-                int accountAge = 0;
-                string accountEmail = null;
-                bool accountInGame = false;
-                bool accountOnline = false;
-                int accountVR = 0;
+                if (item.Value.email != emailTextBox.Text || item.Value.online) continue;
+                
+                firebaseCrud.UpdateData(item.Value.name, item.Value.login, item.Value.email, item.Value.age, true, item.Value.inGame, item.Value.vr);
+                accountName = item.Value.name;
+                accountLogin = item.Value.login;
+                accountAge= item.Value.age;
+                accountEmail = item.Value.email;
+                accountInGame = item.Value.inGame;
+                accountOnline = item.Value.online;
+                accountVR = item.Value.vr;
 
-                foreach (var item in crud.LoadPlayers())
+                emailLabel.Visibility = Visibility.Hidden;
+                passwordLabel.Visibility = Visibility.Hidden;
+                emailTextBox.Visibility = Visibility.Hidden;
+                passwordTextBox.Visibility = Visibility.Hidden;
+                signInButton.Visibility = Visibility.Hidden;
+                signUpButton.Visibility = Visibility.Hidden;
+                welcomeLabel.Visibility = Visibility.Hidden;
+                notRegisteredLabel.Visibility = Visibility.Hidden;
+
+                signedInLabel.Visibility = Visibility.Visible;
+
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+                timer.Start();
+                timer.Tick += (sender2, args) =>
                 {
-                    if (item.Value.email == emailTextBox.Text && item.Value.online == false)
-                    {
-                        crud.UpdateData(item.Value.name, item.Value.login, item.Value.email, item.Value.age, true, item.Value.inGame, item.Value.VR);
-                        accountName = item.Value.name;
-                        accountLogin = item.Value.login;
-                        accountAge= item.Value.age;
-                        accountEmail = item.Value.email;
-                        accountInGame = item.Value.inGame;
-                        accountOnline = item.Value.online;
-                        accountVR = item.Value.VR;
+                    timer.Stop();
+                    var mainWindow = new MainWindow(accountName, accountLogin, accountAge, accountEmail, accountInGame, accountOnline, accountVR);
+                    mainWindow.Show();
+                    Close();
+                };
 
-                        emailLabel.Visibility = Visibility.Hidden;
-                        passwordLabel.Visibility = Visibility.Hidden;
-                        emailTextBox.Visibility = Visibility.Hidden;
-                        passwordTextBox.Visibility = Visibility.Hidden;
-                        signInButton.Visibility = Visibility.Hidden;
-                        signUpButton.Visibility = Visibility.Hidden;
-                        welcomeLabel.Visibility = Visibility.Hidden;
-                        notRegisteredLabel.Visibility = Visibility.Hidden;
-
-                        signedInLabel.Visibility = Visibility.Visible;
-
-                        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-                        timer.Start();
-                        timer.Tick += (sender2, args) =>
-                        {
-                            timer.Stop();
-                            MainWindow mainWindow = new MainWindow(accountName, accountLogin, accountAge, accountEmail, accountInGame, accountOnline, accountVR);
-                            mainWindow.Show();
-                            this.Close();
-                        };
-
-                        break;
-                    }
-                }
+                break;
             }
         }
     }

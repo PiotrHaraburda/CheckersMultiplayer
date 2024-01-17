@@ -491,7 +491,7 @@
 
             </Button>
 
-            <Label x:Name="waitingForOpponentsLabel" Content="Waiting for opponents..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="534,227,0,0" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="180" Height="30"/>
+            <Label x:Name="waitingForOpponentsLabel" Content="Waiting for opponents..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="534,227,0,0" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="250" Height="30"/>
 
             <Label x:Name="opponentLabel" Content="Your opponent:" HorizontalAlignment="Left" Margin="510,294,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="120" Height="30"/>
 
@@ -588,7 +588,7 @@
 
             </Button>
 
-            <Label x:Name="opponentNameLabel" Content="" HorizontalAlignment="Left" Margin="635,294,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="10" Height="30"/>
+            <Label x:Name="opponentNameLabel" Content="" HorizontalAlignment="Left" Margin="635,294,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="200" Height="30"/>
 
         </Grid>
 
@@ -869,15 +869,15 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                <TextBlock Text="{Binding VR}" Margin="5"/>
+                                <TextBlock Text="{Binding vr}" Margin="5"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding Login}" Margin="5"/>
+                                <TextBlock Text="{Binding login}" Margin="5"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Image Source="{Binding StatusImagePath}" Width="20" Height="20" Margin="5"/>
+                                <Image Source="{Binding statusImagePath}" Width="20" Height="20" Margin="5"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

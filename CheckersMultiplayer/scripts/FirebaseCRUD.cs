@@ -1,44 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using Firebase.Auth;
-using FireSharp.Response;
-using Newtonsoft.Json;
-using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using System.Net.Http;
-using Firebase.Functions;
-using System.Drawing.Drawing2D;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.ComponentModel;
+using Firebase.Auth;
+using Newtonsoft.Json;
 
-namespace CheckersMultiplayer
+namespace CheckersMultiplayer.scripts
 {
-    class CRUD_Service
+    internal class FirebaseCrud
     {
-        CRUD_Connection conn = new CRUD_Connection();
+        private readonly FirebaseConnection _firebaseConnection = new FirebaseConnection();
 
         public bool RegisterUser(string email,string password)
         {
             try
             {
-                var registerTask = conn.authClient.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+                var registerTask = _firebaseConnection.AuthClient.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
                     if (task.IsCanceled)
                     {
-                        Console.WriteLine("CreateUserWithEmailAndPasswordAsync was canceled.");
+                        Console.WriteLine(@"CreateUserWithEmailAndPasswordAsync was canceled.");
                     }
                     if (task.IsFaulted)
                     {
-                        Console.WriteLine("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                        Console.WriteLine(@"CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                     }
 
-                    // Firebase user has been created.
-                    UserCredential result = task.Result;
-                    Console.WriteLine("Firebase user created successfully:" +result.User.Uid);
+                    var result = task.Result;
+                    Console.WriteLine(@"Firebase user created successfully:" +result.User.Uid);
                 });
 
                 registerTask.Wait();
@@ -63,19 +50,19 @@ namespace CheckersMultiplayer
         {
             try
             {
-                var loginTask = conn.authClient.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+                var loginTask = _firebaseConnection.AuthClient.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
                     if (task.IsCanceled)
                     {
-                        Console.WriteLine("SignInWithEmailAndPasswordAsync was canceled.");
+                        Console.WriteLine(@"SignInWithEmailAndPasswordAsync was canceled.");
                     }
                     if (task.IsFaulted)
                     {
-                        Console.WriteLine("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                        Console.WriteLine(@"SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                     }
 
-                    UserCredential result = task.Result;
+                    var result = task.Result;
 
-                    Console.WriteLine("User signed in successfully: " + result.User.Uid);
+                    Console.WriteLine(@"User signed in successfully: " + result.User.Uid);
                 });
 
                 loginTask.Wait();
@@ -97,62 +84,56 @@ namespace CheckersMultiplayer
 
         public void DeleteUser()
         {
-            User user = conn.authClient.User;
-            if (user != null)
-            {
-                user.DeleteAsync().ContinueWith(task => {
-                    if (task.IsCanceled)
-                    {
-                        Console.WriteLine("DeleteAsync was canceled.");
-                        return;
-                    }
-                    if (task.IsFaulted)
-                    {
-                        Console.WriteLine("DeleteAsync encountered an error: " + task.Exception);
-                        return;
-                    }
+            var user = _firebaseConnection.AuthClient.User;
+            user?.DeleteAsync().ContinueWith(task => {
+                if (task.IsCanceled)
+                {
+                    Console.WriteLine(@"DeleteAsync was canceled.");
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    Console.WriteLine(@"DeleteAsync encountered an error: " + task.Exception);
+                    return;
+                }
 
-                    Console.WriteLine("User deleted successfully.");
-                });
-            }
+                Console.WriteLine(@"User deleted successfully.");
+            });
 
         }
 
-        public Firebase.Auth.User LogoutUser()
+        public User LogoutUser()
         {
-            conn.authClient.SignOut();
+            _firebaseConnection.AuthClient.SignOut();
 
-            return conn.authClient.User;
+            return _firebaseConnection.AuthClient.User;
         }
 
         public void UpdateUserPassword(string newPassword)
         {
-            User user = conn.authClient.User;
-            if (user != null)
-            {
-                user.ChangePasswordAsync(newPassword).ContinueWith(task => {
-                    if (task.IsCanceled)
-                    {
-                        Console.WriteLine("UpdatePasswordAsync was canceled.");
-                        return;
-                    }
-                    if (task.IsFaulted)
-                    {
-                        Console.WriteLine("UpdatePasswordAsync encountered an error: " + task.Exception);
-                        return;
-                    }
+            var user = _firebaseConnection.AuthClient.User;
+            
+            user?.ChangePasswordAsync(newPassword).ContinueWith(task => {
+                if (task.IsCanceled)
+                {
+                    Console.WriteLine(@"UpdatePasswordAsync was canceled.");
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    Console.WriteLine(@"UpdatePasswordAsync encountered an error: " + task.Exception);
+                    return;
+                }
 
-                    Console.WriteLine("Password updated successfully.");
-                });
-            }
+                Console.WriteLine(@"Password updated successfully.");
+            });
         }
 
-        //set datas to database
-        public void SetData(string name, string login, string email, int age, bool online, bool inGame, int VR)
+        public void SetData(string name, string login, string email, int age, bool online, bool inGame, int vr)
         {
             try
             {
-                CRUDplayers set = new CRUDplayers()
+                var set = new Players()
                 {
                     name = name,
                     login = login,
@@ -160,22 +141,22 @@ namespace CheckersMultiplayer
                     age = age,
                     online = online,
                     inGame = inGame,
-                    VR = VR
+                    vr = vr
                 };
-                var SetData = conn.client.Set("players/" + login, set);
+                _firebaseConnection.Client.Set("players/" + login, set);
             }
             catch (Exception)
             {
-                Console.WriteLine("error");
+                Console.WriteLine(@"error");
             }
 
         }
 
-        public CRUDgame_rooms CreateGameRoom(string login)
+        public GameRooms CreateGameRoom(string login)
         {
             try
             {
-                CRUDgame_rooms set = new CRUDgame_rooms()
+                var set = new GameRooms()
                 {
                     host = login,
                     blackPawns = login,
@@ -195,13 +176,13 @@ namespace CheckersMultiplayer
                     },
                     turn = login
                 };
-                var SetData = conn.client.Set("gameRooms/" + login, set);
+                _firebaseConnection.Client.Set("gameRooms/" + login, set);
 
                 return set;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($@"Error: {ex.Message}");
                 return null;
             }
         }
@@ -210,7 +191,7 @@ namespace CheckersMultiplayer
         {
             try
             {
-                CRUDgame_rooms set = new CRUDgame_rooms()
+                var set = new GameRooms()
                 {
                     host = login,
                     blackPawns = login,
@@ -231,12 +212,11 @@ namespace CheckersMultiplayer
                     inProgress=inProgress,
                     turn = login
                 };
-                var SetData = conn.client.Update("gameRooms/" + login, set);
-
+                _firebaseConnection.Client.Update("gameRooms/" + login, set);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($@"Error: {ex.Message}");
             }
         }
 
@@ -244,14 +224,14 @@ namespace CheckersMultiplayer
         {
             try
             {
-                var updateData = conn.client.Update("gameRooms/" + login, new
+                _firebaseConnection.Client.Update("gameRooms/" + login, new
                 {
                     board = newBoard
                 });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($@"Error: {ex.Message}");
             }
         }
 
@@ -259,14 +239,14 @@ namespace CheckersMultiplayer
         {
             try
             {
-                var updateData = conn.client.Update("gameRooms/" + login, new
+                _firebaseConnection.Client.Update("gameRooms/" + login, new
                 {
                     turn = newTurn
                 });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($@"Error: {ex.Message}");
             }
         }
 
@@ -274,9 +254,7 @@ namespace CheckersMultiplayer
         {
             try
             {
-                var gameRoomExists = conn.client.Get("gameRooms/" + host);
-
-                CRUDgame_rooms set = new CRUDgame_rooms()
+                var set = new GameRooms()
                 {
                     host = host,
                     blackPawns = blackPawns,
@@ -286,11 +264,11 @@ namespace CheckersMultiplayer
                     board = board,
                     turn = turn
                 };
-                var SetData = conn.client.Update("gameRooms/" + host, set);
+                _firebaseConnection.Client.Update("gameRooms/" + host, set);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($@"Error: {ex.Message}");
             }
         }
 
@@ -299,7 +277,7 @@ namespace CheckersMultiplayer
         {
             try
             {
-                CRUDgame_rooms set = new CRUDgame_rooms()
+                GameRooms set = new GameRooms()
                 {
                     host = login,
                     blackPawns = login,
@@ -319,12 +297,11 @@ namespace CheckersMultiplayer
                     },
                     turn = login
                 };
-                var SetData = conn.client.Update("gameRooms/" + login, set);
-
+                _firebaseConnection.Client.Update("gameRooms/" + login, set);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($@"Error: {ex.Message}");
             }
         }
 
@@ -332,20 +309,19 @@ namespace CheckersMultiplayer
         {
             try
             {
-                var SetData = conn.client.Delete("gameRooms/" + accountLogin);
+                _firebaseConnection.Client.Delete("gameRooms/" + accountLogin);
             }
             catch (Exception)
             {
-                Console.WriteLine("error");
+                Console.WriteLine(@"error");
             }
         }
 
-        //Update datas
-        public void UpdateData(string name, string login, string email, int age, bool online, bool inGame, int VR)
+        public void UpdateData(string name, string login, string email, int age, bool online, bool inGame, int vr)
         {
             try
             {
-                CRUDplayers set = new CRUDplayers()
+                var set = new Players()
                 {
                     name = name,
                     login = login,
@@ -353,64 +329,62 @@ namespace CheckersMultiplayer
                     age = age,
                     online = online,
                     inGame = inGame,
-                    VR = VR
+                    vr = vr
                 };
-                var SetData = conn.client.Update("players/" + login, set);
+                _firebaseConnection.Client.Update("players/" + login, set);
             }
             catch (Exception)
             {
-                Console.WriteLine("error");
+                Console.WriteLine(@"error");
             }
         }
 
-        //Delete datas
         public void DeleteData(string login)
         {
             try
             {
-                var SetData = conn.client.Delete("players/" + login);
+                _firebaseConnection.Client.Delete("players/" + login);
             }
             catch (Exception)
             {
-                Console.WriteLine("error");
+                Console.WriteLine(@"error");
             }
         }
 
-        //List of the datas
-        public Dictionary<string, CRUDplayers> LoadPlayers()
+        public Dictionary<string, Players> LoadPlayers()
         {
             try
             {
-                FirebaseResponse al = conn.client.Get("players");
-                Dictionary<string, CRUDplayers> ListData = JsonConvert.DeserializeObject<Dictionary<string, CRUDplayers>>(al.Body.ToString());
-                return ListData;
+                var firebasePlayersResponse = _firebaseConnection.Client.Get("players");
+                var listData = JsonConvert.DeserializeObject<Dictionary<string, Players>>(firebasePlayersResponse.Body);
+                return listData;
             }
             catch (Exception)
             {
-                Console.WriteLine("error");
+                Console.WriteLine(@"error");
                 return null;
             }
         }
 
-        public Dictionary<string, CRUDgame_rooms> LoadGameRooms()
+        public Dictionary<string, GameRooms> LoadGameRooms()
         {
             try
             {
-                FirebaseResponse al = conn.client.Get("gameRooms");
-                string json = al.Body.ToString();
+                var firebaseGameRoomsResponse = _firebaseConnection.Client.Get("gameRooms");
+                string json = firebaseGameRoomsResponse.Body;
 
-                JsonSerializerSettings settings = new JsonSerializerSettings
+                var settings = new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 };
 
-                Dictionary<string, CRUDgame_rooms> gameRooms = JsonConvert.DeserializeObject<Dictionary<string, CRUDgame_rooms>>(json, settings);
+                var gameRooms = JsonConvert.DeserializeObject<Dictionary<string, GameRooms>>(json, settings);
 
                 return gameRooms;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($@"Error: {ex.Message}");
                 return null;
             }
         }
