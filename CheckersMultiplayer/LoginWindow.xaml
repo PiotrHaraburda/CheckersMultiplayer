@@ -54,7 +54,7 @@
 
         <Label x:Name="notRegisteredLabel" Content="Not registered?" HorizontalAlignment="Left" Margin="240,317,0,0" VerticalAlignment="Top" FontSize="10" Width="90" HorizontalContentAlignment="Center" FontFamily="fonts/#Poppins"/>
 
-        <Button x:Name="signInButton" Content="Sign In" HorizontalAlignment="Left" Margin="74,340,0,0" VerticalAlignment="Top" Width="141" Height="38" FontSize="14" Click="signInButton_Click" BorderThickness="0" HorizontalContentAlignment="Center" FontFamily="fonts/#Poppins">
+        <Button x:Name="signInButton" Content="Sign In" HorizontalAlignment="Left" Margin="74,340,0,0" VerticalAlignment="Top" Width="161" Height="38" FontSize="14" Click="signInButton_Click" BorderThickness="0" HorizontalContentAlignment="Center" FontFamily="fonts/#Poppins">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
 

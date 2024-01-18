@@ -27,6 +27,7 @@ namespace CheckersMultiplayer
         private readonly bool _accountInGame;
         private readonly bool _accountOnline;
         private int _accountVR;
+        private int _enemyVR;
 
         private int _countPawnImageB;
         private int _countPawnImageW;
@@ -77,6 +78,7 @@ namespace CheckersMultiplayer
             emailValueLabel.Content = accountEmail;
             ageValueLabel.Content = accountAge;
             VRValueLabel.Content = accountVR;
+            accountWelcomeLabel.Content = "Welcome to your account settings, " + accountName + "!";
         }
 
         private void multiplayerButton_Click(object sender, RoutedEventArgs e)
@@ -363,8 +365,19 @@ namespace CheckersMultiplayer
                 _currentGame.inProgress = item.Value.inProgress;
             }
 
+            if (_firebaseCrud.LoadPlayers() == null) return;
 
-            if (_currentGame.whitePawns.Equals(_accountLogin))
+            foreach (var item in _firebaseCrud.LoadPlayers())
+            {
+                if(item.Key.Equals(_currentGame.host))
+                {
+                    _enemyVR = item.Value.vr;
+                    break;
+                }
+            }
+
+
+                if (_currentGame.whitePawns.Equals(_accountLogin))
                 opponentNameLabel2.Content = _currentGame.blackPawns;
             else
                 opponentNameLabel2.Content = _currentGame.whitePawns;
@@ -1358,6 +1371,8 @@ namespace CheckersMultiplayer
 
         private void GameOver()
         {
+            int extraVR = (_enemyVR - _accountVR) / 100;
+
             if(mainMenuPanel.Visibility == Visibility.Hidden)
             {
                 var db = new DoubleAnimation();
@@ -1390,7 +1405,7 @@ namespace CheckersMultiplayer
             }
             else if (opponentNameLabel2.Content.Equals("") && !(_countPawnImageKB == 1 && _countPawnImageKW == 1 && _countPawnImageB == 1 && _countPawnImageW == 1))
             {
-                _accountVR += 8;
+                _accountVR += 8 + extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
                 db2.From = -600;
@@ -1401,7 +1416,7 @@ namespace CheckersMultiplayer
             }
             else if(!opponentNameLabel2.Content.Equals("")&&_accountLogin.Equals(_currentGame.whitePawns) && _countPawnImageW == 0)
             {
-                _accountVR -= 8;
+                _accountVR -= 8 - extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
                 db2.From = -600;
@@ -1412,7 +1427,7 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.blackPawns) && _countPawnImageB == 0)
             {
-                _accountVR -= 8;
+                _accountVR -= 8 - extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
                 db2.From = -600;
@@ -1423,7 +1438,7 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.whitePawns) && _countPawnImageB == 0)
             {
-                _accountVR += 8;
+                _accountVR += 8 + extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
                 db2.From = -600;
@@ -1434,7 +1449,7 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.blackPawns) && _countPawnImageW == 0)
             {
-                _accountVR += 8;
+                _accountVR += 8 + extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
                 db2.From = -600;
@@ -1517,6 +1532,23 @@ namespace CheckersMultiplayer
         {
             statisticsGrid.Visibility = Visibility.Hidden;
             multiplayerPanel.Visibility = Visibility.Visible;
+        }
+
+        private void creditsButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainMenuPanel.Visibility = Visibility.Hidden;
+            creditsGrid.Visibility = Visibility.Visible;
+        }
+
+        private void quitCreditsPanelButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainMenuPanel.Visibility = Visibility.Visible;
+            creditsGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void rankingListBox_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

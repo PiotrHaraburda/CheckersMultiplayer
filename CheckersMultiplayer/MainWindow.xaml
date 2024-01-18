@@ -13,7 +13,6 @@
 
 
     <Grid>
-
         <Grid x:Name="mainMenuPanel" Visibility="Visible">
 
             <Grid.Background>
@@ -124,7 +123,7 @@
 
             </Button>
 
-            <Button Margin="30,414,0,0" Height="60" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Button x:Name="creditsButton" Margin="30,414,0,0" Height="60" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Click="creditsButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -165,8 +164,8 @@
                 </Button.Style>
 
                 <StackPanel Orientation="Horizontal" Width="100">
-                    <TextBlock Text="Settings" Width="60" FontSize="14" FontFamily="fonts/#Poppins" VerticalAlignment="Center"/>
-                    <Image Source="images/settings.png" Margin="10,0" Width="30" Height="30"/>
+                    <TextBlock Text="Credits" Width="60" FontSize="14" FontFamily="fonts/#Poppins" VerticalAlignment="Center"/>
+                    <Image Source="images/credits.png" Margin="10,0" Width="30" Height="30"/>
                 </StackPanel>
 
             </Button>
@@ -659,6 +658,67 @@
             </Grid>
         </Grid>
 
+        <Grid x:Name="creditsGrid" Visibility="Collapsed">
+
+            <Button x:Name="quitCreditsPanel" HorizontalAlignment="Left" Margin="712,57,0,0" VerticalAlignment="Top" Width="40" Height="41" Click="quitCreditsPanelButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/go_back.png" Width="25" Height="25"/>
+                </StackPanel>
+
+            </Button>
+
+            <Label Content="Credits" HorizontalAlignment="Center" Margin="0,54,0,0" VerticalAlignment="Top" FontSize="28" FontWeight="Bold"/>
+            <Label Content="Backend:" HorizontalAlignment="Left" Margin="296,148,0,0" VerticalAlignment="Top" FontSize="16"/>
+            <Label Content="Frontend:" HorizontalAlignment="Left" Margin="296,178,0,0" VerticalAlignment="Top" FontSize="16"/>
+            <Label Content="Piotr Haraburda" HorizontalAlignment="Left" Margin="389,148,0,0" VerticalAlignment="Top" FontSize="16"/>
+            <Label Content="Tomasz Maciejewski" HorizontalAlignment="Left" Margin="389,178,0,0" VerticalAlignment="Top" FontSize="16"/>
+            <Label Content="Used Technologies:" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Margin="0,298,0,0"/>
+            <Label Content="Backend: C#" HorizontalAlignment="Center" Margin="0,350,0,0" VerticalAlignment="Top"/>
+            <Label Content="Frontend: WPF" HorizontalAlignment="Center" Margin="0,382,0,0" VerticalAlignment="Top"/>
+            <Label Content="Database + Connection: Google Firebase Realtime Database" HorizontalAlignment="Center" Margin="0,444,0,0" VerticalAlignment="Top"/>
+            <Label Content="User authorization: Google Firebase Authentication" HorizontalAlignment="Center" Margin="0,412,0,0" VerticalAlignment="Top"/>
+
+        </Grid>
+
         <Grid x:Name="accountGrid" Visibility="Collapsed">
 
             <Grid.Background>
@@ -672,7 +732,7 @@
 
             <Label Content="Account Panel" HorizontalAlignment="Center" Margin="0,101,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White" FontFamily="fonts/#Poppins" Width="174" Height="45"/>
 
-            <Label Content="Welcome to your account settings, Name!" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Margin="244,141,0,0"/>
+            <Label x:Name="accountWelcomeLabel" Content="Welcome to your account settings, Name!" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Margin="244,141,0,0"/>
 
             <Label Content="First Name:" HorizontalAlignment="Left" Margin="300,204,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins"/>
 
@@ -858,7 +918,7 @@
         </Grid>
         <Grid x:Name="statisticsGrid" Visibility="Collapsed">
             <Label Content="Global Multiplayer VR Ranking" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-            <ListBox Name="rankingListBox" HorizontalContentAlignment="Stretch" Margin="230,151,230,151" HorizontalAlignment="Stretch" IsHitTestVisible="False">
+            <ListBox Name="rankingListBox" HorizontalContentAlignment="Stretch" Margin="230,151,230,151" HorizontalAlignment="Stretch" PreviewMouseDown="rankingListBox_MouseDown">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
