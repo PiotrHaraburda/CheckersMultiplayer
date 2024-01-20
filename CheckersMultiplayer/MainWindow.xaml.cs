@@ -50,6 +50,13 @@ namespace CheckersMultiplayer
         private bool _loggedOut;
         private ObservableCollection<PlayerRankingData> playerRankingData { get; set; }
 
+
+        System.Media.SoundPlayer moveMediaPlayer;
+        System.Media.SoundPlayer pathMediaPlayer;
+        System.Media.SoundPlayer clickMediaPlayer;
+        System.Media.SoundPlayer loseMediaPlayer;
+        System.Media.SoundPlayer winMediaPlayer;
+
         public MainWindow(string accountName, string accountLogin, int accountAge, string accountEmail, bool accountInGame, bool accountOnline, int accountVR)
         {
             InitializeComponent();
@@ -79,218 +86,17 @@ namespace CheckersMultiplayer
             ageValueLabel.Content = accountAge;
             VRValueLabel.Content = accountVR;
             accountWelcomeLabel.Content = "Welcome to your account settings, " + accountName + "!";
+
+            InitializeMediaPlayer();
         }
 
-        private void multiplayerButton_Click(object sender, RoutedEventArgs e)
+        private void InitializeMediaPlayer()
         {
-            mainMenuPanel.Visibility = Visibility.Hidden;
-            multiplayerPanel.Visibility = Visibility.Visible;
-        }
-
-        private void quitMultiplayerButton_Click(object sender, RoutedEventArgs e)
-        {
-            multiplayerPanel.Visibility = Visibility.Hidden;
-            mainMenuPanel.Visibility = Visibility.Visible;
-        }
-
-        private void logoutButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_firebaseCrud.LogoutUser() == null)
-            {
-                _loggedOut = true;
-                _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, false, _accountInGame, _accountVR);
-                var loginWindow = new LoginWindow();
-                loginWindow.Show();
-                Close();
-            }
-        }
-
-        private void joinLobbyButton_Click(object sender, RoutedEventArgs e)
-        {
-            gameRoomsListBox.Items.Clear();
-            gameRoomsGrid.Visibility = Visibility.Visible;
-            multiplayerPanel.Visibility = Visibility.Hidden;
-
-            var gameRooms = _firebaseCrud.LoadGameRooms();
-            if (gameRooms == null)
-                return;
-
-            foreach (var item in gameRooms)
-            {
-                gameRoomsListBox.Items.Add(item.Value.roomName);
-            }
-        }
-
-        private void statisticsButton_Click(object sender, RoutedEventArgs e)
-        {
-            rankingListBox.ItemsSource = null;
-            statisticsGrid.Visibility = Visibility.Visible;
-            multiplayerPanel.Visibility = Visibility.Hidden;
-
-            if (_firebaseCrud.LoadPlayers() == null) return;
-            
-            playerRankingData = new ObservableCollection<PlayerRankingData>();
-
-            foreach (var item in _firebaseCrud.LoadPlayers())
-            {
-                string imagePath;
-
-                if (item.Value.online)
-                    imagePath = @"/images/online.png";
-                else
-                    imagePath = @"/images/offline.png";
-
-                playerRankingData.Add(new PlayerRankingData
-                {
-                    login = item.Value.login,
-                    vr = item.Value.vr,
-                    statusImagePath = imagePath
-                });
-            }
-            var sortedPlayerRankingData = playerRankingData.OrderByDescending(player => player.vr).ToList();
-
-            rankingListBox.ItemsSource = new ObservableCollection<PlayerRankingData>(sortedPlayerRankingData);
-        }
-
-        private void createLobbyButton_Click(object sender, RoutedEventArgs e)
-        {
-            multiplayerPanel.Visibility = Visibility.Hidden;
-            createLobbyGrid.Visibility = Visibility.Visible;
-            createLobbyMainLabel.Visibility = Visibility.Visible;
-            roomNameLabel.Visibility = Visibility.Visible;
-            roomNameTextBox.Visibility = Visibility.Visible;
-            roomPasswordLabel.Visibility = Visibility.Visible;
-            roomPasswordTextBox.Visibility = Visibility.Visible;
-            startGameButton.Visibility = Visibility.Visible;
-            waitingForOpponentsLabel.Visibility = Visibility.Visible;
-            opponentLabel.Visibility = Visibility.Visible;
-            saveRoomInfoButton.Visibility = Visibility.Visible;
-            opponentNameLabel.Visibility = Visibility.Visible;
-
-            var gameRoom = _firebaseCrud.CreateGameRoom(_accountLogin);
-            roomNameTextBox.Text = gameRoom.roomName;
-            _currentGame.roomName = gameRoom.roomName;
-            roomPasswordTextBox.Text = gameRoom.password;
-            _currentGame.host = _accountLogin;
-            waitingForOpponentsLabel.Content = "Waiting for opponents...";
-            saveRoomInfoButton.IsEnabled = true;
-            startGameButton.IsEnabled = true;
-            roomNameTextBox.IsEnabled = true;
-            roomPasswordTextBox.IsEnabled = true;
-            opponentNameLabel.Content = "";
-            startGameButton.IsEnabled = false;
-
-            OpponentListenerAsync(_accountLogin);
-        }
-
-        private void quitLobbyCreation_Click(object sender, RoutedEventArgs e)
-        {
-            multiplayerPanel.Visibility = Visibility.Visible;
-            createLobbyGrid.Visibility = Visibility.Hidden;
-            
-            if (_currentGame.roomName == null) return;
-            
-            if (_accountLogin.Equals(_currentGame.host))
-            {
-                _firebaseCrud.DeleteGameRoom(_accountLogin);
-                _response1.Dispose();
-            }
-            else
-                _firebaseCrud.ClearGameRoomWhitePawns(_currentGame.host, _currentGame.blackPawns, _currentGame.password, _currentGame.roomName, _currentGame.board, _currentGame.turn);
-
-        }
-
-        private void saveRoomInfoButton_Click(object sender, RoutedEventArgs e)
-        {
-            _firebaseCrud.UpdateGameRoom(_accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), false);
-        }
-
-        private void quitGameRoomsButton_Click(object sender, RoutedEventArgs e)
-        {
-            gameRoomsGrid.Visibility = Visibility.Hidden;
-            multiplayerPanel.Visibility = Visibility.Visible;
-        }
-
-        private void joinGameRoomButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (gameRoomsListBox.SelectedItem == null) return;
-            
-            roomPasswordGrid.Visibility = Visibility.Visible;
-            gameRoomsGrid.Visibility = Visibility.Hidden;
-        }
-
-        private void quitRoomPasswordGridButton_Click(object sender, RoutedEventArgs e)
-        {
-            roomPasswordGrid.Visibility = Visibility.Hidden;
-            gameRoomsGrid.Visibility = Visibility.Visible;
-        }
-
-        private void checkGameRoomPasswordButton_Click(object sender, RoutedEventArgs e)
-        {
-            var gameRooms = _firebaseCrud.LoadGameRooms();
-            if (gameRooms == null)
-                return;
-
-            foreach (var item in gameRooms)
-            {
-                if (!item.Value.roomName.Equals(gameRoomsListBox.SelectedItem.ToString())) continue;
-                
-                if (item.Value.password.Equals(enterRoomPasswordTextBox.Text))
-                {
-                    if (item.Value.whitePawns.Equals(""))
-                    {
-                        Console.WriteLine(@"Valid password");
-                        _firebaseCrud.UpdateGameRoomOpponent(item.Value.blackPawns, item.Value.password, item.Value.roomName, _accountLogin);
-                        roomPasswordGrid.Visibility = Visibility.Hidden;
-                        createLobbyGrid.Visibility = Visibility.Visible;
-                        createLobbyMainLabel.Visibility = Visibility.Visible;
-                        roomNameLabel.Visibility = Visibility.Visible;
-                        roomNameTextBox.Visibility = Visibility.Visible;
-                        roomPasswordLabel.Visibility = Visibility.Visible;
-                        roomPasswordTextBox.Visibility = Visibility.Visible;
-                        startGameButton.Visibility = Visibility.Visible;
-                        waitingForOpponentsLabel.Visibility = Visibility.Visible;
-                        opponentLabel.Visibility = Visibility.Visible;
-                        saveRoomInfoButton.Visibility = Visibility.Visible;
-                        opponentNameLabel.Visibility = Visibility.Visible;
-                        roomNameTextBox.Text = item.Value.roomName;
-                        roomPasswordTextBox.Text = item.Value.password;
-                        roomNameTextBox.IsEnabled = false;
-                        roomPasswordTextBox.IsEnabled = false;
-                        _currentGame.host = item.Value.host;
-                        _currentGame.password = item.Value.password;
-                        _currentGame.roomName = item.Value.roomName;
-                        _currentGame.whitePawns = item.Value.whitePawns;
-                        _currentGame.blackPawns = item.Value.blackPawns;
-                        _currentGame.board = item.Value.board;
-                        _currentGame.turn = item.Value.turn;
-                        _currentGame.inProgress = item.Value.inProgress;
-
-
-                        opponentNameLabel.Content = item.Value.blackPawns;
-                        waitingForOpponentsLabel.Content = "Waiting for room host to start the game....";
-                        saveRoomInfoButton.IsEnabled = false;
-                        startGameButton.IsEnabled = false;
-
-                        GameStartedListenerAsync(item.Value.host);
-
-                        _timer2 = new DispatcherTimer();
-                        _timer2.Interval = TimeSpan.FromSeconds(2);
-                        _timer2.Tick += Timer_GameRoomExisting;
-
-                        _timer2.Start();
-                    }
-                    else
-                    {
-                        Console.WriteLine(@"Room full");
-                    }
-                }
-                else
-                    Console.WriteLine(@"Invalid password");
-                return;
-            }
-
-            Console.WriteLine(@"Game room not existing");
+            moveMediaPlayer = new System.Media.SoundPlayer("..\\..\\sounds\\moveAudio.wav");
+            pathMediaPlayer = new System.Media.SoundPlayer("..\\..\\sounds\\pathAudio.wav");
+            clickMediaPlayer = new System.Media.SoundPlayer("..\\..\\sounds\\clickAudio.wav");
+            winMediaPlayer = new System.Media.SoundPlayer("..\\..\\sounds\\winAudio.wav");
+            loseMediaPlayer = new System.Media.SoundPlayer("..\\..\\sounds\\loseAudio.wav");
         }
 
         private void Timer_GameRoomExisting(object sender, EventArgs e)
@@ -327,12 +133,125 @@ namespace CheckersMultiplayer
 
         }
 
-        private void startGameButton_Click(object sender, RoutedEventArgs e)
+        private async Task OpponentListenerAsync(string host)
         {
-            _firebaseCrud.UpdateGameRoom(_accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), true);
-            createLobbyGrid.Visibility = Visibility.Hidden;
-            gameGrid.Visibility = Visibility.Visible;
-            CheckersGame();
+            _response1 = await _firebaseConnection.Client.OnAsync("gameRooms/" + host, (sender, args, context) =>
+            {
+                if (args.Path.Equals("/whitePawns"))
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        opponentNameLabel.Content = args.Data.ToString();
+                        waitingForOpponentsLabel.Content = "Waiting for you to start the game....";
+                        startGameButton.IsEnabled = true;
+                    });
+                    OpponentListenerAsync(host);
+                }
+            });
+        }
+
+        private async Task GameStartedListenerAsync(string host)
+        {
+            await _firebaseConnection.Client.OnAsync("gameRooms/" + host, (sender, args, context) =>
+            {
+                if (args.Path.Equals("/inProgress") && args.Data.Equals("True"))
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        createLobbyGrid.Visibility = Visibility.Hidden;
+                        gameGrid.Visibility = Visibility.Visible;
+                        CheckersGame();
+                    });
+                }
+            });
+        }
+
+        private void Timer_BoardUpdate(object sender, EventArgs e)
+        {
+            var gameRooms = _firebaseCrud.LoadGameRooms();
+            if (gameRooms == null)
+            {
+                var dispatcherTimer = (DispatcherTimer)sender;
+                dispatcherTimer.Stop();
+                _timer.Stop();
+                _currentGame.inProgress = false;
+                if (_countPawnImageW != 0 && _countPawnImageB != 0)
+                    opponentNameLabel2.Content = "";
+                GameOver();
+                return;
+            }
+
+            _currentGame.board = null;
+
+            foreach (var item in gameRooms)
+            {
+                if (item.Key != _currentGame.host) continue;
+
+                _currentGame.board = new List<List<string>>();
+                _currentGame.turn = item.Value.turn;
+
+                foreach (var boardRow in item.Value.board)
+                {
+                    _currentGame.board.Add(new List<string>(boardRow));
+                }
+            }
+
+            if (_currentGame.board == null)
+            {
+                var dispatcherTimer = (DispatcherTimer)sender;
+                dispatcherTimer.Stop();
+                _timer.Stop();
+                _currentGame.inProgress = false;
+                if (_countPawnImageW != 0 && _countPawnImageB != 0)
+                    opponentNameLabel2.Content = "";
+                GameOver();
+                return;
+            }
+
+            if (!_currentGame.turn.Equals(_accountLogin))
+            {
+                DrawPawns();
+                if (_boardUpdated)
+                    _boardUpdated = false;
+            }
+
+            if (_currentGame.turn.Equals(_accountLogin))
+            {
+                _remainingTime = _remainingTime.Subtract(TimeSpan.FromSeconds(1));
+
+                timeRemainingLabel.Content = _remainingTime.ToString("mm':'ss");
+
+                if (_remainingTime <= TimeSpan.Zero)
+                {
+                    if (_accountLogin.Equals(_currentGame.whitePawns))
+                    {
+                        var dispatcherTimer = (DispatcherTimer)sender;
+                        dispatcherTimer.Stop();
+                        _currentGame.inProgress = false;
+                        if (_countPawnImageW != 0 && _countPawnImageB != 0)
+                            opponentNameLabel2.Content = "";
+                        _firebaseCrud.ClearGameRoomWhitePawns(_currentGame.host, _currentGame.blackPawns, _currentGame.password, _currentGame.roomName, _currentGame.board, _currentGame.turn);
+                        _countPawnImageW = 0;
+                    }
+                    else if (_accountLogin.Equals(_currentGame.blackPawns))
+                    {
+                        var dispatcherTimer = (DispatcherTimer)sender;
+                        dispatcherTimer.Stop();
+                        _currentGame.inProgress = false;
+                        if (_countPawnImageW != 0 && _countPawnImageB != 0)
+                            opponentNameLabel2.Content = "";
+                        _firebaseCrud.DeleteGameRoom(_accountLogin);
+                        _countPawnImageB = 0;
+                    }
+                }
+
+                if (!_boardUpdated)
+                {
+                    DrawPawns();
+                    _boardUpdated = true;
+                    GameLabelsUpdate();
+                }
+            }
         }
 
         private void CheckersGame()
@@ -389,7 +308,7 @@ namespace CheckersMultiplayer
             
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
-            _timer.Tick += Timer_Tick;
+            _timer.Tick += Timer_BoardUpdate;
 
             _timer.Start();
 
@@ -402,6 +321,7 @@ namespace CheckersMultiplayer
 
         private void ShowPawnPaths(object sender, MouseButtonEventArgs e)
         {
+            pathMediaPlayer.Play();
             if (sender is Image clickedImage && _currentGame.turn.Equals(_accountLogin) && _currentGame.inProgress)
             {
                 //usuniecie wszystkich widocznych sciezek
@@ -894,6 +814,7 @@ namespace CheckersMultiplayer
 
         private void MovePawn(object sender, MouseButtonEventArgs e)
         {
+            moveMediaPlayer.Play();
             if (sender is Image clickedPawnPath)
             {
                 //pobieram dane o kliknietej sciezce
@@ -1075,128 +996,6 @@ namespace CheckersMultiplayer
                 GameLabelsUpdate();
 
             }
-        }
-
-        private async Task OpponentListenerAsync(string host)
-        {
-            _response1 = await _firebaseConnection.Client.OnAsync("gameRooms/" + host, (sender, args, context) =>
-            {
-                if (args.Path.Equals("/whitePawns"))
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        opponentNameLabel.Content = args.Data.ToString();
-                        waitingForOpponentsLabel.Content = "Waiting for you to start the game....";
-                        startGameButton.IsEnabled = true;
-                    });
-                    OpponentListenerAsync(host);
-                }
-            });
-        }
-
-        private async Task GameStartedListenerAsync(string host)
-        {
-            await _firebaseConnection.Client.OnAsync("gameRooms/" + host, (sender, args, context) =>
-            {
-                if (args.Path.Equals("/inProgress") && args.Data.Equals("True"))
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        createLobbyGrid.Visibility = Visibility.Hidden;
-                        gameGrid.Visibility = Visibility.Visible;
-                        CheckersGame();
-                    });
-                }
-            });
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            var gameRooms = _firebaseCrud.LoadGameRooms();
-            if (gameRooms == null)
-            {
-                var dispatcherTimer = (DispatcherTimer)sender;
-                dispatcherTimer.Stop();
-                _timer.Stop();
-                _currentGame.inProgress = false;
-                if(_countPawnImageW!=0&&_countPawnImageB!=0)
-                    opponentNameLabel2.Content = "";
-                GameOver();
-                return;
-            }
-
-            _currentGame.board = null;
-
-            foreach (var item in gameRooms)
-            {
-                if (item.Key != _currentGame.host) continue;
-                
-                _currentGame.board = new List<List<string>>();
-                _currentGame.turn = item.Value.turn;
-
-                foreach (var boardRow in item.Value.board)
-                {
-                    _currentGame.board.Add(new List<string>(boardRow));
-                }
-            }
-
-            if (_currentGame.board == null)
-            {
-                var dispatcherTimer = (DispatcherTimer)sender;
-                dispatcherTimer.Stop();
-                _timer.Stop();
-                _currentGame.inProgress = false;
-                if (_countPawnImageW != 0 && _countPawnImageB != 0)
-                    opponentNameLabel2.Content = "";
-                GameOver();
-                return;
-            }
-
-            if (!_currentGame.turn.Equals(_accountLogin))
-            {
-                DrawPawns();
-                if (_boardUpdated)
-                    _boardUpdated = false;
-            }
-            
-            if (_currentGame.turn.Equals(_accountLogin))
-            {
-                _remainingTime = _remainingTime.Subtract(TimeSpan.FromSeconds(1));
-
-                timeRemainingLabel.Content = _remainingTime.ToString("mm':'ss");
-
-                if (_remainingTime <= TimeSpan.Zero)
-                {
-                    if (_accountLogin.Equals(_currentGame.whitePawns))
-                    {
-                        var dispatcherTimer = (DispatcherTimer)sender;
-                        dispatcherTimer.Stop();
-                        _currentGame.inProgress = false;
-                        if (_countPawnImageW != 0 && _countPawnImageB != 0)
-                            opponentNameLabel2.Content = "";
-                        _firebaseCrud.ClearGameRoomWhitePawns(_currentGame.host, _currentGame.blackPawns, _currentGame.password, _currentGame.roomName, _currentGame.board, _currentGame.turn);
-                        _countPawnImageW = 0;
-                    }
-                    else if (_accountLogin.Equals(_currentGame.blackPawns))
-                    {
-                        var dispatcherTimer = (DispatcherTimer)sender;
-                        dispatcherTimer.Stop();
-                        _currentGame.inProgress = false;
-                        if (_countPawnImageW != 0 && _countPawnImageB != 0)
-                            opponentNameLabel2.Content = "";
-                        _firebaseCrud.DeleteGameRoom(_accountLogin);
-                        _countPawnImageB = 0;
-                    }
-                }
-
-                if (!_boardUpdated)
-                {
-                    DrawPawns();
-                    _boardUpdated = true;
-                    GameLabelsUpdate();
-                }
-            }
-
         }
 
         private void DrawPawns()
@@ -1396,6 +1195,7 @@ namespace CheckersMultiplayer
 
             if (opponentNameLabel2.Content.Equals("")&&(_countPawnImageKB == 1 && _countPawnImageKW == 1 && _countPawnImageB == 1 && _countPawnImageW == 1))
             {
+                winMediaPlayer.Play();
                 var db2 = new DoubleAnimation();
                 db2.From = -600;
                 db2.To = 0;
@@ -1405,6 +1205,7 @@ namespace CheckersMultiplayer
             }
             else if (opponentNameLabel2.Content.Equals("") && !(_countPawnImageKB == 1 && _countPawnImageKW == 1 && _countPawnImageB == 1 && _countPawnImageW == 1))
             {
+                winMediaPlayer.Play();
                 _accountVR += 8 + extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
@@ -1416,6 +1217,7 @@ namespace CheckersMultiplayer
             }
             else if(!opponentNameLabel2.Content.Equals("")&&_accountLogin.Equals(_currentGame.whitePawns) && _countPawnImageW == 0)
             {
+                loseMediaPlayer.Play();
                 _accountVR -= 8 - extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
@@ -1427,6 +1229,7 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.blackPawns) && _countPawnImageB == 0)
             {
+                loseMediaPlayer.Play();
                 _accountVR -= 8 - extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
@@ -1438,6 +1241,7 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.whitePawns) && _countPawnImageB == 0)
             {
+                winMediaPlayer.Play();
                 _accountVR += 8 + extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
@@ -1449,6 +1253,7 @@ namespace CheckersMultiplayer
             }
             else if (!opponentNameLabel2.Content.Equals("") && _accountLogin.Equals(_currentGame.blackPawns) && _countPawnImageW == 0)
             {
+                winMediaPlayer.Play();
                 _accountVR += 8 + extraVR;
                 _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, true, _accountInGame, _accountVR);
                 var db2 = new DoubleAnimation();
@@ -1462,6 +1267,7 @@ namespace CheckersMultiplayer
 
         private void quitGameButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             gameGrid.Visibility = Visibility.Hidden;
             mainMenuPanel.Visibility = Visibility.Visible;
             _firebaseCrud.DeleteGameRoom(_currentGame.host);
@@ -1477,49 +1283,291 @@ namespace CheckersMultiplayer
             }
         }
 
+        private void multiplayerButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            mainMenuPanel.Visibility = Visibility.Hidden;
+            multiplayerPanel.Visibility = Visibility.Visible;
+        }
+
+        private void quitMultiplayerButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            multiplayerPanel.Visibility = Visibility.Hidden;
+            mainMenuPanel.Visibility = Visibility.Visible;
+        }
+
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            if (_firebaseCrud.LogoutUser() == null)
+            {
+                _loggedOut = true;
+                _firebaseCrud.UpdateData(_accountName, _accountLogin, _accountEmail, _accountAge, false, _accountInGame, _accountVR);
+                var loginWindow = new LoginWindow();
+                loginWindow.Show();
+                Close();
+            }
+        }
+
+        private void joinLobbyButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            gameRoomsListBox.Items.Clear();
+            gameRoomsGrid.Visibility = Visibility.Visible;
+            multiplayerPanel.Visibility = Visibility.Hidden;
+
+            var gameRooms = _firebaseCrud.LoadGameRooms();
+            if (gameRooms == null)
+                return;
+
+            foreach (var item in gameRooms)
+            {
+                gameRoomsListBox.Items.Add(item.Value.roomName);
+            }
+        }
+
+        private void statisticsButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            rankingListBox.ItemsSource = null;
+            statisticsGrid.Visibility = Visibility.Visible;
+            multiplayerPanel.Visibility = Visibility.Hidden;
+
+            if (_firebaseCrud.LoadPlayers() == null) return;
+
+            playerRankingData = new ObservableCollection<PlayerRankingData>();
+
+            foreach (var item in _firebaseCrud.LoadPlayers())
+            {
+                string imagePath;
+
+                if (item.Value.online)
+                    imagePath = @"/images/online.png";
+                else
+                    imagePath = @"/images/offline.png";
+
+                playerRankingData.Add(new PlayerRankingData
+                {
+                    login = item.Value.login,
+                    vr = item.Value.vr,
+                    statusImagePath = imagePath
+                });
+            }
+            var sortedPlayerRankingData = playerRankingData.OrderByDescending(player => player.vr).ToList();
+
+            rankingListBox.ItemsSource = new ObservableCollection<PlayerRankingData>(sortedPlayerRankingData);
+        }
+
+        private void createLobbyButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            multiplayerPanel.Visibility = Visibility.Hidden;
+            createLobbyGrid.Visibility = Visibility.Visible;
+            createLobbyMainLabel.Visibility = Visibility.Visible;
+            roomNameLabel.Visibility = Visibility.Visible;
+            roomNameTextBox.Visibility = Visibility.Visible;
+            roomPasswordLabel.Visibility = Visibility.Visible;
+            roomPasswordTextBox.Visibility = Visibility.Visible;
+            startGameButton.Visibility = Visibility.Visible;
+            waitingForOpponentsLabel.Visibility = Visibility.Visible;
+            opponentLabel.Visibility = Visibility.Visible;
+            saveRoomInfoButton.Visibility = Visibility.Visible;
+            opponentNameLabel.Visibility = Visibility.Visible;
+
+            var gameRoom = _firebaseCrud.CreateGameRoom(_accountLogin);
+            roomNameTextBox.Text = gameRoom.roomName;
+            _currentGame.roomName = gameRoom.roomName;
+            roomPasswordTextBox.Text = gameRoom.password;
+            _currentGame.host = _accountLogin;
+            waitingForOpponentsLabel.Content = "Waiting for opponents...";
+            saveRoomInfoButton.IsEnabled = true;
+            startGameButton.IsEnabled = true;
+            roomNameTextBox.IsEnabled = true;
+            roomPasswordTextBox.IsEnabled = true;
+            opponentNameLabel.Content = "";
+            startGameButton.IsEnabled = false;
+
+            OpponentListenerAsync(_accountLogin);
+        }
+
+        private void quitLobbyCreation_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            multiplayerPanel.Visibility = Visibility.Visible;
+            createLobbyGrid.Visibility = Visibility.Hidden;
+
+            if (_currentGame.roomName == null) return;
+
+            if (_accountLogin.Equals(_currentGame.host))
+            {
+                _firebaseCrud.DeleteGameRoom(_accountLogin);
+                _response1.Dispose();
+            }
+            else
+                _firebaseCrud.ClearGameRoomWhitePawns(_currentGame.host, _currentGame.blackPawns, _currentGame.password, _currentGame.roomName, _currentGame.board, _currentGame.turn);
+
+        }
+
+        private void saveRoomInfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            _firebaseCrud.UpdateGameRoom(_accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), false);
+        }
+
+        private void quitGameRoomsButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            gameRoomsGrid.Visibility = Visibility.Hidden;
+            multiplayerPanel.Visibility = Visibility.Visible;
+        }
+
+        private void joinGameRoomButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+
+            if (gameRoomsListBox.SelectedItem == null) return;
+
+            roomPasswordGrid.Visibility = Visibility.Visible;
+            gameRoomsGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void quitRoomPasswordGridButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            roomPasswordGrid.Visibility = Visibility.Hidden;
+            gameRoomsGrid.Visibility = Visibility.Visible;
+        }
+
+        private void checkGameRoomPasswordButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            var gameRooms = _firebaseCrud.LoadGameRooms();
+            if (gameRooms == null)
+                return;
+
+            foreach (var item in gameRooms)
+            {
+                if (!item.Value.roomName.Equals(gameRoomsListBox.SelectedItem.ToString())) continue;
+
+                if (item.Value.password.Equals(enterRoomPasswordTextBox.Text))
+                {
+                    if (item.Value.whitePawns.Equals(""))
+                    {
+                        Console.WriteLine(@"Valid password");
+                        _firebaseCrud.UpdateGameRoomOpponent(item.Value.blackPawns, item.Value.password, item.Value.roomName, _accountLogin);
+                        roomPasswordGrid.Visibility = Visibility.Hidden;
+                        createLobbyGrid.Visibility = Visibility.Visible;
+                        createLobbyMainLabel.Visibility = Visibility.Visible;
+                        roomNameLabel.Visibility = Visibility.Visible;
+                        roomNameTextBox.Visibility = Visibility.Visible;
+                        roomPasswordLabel.Visibility = Visibility.Visible;
+                        roomPasswordTextBox.Visibility = Visibility.Visible;
+                        startGameButton.Visibility = Visibility.Visible;
+                        waitingForOpponentsLabel.Visibility = Visibility.Visible;
+                        opponentLabel.Visibility = Visibility.Visible;
+                        saveRoomInfoButton.Visibility = Visibility.Visible;
+                        opponentNameLabel.Visibility = Visibility.Visible;
+                        roomNameTextBox.Text = item.Value.roomName;
+                        roomPasswordTextBox.Text = item.Value.password;
+                        roomNameTextBox.IsEnabled = false;
+                        roomPasswordTextBox.IsEnabled = false;
+                        _currentGame.host = item.Value.host;
+                        _currentGame.password = item.Value.password;
+                        _currentGame.roomName = item.Value.roomName;
+                        _currentGame.whitePawns = item.Value.whitePawns;
+                        _currentGame.blackPawns = item.Value.blackPawns;
+                        _currentGame.board = item.Value.board;
+                        _currentGame.turn = item.Value.turn;
+                        _currentGame.inProgress = item.Value.inProgress;
+
+
+                        opponentNameLabel.Content = item.Value.blackPawns;
+                        waitingForOpponentsLabel.Content = "Waiting for room host to start the game....";
+                        saveRoomInfoButton.IsEnabled = false;
+                        startGameButton.IsEnabled = false;
+
+                        GameStartedListenerAsync(item.Value.host);
+
+                        _timer2 = new DispatcherTimer();
+                        _timer2.Interval = TimeSpan.FromSeconds(2);
+                        _timer2.Tick += Timer_GameRoomExisting;
+
+                        _timer2.Start();
+                    }
+                    else
+                    {
+                        Console.WriteLine(@"Room full");
+                    }
+                }
+                else
+                    Console.WriteLine(@"Invalid password");
+                return;
+            }
+
+            Console.WriteLine(@"Game room not existing");
+        }
+
+        private void startGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            clickMediaPlayer.Play();
+            _firebaseCrud.UpdateGameRoom(_accountLogin, roomPasswordTextBox.Text, roomNameTextBox.Text, opponentNameLabel.Content.ToString(), true);
+            createLobbyGrid.Visibility = Visibility.Hidden;
+            gameGrid.Visibility = Visibility.Visible;
+            CheckersGame();
+        }
+
         private void accountButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             mainMenuPanel.Visibility = Visibility.Hidden;
             accountGrid.Visibility = Visibility.Visible;
         }
 
         private void quitAccountPanelButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             mainMenuPanel.Visibility = Visibility.Visible;
             accountGrid.Visibility = Visibility.Hidden;
         }
 
         private void changePasswordButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             passwordChangeGrid.Visibility = Visibility.Visible;
             accountGrid.Visibility = Visibility.Hidden;
         }
 
         private void quitPasswordChangeGridButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             passwordChangeGrid.Visibility = Visibility.Hidden;
             accountGrid.Visibility = Visibility.Visible;
         }
 
         private void confirmPasswordChangeButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             _firebaseCrud.UpdateUserPassword(newPasswordTextBox.Text);
         }
 
         private void deleteAccountButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             accountDeleteGrid.Visibility = Visibility.Visible;
             accountGrid.Visibility = Visibility.Hidden;
         }
 
         private void quitAccountDeleteGridButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             accountDeleteGrid.Visibility = Visibility.Hidden;
             accountGrid.Visibility = Visibility.Visible;
         }
 
         private void confirmAccountDeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             _loggedOut = true;
             _firebaseCrud.DeleteUser();
             _firebaseCrud.DeleteData(_accountLogin);
@@ -1530,18 +1578,21 @@ namespace CheckersMultiplayer
 
         private void quitStatisticsGridButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             statisticsGrid.Visibility = Visibility.Hidden;
             multiplayerPanel.Visibility = Visibility.Visible;
         }
 
         private void creditsButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             mainMenuPanel.Visibility = Visibility.Hidden;
             creditsGrid.Visibility = Visibility.Visible;
         }
 
         private void quitCreditsPanelButton_Click(object sender, RoutedEventArgs e)
         {
+            clickMediaPlayer.Play();
             mainMenuPanel.Visibility = Visibility.Visible;
             creditsGrid.Visibility = Visibility.Hidden;
         }
