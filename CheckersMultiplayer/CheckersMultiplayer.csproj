@@ -342,7 +342,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Resource Include="Wood-2.png" />
+    <Resource Include="images\Wood-2.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -397,6 +397,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Resource Include="images\cancel.png" />
+    <Resource Include="images\confirm.png" />
     <Content Include="sounds\clickAudio.wav" />
     <Content Include="sounds\loseAudio.wav" />
     <Content Include="sounds\moveAudio.wav" />

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using CheckersMultiplayer.scripts;
 
@@ -26,7 +28,25 @@ namespace CheckersMultiplayer
             var firebaseCrud = new FirebaseCrud();
             bool loggedIn=firebaseCrud.LoginUser(emailTextBox.Text, passwordTextBox.Password);
 
-            if (!loggedIn) return;
+            if (!loggedIn)
+            {
+                LinearGradientBrush myBrush = new LinearGradientBrush();
+                myBrush.GradientStops.Add(new GradientStop(Colors.Yellow, 0.0));
+                myBrush.GradientStops.Add(new GradientStop(Colors.Orange, 0.5));
+                myBrush.GradientStops.Add(new GradientStop(Colors.Red, 1.0));
+                emailTextBox.Style = null;
+                passwordTextBox.Style = null;
+
+                emailTextBox.BorderThickness = new Thickness(0, 0, 0, 1);
+                emailTextBox.BorderBrush = myBrush;
+                passwordTextBox.BorderThickness = new Thickness(0, 0, 0, 1);
+                passwordTextBox.BorderBrush = myBrush;
+
+                welcomeLabel.Content = "Invalid account data!";
+                welcomeLabel.Foreground = System.Windows.Media.Brushes.Red;
+
+                return;
+            }
             
             string accountName;
             string accountLogin;

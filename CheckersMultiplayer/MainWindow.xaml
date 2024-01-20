@@ -13,15 +13,16 @@
 
 
     <Grid>
+
         <Grid x:Name="mainMenuPanel" Visibility="Visible">
 
             <Grid.Background>
                 <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <Label Content="Checkers Multiplayer" Height="36" Margin="100,30,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur"/>
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
 
-            <Image HorizontalAlignment="Left" Height="40" Margin="30,30,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
 
             <Button x:Name="multiplayerButton"  Margin="554,498,0,0" Click="multiplayerButton_Click" Height="60" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Button.Style>
@@ -40,12 +41,14 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Border Background="{TemplateBinding Background}"
-                                        CornerRadius="10">
+                                CornerRadius="10">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -71,12 +74,6 @@
             </Button>
 
             <Button x:Name="accountButton" Margin="30,498,0,0" Width="200" Height="60" Click="accountButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
-                        <GradientStop Color="White"/>
-                        <GradientStop Color="#FFE0E0E0" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -84,7 +81,7 @@
                             <Setter.Value>
                                 <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
                                     <GradientStop Color="White" Offset="0"/>
-                                    <GradientStop Color="Gray" Offset="1"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
                                 </LinearGradientBrush>
                             </Setter.Value>
                         </Setter>
@@ -93,12 +90,14 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Border Background="{TemplateBinding Background}"
-                                        CornerRadius="10">
+                                CornerRadius="10">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -147,6 +146,8 @@
                             </Setter.Value>
                         </Setter>
 
+                        <Setter Property="Cursor" Value="Hand"/>
+
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background">
@@ -170,7 +171,7 @@
 
             </Button>
 
-            <Button x:Name="logoutButton" Margin="714,30,0,0" Click="logoutButton_Click" Height="40" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Button x:Name="logoutButton" Margin="714,34,0,0" Click="logoutButton_Click" Height="40" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -187,12 +188,14 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Border Background="{TemplateBinding Background}"
-                                        CornerRadius="10">
+                                CornerRadius="10">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -226,9 +229,9 @@
                 <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <Label Content="Checkers Multiplayer" Height="34" Margin="100,34,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur"/>
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
 
-            <Image HorizontalAlignment="Left" Height="40" Margin="30,34,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
 
             <Label Content="Multiplayer Mode" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center" Foreground="White" Width="224" FontFamily="fonts/#Poppins" VerticalAlignment="Top" Height="50" Margin="0,225,0,0"/>
 
@@ -255,6 +258,8 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -303,6 +308,8 @@
                             </Setter.Value>
                         </Setter>
 
+                        <Setter Property="Cursor" Value="Hand"/>
+
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background">
@@ -349,6 +356,8 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -397,6 +406,8 @@
                             </Setter.Value>
                         </Setter>
 
+                        <Setter Property="Cursor" Value="Hand"/>
+
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background">
@@ -437,13 +448,56 @@
 
             <Label x:Name="roomNameLabel" Content="Room name:&#xD;&#xA;" HorizontalAlignment="Left" Margin="50,276,0,0" VerticalAlignment="Top" Height="30" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="100"/>
 
-            <TextBox x:Name="roomNameTextBox" HorizontalAlignment="Left" Margin="194,276,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" FontFamily="fonts/#Poppins" Height="26"/>
+            <TextBox x:Name="roomNameTextBox" HorizontalAlignment="Left" Margin="194,266,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" FontFamily="fonts/#Poppins" Height="30" Foreground="White" FontSize="14">
+                <TextBox.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="CaretBrush" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border BorderThickness="0,0,0,1">
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="White" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <ScrollViewer x:Name="PART_ContentHost"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+
 
             <Label x:Name="roomPasswordLabel" Content="Room password:" HorizontalAlignment="Left" Margin="50,316,0,0" VerticalAlignment="Top" Height="30" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="130"/>
 
-            <TextBox x:Name="roomPasswordTextBox" HorizontalAlignment="Left" Margin="194,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" FontFamily="fonts/#Poppins" Height="26"/>
+            <TextBox x:Name="roomPasswordTextBox" HorizontalAlignment="Left" Margin="194,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" FontFamily="fonts/#Poppins" Height="30" Foreground="White" FontSize="14">
+                <TextBox.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="CaretBrush" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border BorderThickness="0,0,0,1">
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="White" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <ScrollViewer x:Name="PART_ContentHost"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
 
-            <Button x:Name="startGameButton" HorizontalAlignment="Left" Margin="540,376,0,0" VerticalAlignment="Top" Width="168" Height="46" Click="startGameButton_Click" FontSize="14" FontFamily="fonts/#Poppins">
+            <Button x:Name="startGameButton" HorizontalAlignment="Left" Margin="490,376,0,0" VerticalAlignment="Top" Width="168" Height="46" Click="startGameButton_Click" FontSize="14" FontFamily="fonts/#Poppins">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -466,6 +520,8 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -490,11 +546,11 @@
 
             </Button>
 
-            <Label x:Name="waitingForOpponentsLabel" Content="Waiting for opponents..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="534,227,0,0" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="250" Height="30"/>
+            <Label x:Name="waitingForOpponentsLabel" Content="Waiting for opponents..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="460,276,0,0" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="320" Height="30"/>
 
-            <Label x:Name="opponentLabel" Content="Your opponent:" HorizontalAlignment="Left" Margin="510,294,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="120" Height="30"/>
+            <Label x:Name="opponentLabel" Content="Your opponent:" HorizontalAlignment="Left" Margin="460,302,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="120" Height="30"/>
 
-            <Button x:Name="quitLobbyCreation" HorizontalAlignment="Left" Margin="714,31,0,0" VerticalAlignment="Top" Width="40" Height="40" Click="quitLobbyCreation_Click">
+            <Button x:Name="quitLobbyCreation" HorizontalAlignment="Left" Margin="714,34,0,0" VerticalAlignment="Top" Width="40" Height="40" Click="quitLobbyCreation_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -517,6 +573,8 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -564,6 +622,8 @@
                             </Setter.Value>
                         </Setter>
 
+                        <Setter Property="Cursor" Value="Hand"/>
+
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background">
@@ -587,83 +647,74 @@
 
             </Button>
 
-            <Label x:Name="opponentNameLabel" Content="" HorizontalAlignment="Left" Margin="635,294,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="200" Height="30"/>
+            <Label x:Name="opponentNameLabel" Content="" HorizontalAlignment="Left" Margin="590,316,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="145" Height="30"/>
 
         </Grid>
 
 
         <Grid x:Name="gameRoomsGrid" Visibility="Collapsed">
-            <Label Content="Active Game Rooms" HorizontalAlignment="Center" Margin="0,31,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
-            <ListBox x:Name="gameRoomsListBox" Margin="136,80,136,114"/>
-            <Button x:Name="quitGameRoomsButton" Content="Return" HorizontalAlignment="Left" Margin="33,38,0,0" VerticalAlignment="Top" Width="53" Click="quitGameRoomsButton_Click"/>
-            <Button x:Name="joinGameRoomButton" Content="Join" HorizontalAlignment="Center" Margin="0,419,0,0" VerticalAlignment="Top" Width="110" Click="joinGameRoomButton_Click"/>
-        </Grid>
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
+
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+
+            <Label Content="Active Game Rooms" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Foreground="White" FontFamily="fonts/#poppins" Width="200" Height="40"/>
+
+            <ListBox x:Name="gameRoomsListBox" Margin="0,150,0,0" Width="400" Height="300" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="fonts/#poppins" Background="Transparent" BorderBrush="Transparent">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="border" 
+                                            Background="White" 
+                                            BorderBrush="Black" 
+                                            BorderThickness="1" 
+                                            Padding="5"
+                                            CornerRadius="10">
+                                        <ContentPresenter/>
+                                    </Border>
+
+                                    <ControlTemplate.Triggers>
+
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush EndPoint="0.0,5" StartPoint="1,0.5">
+                                                        <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                                        <GradientStop Color="#FF615F5F" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="border" Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush EndPoint="0.0,5" StartPoint="1,0.5">
+                                                        <GradientStop Color="#FF6B6B67" Offset="0"/>
+                                                        <GradientStop Color="#FF3E3C3C" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
 
 
-        <Grid x:Name="roomPasswordGrid" Visibility="Collapsed">
-            <Label Content="Enter the room password" HorizontalAlignment="Center" Margin="0,129,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
-            <TextBox x:Name="enterRoomPasswordTextBox" HorizontalAlignment="Center" Margin="0,188,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="29" FontSize="16"/>
-            <Button x:Name="quitRoomPasswordGridButton" Content="Cancel" HorizontalAlignment="Left" Margin="314,263,0,0" VerticalAlignment="Top" Height="30" Width="64" Click="quitRoomPasswordGridButton_Click"/>
-            <Button x:Name="checkGameRoomPasswordButton" Content="Join" HorizontalAlignment="Left" Margin="425,263,0,0" VerticalAlignment="Top" Height="30" Width="57" Click="checkGameRoomPasswordButton_Click"/>
-        </Grid>
-
-
-        <Grid x:Name="gameGrid" Visibility="Collapsed">
-            <Image HorizontalAlignment="Left" Height="468" Margin="10,10,0,10" VerticalAlignment="Top" Width="468" Source="/Wood-2.png"/>
-            <Grid x:Name="gameWidgetsGrid" Visibility="Visible">
-                <Grid.RenderTransform>
-                    <TranslateTransform x:Name="gameWidgetsGridTransform"/>
-                </Grid.RenderTransform>
-                <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="483,357,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.221,-0.077" HorizontalContentAlignment="Center" Width="309"/>
-                <Label x:Name="opponentNameLabel2" Content="OpponentLogin" HorizontalAlignment="Left" Margin="483,383,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="309" FontStyle="Italic"/>
-                <Label x:Name="whoseTurnLabel" Content="YOUR TURN" HorizontalAlignment="Left" Margin="483,86,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Height="37" Width="309" HorizontalContentAlignment="Center"/>
-                <Label Content="White Pawns captured:" HorizontalAlignment="Left" Margin="561,167,0,0" VerticalAlignment="Top"/>
-                <Label Content="Black Pawns captured:" HorizontalAlignment="Left" Margin="561,198,0,0" VerticalAlignment="Top"/>
-                <Label x:Name="numberOfWhitePawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="696,167,0,0" VerticalAlignment="Top"/>
-                <Label x:Name="numberOfBlackPawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="693,198,0,0" VerticalAlignment="Top"/>
-                <Label Content="Time remaining:" HorizontalAlignment="Left" Margin="561,248,0,0" VerticalAlignment="Top"/>
-                <Label x:Name="timeRemainingLabel" Content="05:00" HorizontalAlignment="Left" Margin="661,248,0,0" VerticalAlignment="Top"/>
-
-            </Grid>
-            <Grid Margin="483,168,0,174" x:Name="opponentLeftGrid" Visibility="Collapsed">
-                <Grid.RenderTransform>
-                    <TranslateTransform x:Name="opponentLeftGridTransform"/>
-                </Grid.RenderTransform>
-                <Label Content="You won!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-                <Label Content="Your opponent left the match." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
-            </Grid>
-            <Grid Margin="483,168,0,174" x:Name="youLostGrid" Visibility="Collapsed">
-                <Grid.RenderTransform>
-                    <TranslateTransform x:Name="youLostGridTransform"/>
-                </Grid.RenderTransform>
-                <Label Content="You lost!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-                <Label Content="Game over." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
-            </Grid>
-            <Grid Margin="483,168,0,174" x:Name="youWonGrid" Visibility="Collapsed">
-                <Grid.RenderTransform>
-                    <TranslateTransform x:Name="youWonGridTransform"/>
-                </Grid.RenderTransform>
-                <Label Content="You won!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-                <Label Content="Game over." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top"/>
-            </Grid>
-            <Grid Margin="483,168,0,174" x:Name="drawGrid" Visibility="Collapsed">
-                <Grid.RenderTransform>
-                    <TranslateTransform x:Name="drawGridTransform"/>
-                </Grid.RenderTransform>
-                <Label Content="Draw!" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-                <TextBlock Text="The game is drawn with only 2 kings remaining on the board." HorizontalAlignment="Center" Margin="0,87,0,0" VerticalAlignment="Top" Width="200" TextWrapping="Wrap" Height="44" TextAlignment="Center"/>
-            </Grid>
-            <Grid Margin="483,427,0,0">
-                <Button x:Name="quitGameButton" Content="Quit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="83" Height="26" Click="quitGameButton_Click"/>
-            </Grid>
-        </Grid>
-
-        <Grid x:Name="creditsGrid" Visibility="Collapsed">
-
-            <Button x:Name="quitCreditsPanel" HorizontalAlignment="Left" Margin="712,57,0,0" VerticalAlignment="Top" Width="40" Height="41" Click="quitCreditsPanelButton_Click">
+            <Button x:Name="quitGameRoomsButton" HorizontalAlignment="Left" Margin="714,34,0,0" VerticalAlignment="Top" Width="40" Height="40" Click="quitGameRoomsButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-
                         <Setter Property="Background">
                             <Setter.Value>
                                 <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
@@ -677,12 +728,14 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Border Background="{TemplateBinding Background}"
-                            CornerRadius="10">
+                                        CornerRadius="10">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -706,18 +759,412 @@
 
             </Button>
 
-            <Label Content="Credits" HorizontalAlignment="Center" Margin="0,54,0,0" VerticalAlignment="Top" FontSize="28" FontWeight="Bold"/>
-            <Label Content="Backend:" HorizontalAlignment="Left" Margin="296,148,0,0" VerticalAlignment="Top" FontSize="16"/>
-            <Label Content="Frontend:" HorizontalAlignment="Left" Margin="296,178,0,0" VerticalAlignment="Top" FontSize="16"/>
-            <Label Content="Piotr Haraburda" HorizontalAlignment="Left" Margin="389,148,0,0" VerticalAlignment="Top" FontSize="16"/>
-            <Label Content="Tomasz Maciejewski" HorizontalAlignment="Left" Margin="389,178,0,0" VerticalAlignment="Top" FontSize="16"/>
-            <Label Content="Used Technologies:" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Margin="0,298,0,0"/>
-            <Label Content="Backend: C#" HorizontalAlignment="Center" Margin="0,350,0,0" VerticalAlignment="Top"/>
-            <Label Content="Frontend: WPF" HorizontalAlignment="Center" Margin="0,382,0,0" VerticalAlignment="Top"/>
-            <Label Content="Database + Connection: Google Firebase Realtime Database" HorizontalAlignment="Center" Margin="0,444,0,0" VerticalAlignment="Top"/>
-            <Label Content="User authorization: Google Firebase Authentication" HorizontalAlignment="Center" Margin="0,412,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="joinGameRoomButton" Margin="0,480,0,0"  Width="200" Height="60" HorizontalAlignment="Center" VerticalAlignment="Top" Click="joinGameRoomButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                         CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Join" Width="70" FontFamily="fonts/#Poppins" VerticalAlignment="Center"/>
+                    <Image Source="images/join.png" Width="30" Height="30"/>
+                </StackPanel>
+
+            </Button>
 
         </Grid>
+
+
+        <Grid x:Name="roomPasswordGrid" Visibility="Collapsed">
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
+
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+
+            <Label Content="Enter the room password" HorizontalAlignment="Center" Margin="0,194,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Foreground="White" FontFamily="fonts/#poppins"/>
+
+            <TextBox x:Name="enterRoomPasswordTextBox" HorizontalAlignment="Center" Margin="0,252,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="30" FontSize="16" Foreground="White" FontFamily="fonts/#poppins">
+                <TextBox.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="CaretBrush" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border BorderThickness="0,0,0,1">
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="White" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <ScrollViewer x:Name="PART_ContentHost"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+
+            <Button x:Name="quitRoomPasswordGridButton" HorizontalAlignment="Left" Margin="230,324,0,0" VerticalAlignment="Top" Height="50" Width="150" Click="quitRoomPasswordGridButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal" Height="30" Width="97">
+                    <TextBlock Text="Cancel" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
+                    <Image Source="images/cancel.png" Margin="10,0" Width="40" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
+            <Button x:Name="checkGameRoomPasswordButton" HorizontalAlignment="Left" Margin="424,324,0,0" VerticalAlignment="Top" Height="50" Width="150" Click="checkGameRoomPasswordButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal" Width="80">
+                    <TextBlock Text="Join" Width="45" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
+                    <Image Source="images/join.png" Margin="0,0,0,0" Width="40" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
+        </Grid>
+
+
+        <Grid x:Name="gameGrid" Visibility="Collapsed">
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Image HorizontalAlignment="Left" Height="468" Margin="10,10,0,0" VerticalAlignment="Top" Width="468" Source="images/Wood-2.png"/>
+
+            <Grid x:Name="gameWidgetsGrid" Visibility="Visible">
+
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="gameWidgetsGridTransform"/>
+                </Grid.RenderTransform>
+
+                <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="480,510,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="310" Foreground="White" FontFamily="fonts/#poppins" Height="30"/>
+
+                <Label x:Name="opponentNameLabel2" Content="OpponentLogin" HorizontalAlignment="Left" Margin="480,526,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="310" Foreground="White" FontFamily="fonts/#poppins" Height="30"/>
+
+                <Label x:Name="whoseTurnLabel" Content="YOUR TURN" HorizontalAlignment="Left" Margin="480,57,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="20" Height="40" Width="310" HorizontalContentAlignment="Center" Foreground="White" FontFamily="fonts/#poppins"/>
+
+                <Label Content="White Pawns captured:" HorizontalAlignment="Left" Margin="554,222,0,0" VerticalAlignment="Top"  Foreground="White" FontFamily="fonts/#poppins" Width="150" Height="30"/>
+
+                <Label Content="Black Pawns captured:" HorizontalAlignment="Left" Margin="554,252,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins" Width="150" Height="30"/>
+
+                <Label x:Name="numberOfWhitePawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="704,222,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins" Width="20" Height="30"/>
+
+                <Label x:Name="numberOfBlackPawnsCaptured" Content="0" HorizontalAlignment="Left" Margin="704,252,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins" Width="20" Height="30"/>
+
+                <Label Content="Time remaining:" HorizontalAlignment="Left" Margin="554,302,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins" Width="110" Height="30"/>
+
+                <Label x:Name="timeRemainingLabel" Content="05:00" HorizontalAlignment="Left" Margin="664,302,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins" Width="46" Height="30"/>
+
+            </Grid>
+
+            <Grid Margin="483,168,0,174" x:Name="opponentLeftGrid" Visibility="Collapsed">
+
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="opponentLeftGridTransform"/>
+                </Grid.RenderTransform>
+
+                <Label Content="You won!" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" FontFamily="fonts/#poppins" Height="50" Width="125" HorizontalContentAlignment="Center"/>
+
+                <Label Content="Your opponent left the match." HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#poppins" Height="30" Width="300" HorizontalContentAlignment="Center"/>
+
+            </Grid>
+
+            <Grid Margin="483,168,0,174" x:Name="youLostGrid" Visibility="Collapsed">
+
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="youLostGridTransform"/>
+
+                </Grid.RenderTransform>
+
+                <Label Content="You lost!" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" FontFamily="fonts/#poppins" Height="50" Width="125" HorizontalContentAlignment="Center"/>
+
+                <Label Content="Game over." HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#poppins" Height="30" Width="190" HorizontalContentAlignment="Center"/>
+
+            </Grid>
+
+            <Grid Margin="483,168,0,174" x:Name="youWonGrid" Visibility="Collapsed">
+
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="youWonGridTransform"/>
+
+                </Grid.RenderTransform>
+
+                <Label Content="You won!" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" FontFamily="fonts/#poppins" Height="50" Width="125" HorizontalContentAlignment="Center"/>
+
+                <Label Content="Game over." HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#poppins" Height="30" Width="190" HorizontalContentAlignment="Center"/>
+
+            </Grid>
+
+            <Grid Margin="483,168,0,174" x:Name="drawGrid" Visibility="Collapsed">
+
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="drawGridTransform"/>
+                </Grid.RenderTransform>
+
+                <Label Content="Draw!" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" FontFamily="fonts/#poppins" Height="50" Width="125" HorizontalContentAlignment="Center"/>
+
+                <TextBlock Text="The game is drawn with only 2 kings remaining on the board." HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#poppins" Height="60" Width="250" TextWrapping="Wrap"/>
+
+            </Grid>
+
+
+            <Button x:Name="quitGameButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="282" Height="46" Click="quitGameButton_Click" Margin="103,504,0,0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Quit" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
+                    <Image Source="images/logout.png" Margin="10,0" Width="40" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
+
+        </Grid>
+
+
+        <Grid x:Name="creditsGrid" Visibility="Collapsed">
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
+
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+
+            <Button x:Name="quitCreditsPanel" HorizontalAlignment="Left" Margin="714,34,0,0" VerticalAlignment="Top" Width="40" Height="40" Click="quitCreditsPanelButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/go_back.png" Width="25" Height="25"/>
+                </StackPanel>
+
+            </Button>
+
+            <Label Content="Credits" HorizontalAlignment="Center" Margin="0,75,0,0" VerticalAlignment="Top" FontSize="28" FontWeight="Bold" Foreground="White" FontFamily="fonts/#Poppins" Width="120" Height="50"/>
+
+            <Label Content="Backend:" HorizontalAlignment="Left" Margin="290,160,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Height="35" Width="85"/>
+
+            <Label Content="Frontend:" HorizontalAlignment="Left" Margin="290,200,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="85" Height="35"/>
+
+            <Label Content="Piotr Haraburda" HorizontalAlignment="Left" Margin="400,160,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="175" Height="35"/>
+
+            <Label Content="Tomasz Maciejewski" HorizontalAlignment="Left" Margin="400,200,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="175" Height="35"/>
+
+            <Label Content="Used Technologies:" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Margin="0,300,0,0" Foreground="White" FontFamily="fonts/#Poppins" Width="170" Height="40"/>
+
+            <Label Content="Backend: C#" HorizontalAlignment="Center" Margin="0,340,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16"/>
+
+            <Label Content="Frontend: WPF" HorizontalAlignment="Center" Margin="0,380,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16"/>
+
+            <Label Content="Database + Connection: Google Firebase Realtime Database" HorizontalAlignment="Center" Margin="0,460,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16"/>
+
+            <Label Content="User authorization: Google Firebase Authentication" HorizontalAlignment="Center" Margin="0,420,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16"/>
+
+        </Grid>
+
 
         <Grid x:Name="accountGrid" Visibility="Collapsed">
 
@@ -725,14 +1172,13 @@
                 <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
             </Grid.Background>
 
-            <Label Content="Checkers Multiplayer" Height="35" Margin="100,33,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur"/>
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
 
-            <Image HorizontalAlignment="Left" Height="41" Margin="30,33,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
-
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
 
             <Label Content="Account Panel" HorizontalAlignment="Center" Margin="0,101,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White" FontFamily="fonts/#Poppins" Width="174" Height="45"/>
 
-            <Label x:Name="accountWelcomeLabel" Content="Welcome to your account settings, Name!" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Margin="244,141,0,0"/>
+            <Label x:Name="accountWelcomeLabel" Content="Welcome to your account settings, Name!" Width="800" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Margin="0,145,0,0"/>
 
             <Label Content="First Name:" HorizontalAlignment="Left" Margin="300,204,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins"/>
 
@@ -782,6 +1228,8 @@
                             </Setter.Value>
                         </Setter>
 
+                        <Setter Property="Cursor" Value="Hand"/>
+
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background">
@@ -829,6 +1277,8 @@
                             </Setter.Value>
                         </Setter>
 
+                        <Setter Property="Cursor" Value="Hand"/>
+
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background">
@@ -852,7 +1302,7 @@
 
             </Button>
 
-            <Button x:Name="quitAccountPanel" HorizontalAlignment="Left" Margin="714,33,0,0" VerticalAlignment="Top" Width="40" Height="41" Click="quitAccountPanelButton_Click">
+            <Button x:Name="quitAccountPanel" HorizontalAlignment="Left" Margin="714,34,0,0" VerticalAlignment="Top" Width="40" Height="41" Click="quitAccountPanelButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -875,6 +1325,8 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -900,25 +1352,300 @@
 
         </Grid>
 
+
         <Grid x:Name="passwordChangeGrid" Visibility="Collapsed">
-            <Label Content="Changing your password" HorizontalAlignment="Center" Margin="0,118,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-            <Label Content="Enter your new password twice to change it" HorizontalAlignment="Center" Margin="0,173,0,0" VerticalAlignment="Top"/>
-            <Label Content="New password:" HorizontalAlignment="Left" Margin="267,259,0,0" VerticalAlignment="Top"/>
-            <Label Content="Confirm new password:" HorizontalAlignment="Left" Margin="267,300,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="newPasswordTextBox" HorizontalAlignment="Left" Margin="420,263,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="confirmNewPasswordTextBox" HorizontalAlignment="Left" Margin="420,304,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-            <Button x:Name="quitPasswordChangeGridButton" Content="Cancel" HorizontalAlignment="Left" Margin="312,409,0,0" VerticalAlignment="Top" Height="29" Width="79" Click="quitPasswordChangeGridButton_Click"/>
-            <Button x:Name="confirmPasswordChangeButton" Content="Confirm" HorizontalAlignment="Left" Margin="420,409,0,0" VerticalAlignment="Top" Height="29" Width="86" Click="confirmPasswordChangeButton_Click"/>
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
+
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+
+            <Label Content="Changing your password" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" FontFamily="fonts/#poppins"/>
+
+            <Label Content="Enter your new password twice to change it" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins"/>
+
+            <Label Content="New password:" HorizontalAlignment="Left" Margin="270,260,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins" Height="30" Width="100"/>
+
+            <Label Content="Confirm new password:" HorizontalAlignment="Left" Margin="270,300,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins" Height="30" Width="150"/>
+
+            <TextBox x:Name="newPasswordTextBox" HorizontalAlignment="Left" Margin="430,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Foreground="White" FontFamily="fonts/#poppins" Height="20">
+                <TextBox.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="CaretBrush" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border BorderThickness="0,0,0,1">
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="White" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <ScrollViewer x:Name="PART_ContentHost"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+
+            <TextBox x:Name="confirmNewPasswordTextBox" HorizontalAlignment="Left" Margin="430,300,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Foreground="White" FontFamily="fonts/#poppins" Height="20">
+                <TextBox.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="CaretBrush" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border BorderThickness="0,0,0,1">
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="White" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <ScrollViewer x:Name="PART_ContentHost"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+
+            <Button x:Name="quitPasswordChangeGridButton" HorizontalAlignment="Left" Margin="200,380,0,0" VerticalAlignment="Top" Height="60" Width="200" Click="quitPasswordChangeGridButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Cancel" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
+                    <Image Source="images/cancel.png" Margin="10,0" Width="40" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
+            <Button x:Name="confirmPasswordChangeButton" HorizontalAlignment="Left" Margin="420,380,0,0" VerticalAlignment="Top" Height="60" Width="200" Click="confirmPasswordChangeButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Confirm" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
+                    <Image Source="images/confirm.png" Margin="10,0" Width="40" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
         </Grid>
+
+
         <Grid x:Name="accountDeleteGrid" Visibility="Collapsed">
-            <Label Content="Deleting your account" HorizontalAlignment="Center" Margin="0,156,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-            <Label Content="Be sure you want to do it!" HorizontalAlignment="Center" Margin="0,211,0,0" VerticalAlignment="Top"/>
-            <Button x:Name="quitAccountDeleteGridButton" Content="Cancel" HorizontalAlignment="Left" Margin="309,340,0,0" VerticalAlignment="Top" Height="29" Width="79" Click="quitAccountDeleteGridButton_Click"/>
-            <Button x:Name="confirmAccountDeleteButton" Content="Confirm" HorizontalAlignment="Left" Margin="417,340,0,0" VerticalAlignment="Top" Height="29" Width="86" Click="confirmAccountDeleteButton_Click"/>
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
+
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+
+            <Label Content="Deleting your account" HorizontalAlignment="Center" Margin="0,156,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" FontFamily="fonts/#poppins"/>
+
+            <Label Content="Be sure you want to do it!" HorizontalAlignment="Center" Margin="0,211,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins"/>
+
+            <Button x:Name="quitAccountDeleteGridButton" HorizontalAlignment="Left" Margin="160,340,0,0" VerticalAlignment="Top" Height="60" Width="200" Click="quitAccountDeleteGridButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Cancel" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
+                    <Image Source="images/cancel.png" Margin="10,0" Width="40" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
+            <Button x:Name="confirmAccountDeleteButton" HorizontalAlignment="Left" Margin="440,340,0,0" VerticalAlignment="Top" Height="60" Width="200" Click="confirmAccountDeleteButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Confirm" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
+                    <Image Source="images/confirm.png" Margin="10,0" Width="40" Height="30"/>
+                </StackPanel>
+
+            </Button>
+
         </Grid>
+
+
         <Grid x:Name="statisticsGrid" Visibility="Collapsed">
-            <Label Content="Global Multiplayer VR Ranking" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
-            <ListBox Name="rankingListBox" HorizontalContentAlignment="Stretch" Margin="230,151,230,151" HorizontalAlignment="Stretch" PreviewMouseDown="rankingListBox_MouseDown">
+
+            <Grid.Background>
+                <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
+
+            <Label Content="Checkers Multiplayer" Height="35" Margin="100,31,0,0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#tektur" Width="220"/>
+
+            <Image HorizontalAlignment="Left" Height="40" Margin="30,31,0,0" VerticalAlignment="Top" Width="40" Source="images/logo.png"/>
+
+            <Label Content="Global Multiplayer VR Ranking" HorizontalAlignment="Center" Margin="0,85,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" FontFamily="fonts/#poppins"/>
+
+            <ListBox Name="rankingListBox" HorizontalContentAlignment="Stretch" Margin="0,200,0,0" HorizontalAlignment="Stretch" PreviewMouseDown="rankingListBox_MouseDown" Width="340" Height="400" Foreground="White" FontFamily="fonts/#poppins" Background="Transparent" BorderBrush="Transparent">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -929,11 +1656,11 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                <TextBlock Text="{Binding vr}" Margin="5"/>
+                                <TextBlock Text="{Binding vr}" Margin="5" FontFamily="fonts/#poppins"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding login}" Margin="5"/>
+                                <TextBlock Text="{Binding login}" Margin="5" FontFamily="fonts/#poppins"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -942,10 +1669,89 @@
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="border" 
+                                            Background="Transparent">
+                                        <ContentPresenter/>
+                                    </Border>
+
+                                    <ControlTemplate.Triggers>
+
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="Transparent"/>
+                                        </Trigger>
+
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="Transparent"/>
+                                        </Trigger>
+
+                                    </ControlTemplate.Triggers>
+
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
             </ListBox>
-            <Button x:Name="quitStatisticsGridButton" Content="Go Back" HorizontalAlignment="Center" Margin="0,498,0,0" VerticalAlignment="Top" Width="152" Height="28" Click="quitStatisticsGridButton_Click"/>
+
+            <Button x:Name="quitStatisticsGridButton" HorizontalAlignment="Left" Margin="714,34,0,0" VerticalAlignment="Top" Width="40" Height="40" Click="quitStatisticsGridButton_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                                            <GradientStop Color="#FFBFBFB7" Offset="0"/>
+                                            <GradientStop Color="#FF615F5F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Button.Style>
+
+                <StackPanel Orientation="Horizontal">
+
+                    <Image Source="images/go_back.png" Width="25" Height="25"/>
+                </StackPanel>
+
+            </Button>
 
         </Grid>
+
+
     </Grid>
 
 </Window>
