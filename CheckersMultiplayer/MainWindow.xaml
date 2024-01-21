@@ -14,7 +14,7 @@
 
     <Grid>
 
-        <Grid x:Name="mainMenuPanel" Visibility="Visible">
+        <Grid x:Name="mainMenuPanel" Visibility="Collapsed">
 
             <Grid.Background>
                 <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
@@ -66,7 +66,7 @@
                     </Style>
                 </Button.Style>
 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                     <TextBlock Text="Play Multiplayer" Width="115" FontSize="14" FontFamily="fonts/#Poppins" VerticalAlignment="Center"/>
                     <Image Source="images/joystick.png" Width="40" Height="30"/>
                 </StackPanel>
@@ -434,7 +434,7 @@
         </Grid>
 
 
-        <Grid x:Name="createLobbyGrid" Visibility="Collapsed">
+        <Grid x:Name="createLobbyGrid" Visibility="Visible">
 
             <Grid.Background>
                 <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
@@ -497,7 +497,7 @@
                 </TextBox.Resources>
             </TextBox>
 
-            <Button x:Name="startGameButton" HorizontalAlignment="Left" Margin="490,376,0,0" VerticalAlignment="Top" Width="168" Height="46" Click="startGameButton_Click" FontSize="14" FontFamily="fonts/#Poppins">
+            <Button x:Name="startGameButton" HorizontalAlignment="Left" Margin="490,380,0,0" VerticalAlignment="Top" Width="168" Height="45" Click="startGameButton_Click" FontSize="14" FontFamily="fonts/#Poppins">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -546,9 +546,9 @@
 
             </Button>
 
-            <Label x:Name="waitingForOpponentsLabel" Content="Waiting for opponents..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="460,276,0,0" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="320" Height="30"/>
+            <Label x:Name="waitingForOpponentsLabel" Content="Waiting for opponents..." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="400,276,0,0" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="400" Height="40" HorizontalContentAlignment="Center"/>
 
-            <Label x:Name="opponentLabel" Content="Your opponent:" HorizontalAlignment="Left" Margin="460,302,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="120" Height="30"/>
+            <Label x:Name="opponentLabel" Content="Your opponent:" HorizontalAlignment="Left" Margin="400,316,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="200" Height="30" HorizontalContentAlignment="Right"/>
 
             <Button x:Name="quitLobbyCreation" HorizontalAlignment="Left" Margin="714,34,0,0" VerticalAlignment="Top" Width="40" Height="40" Click="quitLobbyCreation_Click">
                 <Button.Style>
@@ -598,7 +598,7 @@
 
             </Button>
 
-            <Button x:Name="saveRoomInfoButton" HorizontalAlignment="Left" Margin="112,382,0,0" VerticalAlignment="Top"  Width="160" Click="saveRoomInfoButton_Click" Height="44">
+            <Button x:Name="saveRoomInfoButton" HorizontalAlignment="Left" Margin="112,380,0,0" VerticalAlignment="Top"  Width="160" Click="saveRoomInfoButton_Click" Height="45">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -647,7 +647,7 @@
 
             </Button>
 
-            <Label x:Name="opponentNameLabel" Content="" HorizontalAlignment="Left" Margin="590,316,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="145" Height="30"/>
+            <Label x:Name="opponentNameLabel" Content="" HorizontalAlignment="Left" Margin="600,316,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" FontFamily="fonts/#Poppins" Width="200" Height="30" HorizontalContentAlignment="Left"/>
 
         </Grid>
 
@@ -759,7 +759,7 @@
 
             </Button>
 
-            <Button x:Name="joinGameRoomButton" Margin="0,480,0,0"  Width="200" Height="60" HorizontalAlignment="Center" VerticalAlignment="Top" Click="joinGameRoomButton_Click">
+            <Button x:Name="joinGameRoomButton" Margin="0,480,0,0"  Width="160" Height="45" HorizontalAlignment="Center" VerticalAlignment="Top" Click="joinGameRoomButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -802,7 +802,7 @@
                 </Button.Style>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Join" Width="70" FontFamily="fonts/#Poppins" VerticalAlignment="Center"/>
+                    <TextBlock Text="Join" Width="40" FontFamily="fonts/#Poppins" VerticalAlignment="Center"/>
                     <Image Source="images/join.png" Width="30" Height="30"/>
                 </StackPanel>
 
@@ -846,7 +846,7 @@
                 </TextBox.Resources>
             </TextBox>
 
-            <Button x:Name="quitRoomPasswordGridButton" HorizontalAlignment="Left" Margin="230,324,0,0" VerticalAlignment="Top" Height="50" Width="150" Click="quitRoomPasswordGridButton_Click">
+            <Button x:Name="quitRoomPasswordGridButton" HorizontalAlignment="Left" Margin="220,324,0,0" VerticalAlignment="Top" Height="45" Width="160" Click="quitRoomPasswordGridButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -895,7 +895,7 @@
 
             </Button>
 
-            <Button x:Name="checkGameRoomPasswordButton" HorizontalAlignment="Left" Margin="424,324,0,0" VerticalAlignment="Top" Height="50" Width="150" Click="checkGameRoomPasswordButton_Click">
+            <Button x:Name="checkGameRoomPasswordButton" HorizontalAlignment="Left" Margin="420,324,0,0" VerticalAlignment="Top" Height="45" Width="160" Click="checkGameRoomPasswordButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -961,9 +961,9 @@
                     <TranslateTransform x:Name="gameWidgetsGridTransform"/>
                 </Grid.RenderTransform>
 
-                <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="480,510,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="310" Foreground="White" FontFamily="fonts/#poppins" Height="30"/>
+                <Label Content="Playing VS:" HorizontalAlignment="Left" Margin="480,500,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="310" Foreground="White" FontFamily="fonts/#poppins" Height="30"/>
 
-                <Label x:Name="opponentNameLabel2" Content="OpponentLogin" HorizontalAlignment="Left" Margin="480,526,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="310" Foreground="White" FontFamily="fonts/#poppins" Height="30"/>
+                <Label x:Name="opponentNameLabel2" Content="OpponentLogin" HorizontalAlignment="Left" Margin="480,530,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="310" Foreground="White" FontFamily="fonts/#poppins" Height="30"/>
 
                 <Label x:Name="whoseTurnLabel" Content="YOUR TURN" HorizontalAlignment="Left" Margin="480,57,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="20" Height="40" Width="310" HorizontalContentAlignment="Center" Foreground="White" FontFamily="fonts/#poppins"/>
 
@@ -1032,7 +1032,7 @@
             </Grid>
 
 
-            <Button x:Name="quitGameButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="282" Height="46" Click="quitGameButton_Click" Margin="103,504,0,0">
+            <Button x:Name="quitGameButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="280" Height="46" Click="quitGameButton_Click" Margin="103,504,0,0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -1074,7 +1074,7 @@
                     </Style>
                 </Button.Style>
 
-                <StackPanel Orientation="Horizontal" Height="30">
+                <StackPanel Orientation="Horizontal" Height="30" Margin="20,0,0,0">
                     <TextBlock Text="Quit" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
                     <Image Source="images/logout.png" Margin="10,0" Width="40" Height="30"/>
                 </StackPanel>
@@ -1143,25 +1143,25 @@
 
             </Button>
 
-            <Label Content="Credits" HorizontalAlignment="Center" Margin="0,75,0,0" VerticalAlignment="Top" FontSize="28" FontWeight="Bold" Foreground="White" FontFamily="fonts/#Poppins" Width="120" Height="50"/>
+            <Label Content="Credits" HorizontalAlignment="Center" Margin="0,75,0,0" FontSize="28" FontWeight="Bold" Foreground="White" FontFamily="fonts/#Poppins" Width="200" Height="50" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
 
-            <Label Content="Backend:" HorizontalAlignment="Left" Margin="290,160,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Height="35" Width="85"/>
+            <Label Content="Backend:" HorizontalAlignment="Left" Margin="0,160,30,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Height="35" Width="370" HorizontalContentAlignment="Right"/>
 
-            <Label Content="Frontend:" HorizontalAlignment="Left" Margin="290,200,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="85" Height="35"/>
+            <Label Content="Frontend:" HorizontalAlignment="Left" Margin="0,200,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="370" Height="35" HorizontalContentAlignment="Right"/>
 
-            <Label Content="Piotr Haraburda" HorizontalAlignment="Left" Margin="400,160,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="175" Height="35"/>
+            <Label Content="Piotr Haraburda" HorizontalAlignment="Left" Margin="380,160,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="390" Height="35"/>
 
-            <Label Content="Tomasz Maciejewski" HorizontalAlignment="Left" Margin="400,200,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="175" Height="35"/>
+            <Label Content="Tomasz Maciejewski" HorizontalAlignment="Left" Margin="380,200,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" FontFamily="fonts/#Poppins" Width="390" Height="35"/>
 
-            <Label Content="Used Technologies:" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Margin="0,300,0,0" Foreground="White" FontFamily="fonts/#Poppins" Width="170" Height="40"/>
+            <Label Content="Used Technologies:" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Margin="0,300,0,0" Foreground="White" FontFamily="fonts/#Poppins" Width="600" Height="40" HorizontalContentAlignment="Center"/>
 
-            <Label Content="Backend: C#" HorizontalAlignment="Center" Margin="0,340,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16"/>
+            <Label Content="Backend: C#" HorizontalAlignment="Center" Margin="0,340,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16" Height="35" Width="600" HorizontalContentAlignment="Center"/>
 
-            <Label Content="Frontend: WPF" HorizontalAlignment="Center" Margin="0,380,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16"/>
+            <Label Content="Frontend: WPF" HorizontalAlignment="Center" Margin="0,380,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16" Height="35" Width="600" HorizontalContentAlignment="Center"/>
 
-            <Label Content="Database + Connection: Google Firebase Realtime Database" HorizontalAlignment="Center" Margin="0,460,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16"/>
+            <Label Content="Database + Connection: Google Firebase Realtime Database" HorizontalAlignment="Center" Margin="0,460,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16" Width="600" Height="35" HorizontalContentAlignment="Center"/>
 
-            <Label Content="User authorization: Google Firebase Authentication" HorizontalAlignment="Center" Margin="0,420,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16"/>
+            <Label Content="User authorization: Google Firebase Authentication" HorizontalAlignment="Center" Margin="0,420,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#Poppins" FontSize="16" Width="600" Height="35" HorizontalContentAlignment="Center"/>
 
         </Grid>
 
@@ -1417,7 +1417,7 @@
                 </TextBox.Resources>
             </TextBox>
 
-            <Button x:Name="quitPasswordChangeGridButton" HorizontalAlignment="Left" Margin="200,380,0,0" VerticalAlignment="Top" Height="60" Width="200" Click="quitPasswordChangeGridButton_Click">
+            <Button x:Name="quitPasswordChangeGridButton" HorizontalAlignment="Left" Margin="200,360,0,0" VerticalAlignment="Top" Height="45" Width="160" Click="quitPasswordChangeGridButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -1459,14 +1459,14 @@
                     </Style>
                 </Button.Style>
 
-                <StackPanel Orientation="Horizontal" Height="30">
+                <StackPanel Orientation="Horizontal" Height="30" Margin="15,0,0,0">
                     <TextBlock Text="Cancel" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
                     <Image Source="images/cancel.png" Margin="10,0" Width="40" Height="30"/>
                 </StackPanel>
 
             </Button>
 
-            <Button x:Name="confirmPasswordChangeButton" HorizontalAlignment="Left" Margin="420,380,0,0" VerticalAlignment="Top" Height="60" Width="200" Click="confirmPasswordChangeButton_Click">
+            <Button x:Name="confirmPasswordChangeButton" HorizontalAlignment="Left" Margin="420,360,0,0" VerticalAlignment="Top" Height="45" Width="160" Click="confirmPasswordChangeButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -1508,7 +1508,7 @@
                     </Style>
                 </Button.Style>
 
-                <StackPanel Orientation="Horizontal" Height="30">
+                <StackPanel Orientation="Horizontal" Height="30" Margin="15,0,0,0">
                     <TextBlock Text="Confirm" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
                     <Image Source="images/confirm.png" Margin="10,0" Width="40" Height="30"/>
                 </StackPanel>
@@ -1532,7 +1532,7 @@
 
             <Label Content="Be sure you want to do it!" HorizontalAlignment="Center" Margin="0,211,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="fonts/#poppins"/>
 
-            <Button x:Name="quitAccountDeleteGridButton" HorizontalAlignment="Left" Margin="160,340,0,0" VerticalAlignment="Top" Height="60" Width="200" Click="quitAccountDeleteGridButton_Click">
+            <Button x:Name="quitAccountDeleteGridButton" HorizontalAlignment="Left" Margin="220,320,0,0" VerticalAlignment="Top" Height="45" Width="160" Click="quitAccountDeleteGridButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -1574,14 +1574,14 @@
                     </Style>
                 </Button.Style>
 
-                <StackPanel Orientation="Horizontal" Height="30">
-                    <TextBlock Text="Cancel" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
-                    <Image Source="images/cancel.png" Margin="10,0" Width="40" Height="30"/>
+                <StackPanel Orientation="Horizontal" Height="30" Margin="15,0,0,0">
+                    <TextBlock Text="Cancel" Width="50" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
+                    <Image Source="images/cancel.png" Margin="10,0" Width="40" Height="30" RenderTransformOrigin="1.4,0.501"/>
                 </StackPanel>
 
             </Button>
 
-            <Button x:Name="confirmAccountDeleteButton" HorizontalAlignment="Left" Margin="440,340,0,0" VerticalAlignment="Top" Height="60" Width="200" Click="confirmAccountDeleteButton_Click">
+            <Button x:Name="confirmAccountDeleteButton" HorizontalAlignment="Left" Margin="420,320,0,0" VerticalAlignment="Top" Height="45" Width="160" Click="confirmAccountDeleteButton_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
 
@@ -1623,7 +1623,7 @@
                     </Style>
                 </Button.Style>
 
-                <StackPanel Orientation="Horizontal" Height="30">
+                <StackPanel Orientation="Horizontal" Height="30" Margin="15,0,0,0">
                     <TextBlock Text="Confirm" Width="55" FontFamily="fonts/#Poppins" VerticalAlignment="Center" FontSize="14"/>
                     <Image Source="images/confirm.png" Margin="10,0" Width="40" Height="30"/>
                 </StackPanel>

@@ -31,9 +31,9 @@ namespace CheckersMultiplayer
             if (!loggedIn)
             {
                 LinearGradientBrush myBrush = new LinearGradientBrush();
-                myBrush.GradientStops.Add(new GradientStop(Colors.Yellow, 0.0));
-                myBrush.GradientStops.Add(new GradientStop(Colors.Orange, 0.5));
-                myBrush.GradientStops.Add(new GradientStop(Colors.Red, 1.0));
+                myBrush.GradientStops.Add(new GradientStop(Colors.Red, 0.0));
+                myBrush.GradientStops.Add(new GradientStop(Colors.IndianRed, 0.5));
+                myBrush.GradientStops.Add(new GradientStop(Colors.DarkRed, 1.0));
                 emailTextBox.Style = null;
                 passwordTextBox.Style = null;
 
