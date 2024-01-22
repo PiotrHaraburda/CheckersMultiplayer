@@ -14,7 +14,7 @@
 
     <Grid>
 
-        <Grid x:Name="mainMenuPanel" Visibility="Collapsed">
+        <Grid x:Name="mainMenuPanel" Visibility="Visible">
 
             <Grid.Background>
                 <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
@@ -434,7 +434,7 @@
         </Grid>
 
 
-        <Grid x:Name="createLobbyGrid" Visibility="Visible">
+        <Grid x:Name="createLobbyGrid" Visibility="Collapsed">
 
             <Grid.Background>
                 <ImageBrush ImageSource="images/checkers_background.jpg" Stretch="UniformToFill"/>
